@@ -10,6 +10,7 @@ public class Program {
         System.out.println("Exit (3)");
         System.out.print("Enter your choice, (1,2,3): ");
 
+        //amateur CLI options placeholder
         boolean validChoice = false;
         while (!validChoice) {
             try {
