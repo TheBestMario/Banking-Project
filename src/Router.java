@@ -1,11 +1,15 @@
+import Pages.CustomersPage;
+import java.util.Scanner;
+
 public class Router {
 
     public Router(){}
 
-    String route(String route){
+    String route(String route, Scanner scanner){
         switch (route){
             case "/home":
                 // routes to home page, shows home page menu with options
+                CustomersPage.display(scanner);
                 break;
 
             case "home/customers":
