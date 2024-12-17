@@ -2,14 +2,14 @@ import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("CLI BANKING SYSTEM");
-        System.out.println("Review client accounts (1)");
-        System.out.println("Create a new account (2)");
-        System.out.println("Exit (3)");
-        System.out.print("Enter your choice, (1,2,3): ");
-
+        System.out.print("""
+               CLI BANKING SYSTEM
+               Review client accounts (1)
+               Create a new account (2)
+               Exit (3)
+               Enter your choice, (1,2,3):
+                """);
         //amateur CLI options placeholder
         boolean validChoice = false;
         while (!validChoice) {
