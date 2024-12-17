@@ -1,5 +1,6 @@
 import Pages.CustomersPage;
 
+import javax.xml.crypto.Data;
 import java.util.Scanner;
 
 public class Program {
@@ -7,11 +8,14 @@ public class Program {
 
 
     public static void main(String[] args) {
+        Config config = new Config();
+        Database db = new Database(config);
+        db.establishConnection();
+
         Router router = new Router();
         String currentDirectory = "/home";
         Teller currentTeller = new Teller(currentDirectory);
         router.route(currentTeller.currentDirectory, scanner);
-
 
 
         scanner.close();

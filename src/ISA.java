@@ -1,5 +1,6 @@
 public class ISA extends Account {
     private static final double ANNUAL_APR = 0.0275;
+    private double balance;
 
     public ISA(int accountNumber, double initialBalance) {
         super(accountNumber, initialBalance);
@@ -12,6 +13,6 @@ public class ISA extends Account {
 
 
     public void applyAnnualInterest() {
-        balance = balance + (balance * ANNUAL_APR);
+        this.balance = this.balance + (this.balance * ANNUAL_APR);
     }
 }
