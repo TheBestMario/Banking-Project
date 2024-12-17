@@ -1,0 +1,17 @@
+public class ISA extends Account {
+    private static final double ANNUAL_APR = 0.0275;
+
+    public ISA(int accountNumber, double initialBalance) {
+        super(accountNumber, initialBalance);
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        System.out.println("You cannot withdraw from an ISA account");
+    }
+
+
+    public void applyAnnualInterest() {
+        balance = balance + (balance * ANNUAL_APR);
+    }
+}
