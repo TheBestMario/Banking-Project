@@ -26,6 +26,8 @@ public class NewISAPage {
         System.out.println("Enter customer name: ");
         String customerName = scanner.nextLine();
 
+        // If statement here to check if customer isa exists within the database
+
 
 //        if (/* hashMap.contains(name)*/) {
 //            System.out.println("Customer already has a ISA account. Customer can only have one ISA account");
