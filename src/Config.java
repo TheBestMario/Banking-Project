@@ -3,6 +3,6 @@ public class Config {
     String password;
     public Config(){
         this.userName = "sa";
-        this.password = "F@z2&WmP";
+        this.password = "StrongP@ssw0rd";
     }
 }
