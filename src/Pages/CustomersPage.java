@@ -1,11 +1,11 @@
 package Pages;
 import java.util.Scanner;
-
+import main.Teller;
 public class CustomersPage {
 
     public CustomersPage() {}
 
-    public static void display(Scanner scanner){
+    public static Teller display(Teller currentTeller, Scanner scanner){
         System.out.print("""
                CLI BANKING SYSTEM
                Review client accounts (1)
@@ -35,6 +35,6 @@ public class CustomersPage {
                 System.out.println("Invalid input, use a number from the list given");
             }
         }
-
+        return currentTeller;
     }
 }

@@ -8,7 +8,7 @@ public class CreateAccountPage {
     private String lastName;
     private String password;
 
-    public static void display(Teller currentTeller, Scanner scanner) {
+    public static Teller display(Teller currentTeller, Scanner scanner) {
         String firstName = "";
         String lastName = "";
         String password = "";
@@ -45,8 +45,9 @@ public class CreateAccountPage {
                 validPassword = true;
                 // after a teller is saved, route back to the root directory
                 currentTeller.currentDirectory = "";
+                return currentTeller;
             }
         }
-
+        return currentTeller;
     }
 }

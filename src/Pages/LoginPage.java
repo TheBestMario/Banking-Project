@@ -24,6 +24,9 @@ public class LoginPage {
         while(password.length() == 0){
             password = scanner.nextLine();
         }
+        System.out.println("answers:");
+        System.out.println(username);
+        System.out.println(password);
 
     /*
         if (isAuthenticated) {
@@ -35,7 +38,7 @@ public class LoginPage {
 
 
      */
-
+        teller.currentDirectory = "/home";
         return teller;
     }
 }

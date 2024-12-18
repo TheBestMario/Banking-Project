@@ -18,9 +18,10 @@ public class Router {
                 HelpPage.display(scanner);
                 break;
             case "createTeller":
-                CreateAccountPage.display(currentTeller, scanner);
-                break;
+                currentTeller = CreateAccountPage.display(currentTeller, scanner);
+                return currentTeller;
             case "/home":
+                currentTeller = CustomersPage.display(currentTeller, scanner);
                 // routes to home page, shows home page menu with options
                 break;
 
