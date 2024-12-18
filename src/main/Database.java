@@ -37,11 +37,12 @@ public class Database {
     }
     //TELLERS
     public void createTeller(Teller teller) {
-        String query = "INSERT INTO Tellers (firstName,LastName, password) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Tellers (firstName,lastName,userName, password) VALUES (?, ?, ?, ?)";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, teller.getFirstName());
             st.setString(2, teller.getLastName());
-            st.setString(3, teller.getPassword());
+            st.setString(3, teller.getUserName());
+            st.setString(4, teller.getPassword());
             st.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,11 +50,23 @@ public class Database {
     }
     public Teller getTeller(String username, String password) {
         String query = "SELECT * FROM Tellers WHERE username = ? and password = ?";
-
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1,username);
             st.setString(2,password);
             ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+
+                Teller teller = new Teller("/home", this);
+                teller.setFirstName(rs.getString("firstName"));
+                teller.setLastName(rs.getString("lastName"));
+                teller.setUserName(rs.getString("username"));
+                teller.setPassword(rs.getString("password"));
+                teller.teller_id = rs.getInt("id");
+                return teller;
+
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,11 +75,13 @@ public class Database {
     public void updateTeller(Teller teller) {
         String query = "UPDATE Tellers SET password = ?, firstName = ?, lastName = ? WHERE id = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
+
             st.setString(1, teller.getPassword());
             st.setString(2, teller.getFirstName());
             st.setString(3, teller.getLastName());
             st.setInt(4, teller.getID());
             st.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,8 +89,10 @@ public class Database {
     public void deleteTeller(String username) {
         String query = "DELETE FROM Tellers WHERE username = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
+
             st.setString(1, username);
             st.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

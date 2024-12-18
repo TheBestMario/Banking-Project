@@ -47,7 +47,14 @@ public class CreateAccountPage {
             }
             else{
                 validPassword = true;
+                currentTeller.setFirstName(firstName);
+                currentTeller.setLastName(lastName);
+                currentTeller.setUserName(userName);
+                currentTeller.setPassword(password);
                 // after a teller is saved, route back to the root directory
+                System.out.println("Account created successfully! Welcome, " + currentTeller.getFirstName() + " " + currentTeller.getLastName() + ".");
+
+                currentTeller.getDatabase().createTeller(currentTeller);
                 currentTeller.currentDirectory = "";
                 return currentTeller;
             }

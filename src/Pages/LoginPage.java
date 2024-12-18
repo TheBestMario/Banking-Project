@@ -25,6 +25,7 @@ public class LoginPage {
         while(password.length() == 0){
             password = scanner.nextLine();
             Teller storedTeller = teller.getDatabase().getTeller(username, password);
+            System.out.println("storedTeller:" + storedTeller);
             if (storedTeller != null) {
                 isAuthenticated = true;
                 teller = storedTeller;
