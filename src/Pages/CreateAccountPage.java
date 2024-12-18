@@ -4,16 +4,17 @@ import main.Teller;
 import java.util.Scanner;
 
 public class CreateAccountPage {
-    private String firstName;
-    private String lastName;
-    private String password;
+
+
 
     public static Teller display(Teller currentTeller, Scanner scanner) {
         String firstName = "";
         String lastName = "";
         String password = "";
+        String userName = "";
         String confirmPassword = "";
         Boolean validPassword = false;
+        scanner.nextLine();
 
         while (firstName.length() == 0) {
             System.out.print("Please enter your first name: ");
@@ -25,6 +26,11 @@ public class CreateAccountPage {
         while (lastName.length() == 0) {
             System.out.print("Please enter your last name: ");
             lastName = scanner.nextLine();
+        }
+
+        while (userName.length() == 0) {
+            System.out.print("Please enter your username: ");
+            userName = scanner.nextLine();
         }
 
         // Get and confirm the password
