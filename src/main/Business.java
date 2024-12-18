@@ -5,16 +5,48 @@ public class Business extends Account {
 
     public Business(int accountNumber, double initialBalance) {
         super(accountNumber, initialBalance);
+
     }
 
     @Override
     public void withdraw(double amount) {
-        if (amount > 0 && balance >= amount) {
-            balance -= amount;
+        if (amount <= 0){
+            throw new IllegalArgumentException("Amount must be greater than zero");
         }
+        if (amount > this.balance){
+            throw new IllegalArgumentException("Amount must be less than balance");
+        }
+        this.balance -= amount;
+
     }
 
     public void applyAnnualCharge() {
-        balance -= ANNUAL_CHARGE;
+        if (this.balance < ANNUAL_CHARGE){
+            throw new IllegalArgumentException("Insufficient Balance for Bank Charge");
+        }
+        this.balance -= ANNUAL_CHARGE;
+    }
+
+    public void deposit(double amount) {
+        if (amount <= 0){
+            throw new IllegalArgumentException("Amount must be greater than zero");
+
+        }
+        this.balance += amount;
+        System.out.println("The Balance is: " + this.balance);
+
+    }
+    public void viewBalance() {
+        System.out.println("The Balance is: " + this.balance);
+    }
+
+    public void makeInternationalPayments(double amount) {
+        if (amount <= 0 || amount > this.balance){
+            throw new IllegalArgumentException("Amount must be greater than zero");
+        }
+        this.balance -= amount;
+        System.out.println("The International Payment is: " + amount);
+
     }
 }
+
