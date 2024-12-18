@@ -1,5 +1,7 @@
 package Pages;
 
+import main.Teller;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -9,7 +11,7 @@ public class NewISAPage {
 
     boolean hasExistingISA = false;
 
-    public void display() {
+    public static void display(Teller teller) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("ISA Account Setup");
@@ -22,7 +24,7 @@ public class NewISAPage {
     }
 
 
-    public void validateUser(Scanner scanner) {
+    public static void validateUser(Scanner scanner) {
         System.out.println("Enter customer name: ");
         String customerName = scanner.nextLine();
 
@@ -38,7 +40,7 @@ public class NewISAPage {
 //        }
     }
 
-    public void chooseAccountType(Scanner scanner) {
+    public static void chooseAccountType(Scanner scanner) {
         boolean validChoice = false;
         int accountType = 0;
 
@@ -88,7 +90,7 @@ public class NewISAPage {
 
     }
 
-    public void makeInitialDeposit(Scanner scanner) {
+    public static void makeInitialDeposit(Scanner scanner) {
         boolean validDeposit = false;
         double initialDepositAmount = 0;
 
@@ -110,7 +112,7 @@ public class NewISAPage {
 
     }
 
-    public void validateAge(Scanner scanner) {
+    public static void validateAge(Scanner scanner) {
         System.out.println("HELP: Customer must be between the ages of 18 - 40 to open a Lifetime ISA");
         int age = scanner.nextInt();
         // If the customer is an existing customer, we can pull their DOB and calculate their age.
