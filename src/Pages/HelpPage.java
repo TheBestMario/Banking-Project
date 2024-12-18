@@ -64,7 +64,7 @@ public class HelpPage {
 
 
 
-    private static void FAQs() {
+    private static void displayFAQs() {
         System.out.println("====== FAQs ======");
         System.out.println("Q1: How do I register a new customer?");
         System.out.println("A1: Use the 'Register New Customer' feature and input the required information.");

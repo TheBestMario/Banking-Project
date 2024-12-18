@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class CreateAccountPage {
 
-
-
     public static Teller display(Teller currentTeller, Scanner scanner) {
         String firstName = "";
         String lastName = "";
