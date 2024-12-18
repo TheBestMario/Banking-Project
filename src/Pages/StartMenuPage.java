@@ -11,6 +11,7 @@ public class StartMenuPage {
                 Enter your choice, (1,2):
                  """);
         boolean exit = false;
+
         while (!exit) {
             try {
                 int choice = scanner.nextInt();
@@ -25,6 +26,7 @@ public class StartMenuPage {
                 return  teller;
             } catch (Exception e) {
                 System.out.println("Invalid input, use a number from the list given");
+                scanner.nextLine();
             }
         }
         return teller;
