@@ -54,9 +54,6 @@ public class Database {
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1,username);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return new Teller("");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
