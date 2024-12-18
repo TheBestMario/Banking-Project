@@ -11,7 +11,7 @@ public class Database {
     public Database(Config config){
         this.dbUsername = config.userName;
         this.dbPassword = config.password;
-        this.connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=BankingAppDB;user=" + this.dbUsername + ";password=<" + this.dbPassword + ">;encrypt=true;";
+        this.connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=BankingAppDB;user=" + this.dbUsername + ";password=" + this.dbPassword + ";encrypt=false;";
     }
 
 
