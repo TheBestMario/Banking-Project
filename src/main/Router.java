@@ -6,16 +6,16 @@ public class Router {
 
     public Router(){}
 
-    String route(Teller currentTeller, Scanner scanner){
+    Teller route(Teller currentTeller, Scanner scanner){
         System.out.println("current route:");
         System.out.println(currentTeller.currentDirectory);
         switch (currentTeller.currentDirectory){
             case "":
                 currentTeller = StartMenuPage.display(currentTeller, scanner);
-                break;
+                return currentTeller;
             case "login":
                 currentTeller = LoginPage.display(currentTeller, scanner);
-                break;
+                return currentTeller;
             case "help":
                 HelpPage.display(scanner);
                 break;
@@ -34,8 +34,7 @@ public class Router {
             case "logout":
                 // logouts out of the system...
                 break;
-
         }
-        return "";
+        return currentTeller;
     }
 }

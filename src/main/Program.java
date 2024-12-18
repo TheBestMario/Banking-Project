@@ -15,7 +15,7 @@ public class Program {
         while(!currentTeller.loggedIN){
             router.route(currentTeller, scanner);
             while(currentTeller.loggedIN){
-                router.route(currentTeller, scanner);
+                currentTeller = router.route(currentTeller, scanner);
             }
         }
         scanner.close();
