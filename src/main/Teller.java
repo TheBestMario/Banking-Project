@@ -3,9 +3,9 @@ public class Teller {
     String firstName;
     String lastName;
     public String currentDirectory;
+    public String userName;
     int teller_id;
     public Boolean loggedIN;
-
 
     public Teller(String setDirectory){
         this.currentDirectory = setDirectory;
@@ -22,6 +22,9 @@ public class Teller {
     public String getLastName(){
         return this.firstName;
     }
+    public String getUsername(){
+        return this.userName;
+    }
 
     public String getPassword(){
         return this.firstName;
@@ -32,5 +35,9 @@ public class Teller {
 
     public int getID() {
         return this.teller_id;
+    }
+
+    public void createAccount(String firstName, String lastName, String password){
+
     }
 }

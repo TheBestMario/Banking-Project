@@ -8,7 +8,7 @@ public class StartMenuPage {
                 Welcome to ACME Bank, Would you like to:
                 Login: (1)
                 Create an Account: (2)
-                Enter your choice, (1,2,3):
+                Enter your choice, (1,2):
                  """);
         boolean exit = false;
         while (!exit) {
