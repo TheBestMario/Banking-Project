@@ -3,7 +3,7 @@ import main.Teller;
 import java.util.Scanner;
 
 public class StartMenuPage {
-    public static void display(Teller teller, Scanner scanner) {
+    public static Teller display(Teller teller, Scanner scanner) {
         System.out.print("""
                 Welcome to ACME Bank, Would you like to:
                 Login: (1)
@@ -17,19 +17,17 @@ public class StartMenuPage {
                 switch (choice) {
                     case 1:
                         teller.currentDirectory = "login";
-                        break;
+                        return teller;
                     case 2:
                         teller.currentDirectory = "createTeller";
-                        break;
+                        return teller;
                 }
-
+                return  teller;
             } catch (Exception e) {
                 System.out.println("Invalid input, use a number from the list given");
             }
-
         }
-
-
+        return teller;
     }
 
 }

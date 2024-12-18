@@ -7,12 +7,14 @@ public class Router {
     public Router(){}
 
     String route(Teller currentTeller, Scanner scanner){
+        System.out.println("current route:");
+        System.out.println(currentTeller.currentDirectory);
         switch (currentTeller.currentDirectory){
             case "":
-                StartMenuPage.display(currentTeller, scanner);
+                currentTeller = StartMenuPage.display(currentTeller, scanner);
                 break;
             case "login":
-                LoginPage.display(scanner);
+                currentTeller = LoginPage.display(currentTeller, scanner);
                 break;
             case "help":
                 HelpPage.display(scanner);
