@@ -7,8 +7,6 @@ public class Router {
     public Router(){}
 
     Teller route(Teller currentTeller, Scanner scanner){
-        System.out.println("current route:");
-        System.out.println(currentTeller.currentDirectory);
         switch (currentTeller.currentDirectory){
             case "":
                 currentTeller = StartMenuPage.display(currentTeller, scanner);
