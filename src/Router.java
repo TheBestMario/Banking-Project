@@ -1,4 +1,5 @@
-import Pages.CustomersPage;
+import Pages.*;
+
 import java.util.Scanner;
 
 public class Router {
@@ -8,10 +9,17 @@ public class Router {
     String route(String route, Scanner scanner){
         switch (route){
             case "":
-
-
-
-
+                StartMenuPage.display(scanner);
+                break;
+            case "login":
+                LoginPage.display(scanner);
+                break;
+            case "help":
+                HelpPage.display(scanner);
+                break;
+            case "createTeller":
+                CreateAccountPage.display(scanner);
+                break;
             case "/home":
                 // routes to home page, shows home page menu with options
                 CustomersPage.display(scanner);
