@@ -47,10 +47,12 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public Teller getTeller(String username) {
-        String query = "SELECT * FROM Tellers WHERE username = ?";
+    public Teller getTeller(String username, String password) {
+        String query = "SELECT * FROM Tellers WHERE username = ? and password = ?";
+
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1,username);
+            st.setString(2,password);
             ResultSet rs = st.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();

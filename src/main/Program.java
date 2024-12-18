@@ -11,6 +11,7 @@ public class Program {
         db.establishConnection();
         String currentDirectory = "";
         Teller currentTeller = new Teller(currentDirectory);
+        currentTeller.setDatabase(db);
 
         while(!currentTeller.loggedIN){
             router.route(currentTeller, scanner);

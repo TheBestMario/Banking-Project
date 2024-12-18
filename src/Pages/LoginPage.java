@@ -21,14 +21,20 @@ public class LoginPage {
         System.out.print("""
                 Please enter your password:
                 """);
+
         while(password.length() == 0){
             password = scanner.nextLine();
+            Teller storedTeller = teller.getDatabase().getTeller(username, password);
+            if (storedTeller != null) {
+                isAuthenticated = true;
+                teller = storedTeller;
+            }
         }
         System.out.println("answers:");
         System.out.println(username);
         System.out.println(password);
 
-    /*
+
         if (isAuthenticated) {
             System.out.println("Login successful! Welcome, " + teller.getFirstName() + " " + teller.getLastName() + ".");
         } else {
@@ -37,7 +43,7 @@ public class LoginPage {
         }
 
 
-     */
+
         teller.currentDirectory = "/home";
         return teller;
     }

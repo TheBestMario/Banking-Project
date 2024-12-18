@@ -6,6 +6,8 @@ public class Teller {
     public String userName;
     int teller_id;
     public Boolean loggedIN;
+    private String password;
+    private Database db;
 
     public Teller(String setDirectory){
         this.currentDirectory = setDirectory;
@@ -20,22 +22,29 @@ public class Teller {
         return this.firstName;
     }
     public String getLastName(){
-        return this.firstName;
+        return this.lastName;
     }
     public String getUsername(){
         return this.userName;
     }
 
     public String getPassword(){
-        return this.firstName;
+        return this.password;
     }
     public Boolean Logout(){
         return true;
+    }
+    public void setDatabase(Database db){
+        this.db = db;
+    }
+    public Database getDatabase(){
+        return this.db;
     }
 
     public int getID() {
         return this.teller_id;
     }
+
 
     public void createAccount(String firstName, String lastName, String password){
 
