@@ -18,11 +18,10 @@ public class Router {
                 HelpPage.display(scanner);
                 break;
             case "createTeller":
-                CreateAccountPage.display(scanner);
+                CreateAccountPage.display(currentTeller, scanner);
                 break;
             case "/home":
                 // routes to home page, shows home page menu with options
-                CustomersPage.display(scanner);
                 break;
 
             case "home/customers":

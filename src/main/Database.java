@@ -15,8 +15,6 @@ public class Database {
         this.connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=BankingAppDB;user=" + this.dbUsername + ";password=" + this.dbPassword + ";encrypt=false;";
     }
 
-
-
     public Boolean establishConnection(){
         try {
             System.out.println(this.connectionUrl);
