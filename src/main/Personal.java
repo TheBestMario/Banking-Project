@@ -1,3 +1,4 @@
+package main;
 public class Personal extends Account {
     private static final float min_opening_balance = 1.0F;
 

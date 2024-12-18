@@ -1,3 +1,5 @@
+package main;
+
 public class Business extends Account {
     private static final double ANNUAL_CHARGE = 120.0;
 

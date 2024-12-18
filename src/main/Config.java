@@ -1,3 +1,4 @@
+package main;
 public class Config {
     String userName;
     String password;

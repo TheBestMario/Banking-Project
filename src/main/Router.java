@@ -1,15 +1,15 @@
+package main;
 import Pages.*;
-
 import java.util.Scanner;
 
 public class Router {
 
     public Router(){}
 
-    String route(String route, Scanner scanner){
-        switch (route){
+    String route(Teller currentTeller, Scanner scanner){
+        switch (currentTeller.currentDirectory){
             case "":
-                StartMenuPage.display(scanner);
+                StartMenuPage.display(currentTeller, scanner);
                 break;
             case "login":
                 LoginPage.display(scanner);

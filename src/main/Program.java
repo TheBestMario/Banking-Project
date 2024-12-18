@@ -1,11 +1,8 @@
-import Pages.CustomersPage;
-
-import javax.xml.crypto.Data;
+package main;
 import java.util.Scanner;
 
 public class Program {
     private static Scanner scanner = new Scanner(System.in);
-
 
     public static void main(String[] args) {
         Config config = new Config();
@@ -14,10 +11,11 @@ public class Program {
         db.establishConnection();
         String currentDirectory = "";
         Teller currentTeller = new Teller(currentDirectory);
+
         while(!currentTeller.loggedIN){
-            router.route(currentTeller.currentDirectory, scanner);
+            router.route(currentTeller, scanner);
             while(currentTeller.loggedIN){
-                router.route(currentTeller.currentDirectory, scanner);
+                router.route(currentTeller, scanner);
             }
         }
         scanner.close();
