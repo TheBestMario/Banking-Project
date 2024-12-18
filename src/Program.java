@@ -10,14 +10,16 @@ public class Program {
     public static void main(String[] args) {
         Config config = new Config();
         Database db = new Database(config);
-        db.establishConnection();
-
         Router router = new Router();
-        String currentDirectory = "/home";
+        db.establishConnection();
+        String currentDirectory = "";
         Teller currentTeller = new Teller(currentDirectory);
-        router.route(currentTeller.currentDirectory, scanner);
-
-
+        while(!currentTeller.loggedIN){
+            router.route(currentTeller.currentDirectory, scanner);
+            while(currentTeller.loggedIN){
+                router.route(currentTeller.currentDirectory, scanner);
+            }
+        }
         scanner.close();
         System.exit(0);
     }

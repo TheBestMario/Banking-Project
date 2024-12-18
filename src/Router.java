@@ -7,6 +7,10 @@ public class Router {
 
     String route(String route, Scanner scanner){
         switch (route){
+            case "login":
+
+
+
             case "/home":
                 // routes to home page, shows home page menu with options
                 CustomersPage.display(scanner);

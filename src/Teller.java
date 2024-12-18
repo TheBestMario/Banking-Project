@@ -3,11 +3,18 @@ public class Teller {
     String lastName;
     String currentDirectory;
     int teller_id;
+    Boolean loggedIN;
 
     public Teller(String setDirectory){
         this.currentDirectory = setDirectory;
+        this.loggedIN = false;
     }
 
-    public void Login(){}
-    public void Logout(){}
+    public Boolean Login(){
+        return true;
+
+    }
+    public Boolean Logout(){
+        return true;
+    }
 }
