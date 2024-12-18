@@ -11,8 +11,8 @@ public class NewISAPage {
 
     boolean hasExistingISA = false;
 
-    public static void display(Teller teller) {
-        Scanner scanner = new Scanner(System.in);
+    public static void display(Teller teller, Scanner scanner) {
+        scanner = new Scanner(System.in);
 
         System.out.println("ISA Account Setup");
 

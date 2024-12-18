@@ -1,11 +1,14 @@
 package Pages;
 
+import main.ISA;
+import main.Teller;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExistingISAAccountPage {
 
-    public void display(Scanner scanner) {
+    public static void display(Scanner scanner, Teller teller) {
 
         boolean isRunning = true;
 
@@ -42,7 +45,7 @@ public class ExistingISAAccountPage {
                       break;
 
                     case 4:
-                        deposit();
+                        deposit(scanner);
                         break;
 
                     case 5:
@@ -61,23 +64,25 @@ public class ExistingISAAccountPage {
         }
     }
 
-    public void displayGainsOverYears() {
+    public  static void displayGainsOverYears() {
         System.out.println("Gains Over Years");
     }
 
-    public void displayBalance() {
+    public static void displayBalance() {
         System.out.println("Balance");
+
+
     }
 
-    public void withdraw(Scanner scanner) {
+    public static void withdraw(Scanner scanner) {
         System.out.println("Withdraw");
     }
 
-    public void deposit() {
+    public static void deposit(Scanner scanner) {
         System.out.println("Deposit");
     }
 
-    public void displayPendingPayments() {
+    public static void displayPendingPayments() {
         System.out.println("Pending Payments");
     }
 }
