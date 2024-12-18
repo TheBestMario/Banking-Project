@@ -1,4 +1,7 @@
 package main;
+
+import javax.xml.crypto.Data;
+
 public class Teller {
     String firstName;
     String lastName;
@@ -9,9 +12,10 @@ public class Teller {
     private String password;
     private Database db;
 
-    public Teller(String setDirectory){
+    public Teller(String setDirectory, Database db){
         this.currentDirectory = setDirectory;
         this.loggedIN = false;
+        this.db = db;
     }
 
     public Boolean Login(){

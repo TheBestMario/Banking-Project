@@ -22,6 +22,9 @@ public class StartMenuPage {
                     case 2:
                         teller.currentDirectory = "createTeller";
                         return teller;
+                    default:
+                        System.out.println("Invalid input, use a number from the list given");
+                        scanner.nextLine();
                 }
                 return  teller;
             } catch (Exception e) {

@@ -9,9 +9,7 @@ public class Program {
         Database db = new Database(config);
         Router router = new Router();
         db.establishConnection();
-        String currentDirectory = "";
-        Teller currentTeller = new Teller(currentDirectory);
-        currentTeller.setDatabase(db);
+        Teller currentTeller = new Teller("", db);
 
         while(!currentTeller.loggedIN){
             router.route(currentTeller, scanner);
