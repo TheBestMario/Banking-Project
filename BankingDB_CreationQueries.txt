@@ -1,7 +1,7 @@
 ﻿create database BankingAppDB;
 
 create table Tellers
-(id int primary key,
+(id int primary key identity(1,1),
 firstName varchar(255),
 lastName varchar(255),
 userName varchar(255),
@@ -9,7 +9,7 @@ password varchar(255),
 isDeleted tinyint);
 
 create table Customers
-(id int primary key,
+(id int primary key identity(1,1),
 firstName varchar(255),
 lastName varchar(255),
 photo_proof varchar(255),
@@ -18,35 +18,35 @@ business_proof varchar(255),
 isDeleted tinyint);
 
 create table ISA_Types
-(id int primary key,
+(id int primary key identity(1,1),
 type varchar(255),
 limit int,
 charge int);
 
 create table ISA_Accounts
-(id int primary key,
+(id int primary key identity(1,1),
 type_id int foreign key references ISA_Types(id),
 currentBalance int,
 dateCreated date);
 
 create table ISA_Pending_Payments
-(id int primary key,
+(id int primary key identity(1,1),
 account_id int foreign key references ISA_Accounts(id),
 annual_payment_date date,
 isDeleted tinyint);
 
 create table Business_Payment_Type
-(id int primary key,
+(id int primary key identity(1,1),
 name varchar(255),
 additional_info text null);
 
 create table Business_Accounts
-(id int primary key,
+(id int primary key identity(1,1),
 has_Cheque_Books tinyint default 0,
 business_details text);
 
 create table Business_Pending_Payments
-(id int primary key,
+(id int primary key identity(1,1),
 account_id int foreign key references Business_Accounts(id),
 type_id int foreign key references Business_Payment_Type(id),
 dateCreated datetime,
@@ -56,12 +56,12 @@ isDeleted tinyint);
 
 
 create table Personal_Accounts
-(id int primary key,
+(id int primary key identity(1,1),
 bank_address varchar(120) not null,
 payment_limit int);
 
 create table Personal_Standing_Orders
-(id int primary key,
+(id int primary key identity(1,1),
 account_id int foreign key references Personal_Accounts(id),
 amount int,
 sellerName varchar(255),
@@ -69,17 +69,17 @@ dateCreated datetime,
 isDeleted tinyint);
 
 create table Account_Type
-(id int primary key,
+(id int primary key identity(1,1),
 personal_account_id int foreign key references Personal_Accounts(id),
 business_account_id int foreign key references Business_Accounts(id),
 ISA_account_id int foreign key references ISA_Accounts(id));
 
 create table Account_Transaction_Type
-(id int primary key,
+(id int primary key identity(1,1),
 name varchar(255));
 
 create table Accounts
-(id int primary key,
+(id int primary key identity(1,1),
 customer_id int foreign key references Customers(id),
 type_id int foreign key references Account_Type(id),
 initial_deposit int,
@@ -89,7 +89,7 @@ dateUpdated datetime,
 isDeleted tinyint);
 
 create table Account_Transactions
-(id int primary key, 
+(id int primary key identity(1,1),
 account_id int foreign key references Accounts(id),
 balance_before int,
 balance_after int,

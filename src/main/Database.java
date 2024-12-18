@@ -29,6 +29,60 @@ public class Database {
         }
     }
 
+    public void closeConnection(){
+        try {
+            this.con.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //TELLERS
+    public void createTeller(Teller teller) {
+        String query = "INSERT INTO Tellers (firstName,LastName, password) VALUES (?, ?, ?)";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, teller.getFirstName());
+            st.setString(2, teller.getLastName());
+            st.setString(3, teller.getPassword());
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public Teller getTeller(String username) {
+        String query = "SELECT * FROM Tellers WHERE username = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1,username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new Teller("");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public void updateTeller(Teller teller) {
+        String query = "UPDATE Tellers SET password = ?, firstName = ?, lastName = ? WHERE id = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, teller.getPassword());
+            st.setString(2, teller.getFirstName());
+            st.setString(3, teller.getLastName());
+            st.setInt(4, teller.getID());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteTeller(String username) {
+        String query = "DELETE FROM Tellers WHERE username = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, username);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

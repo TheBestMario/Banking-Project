@@ -16,7 +16,21 @@ public class Teller {
         return true;
 
     }
+    public String getFirstName(){
+        return this.firstName;
+    }
+    public String getLastName(){
+        return this.firstName;
+    }
+
+    public String getPassword(){
+        return this.firstName;
+    }
     public Boolean Logout(){
         return true;
+    }
+
+    public int getID() {
+        return this.teller_id;
     }
 }
