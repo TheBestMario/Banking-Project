@@ -7,7 +7,8 @@ public class Router {
 
     String route(String route, Scanner scanner){
         switch (route){
-            case "login":
+            case "":
+
 
 
 
