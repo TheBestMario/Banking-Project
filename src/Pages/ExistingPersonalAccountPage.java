@@ -1,9 +1,10 @@
 package Pages;
+import main.Teller;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExistingPersonalAccountPage {
-    public void display(Scanner scanner) {
+    public static Teller display(Teller currentTeller, Scanner scanner) {
         boolean isRunning = true;
 
         while (isRunning) {
@@ -28,11 +29,14 @@ public class ExistingPersonalAccountPage {
                     case 5: withdraw(scanner);
                     case 6: viewCardDetails();
                     case 7: viewPendingPayments();
-                    case 8: isRunning = false;
+                    case 8:
+                        isRunning = false;
                         System.out.println("Leaving Personal Account Page");
-                        break;
-                        default:
-                            isRunning = false;
+                        currentTeller.goBack();
+                        return currentTeller;
+                    default:
+                        isRunning = true;
+
                 }
 
             }catch (InputMismatchException e) {
@@ -40,18 +44,18 @@ public class ExistingPersonalAccountPage {
                 scanner.nextLine();
             }
         }
-
+        return currentTeller;
     }
-    public void displayBalance() {
+    public static void displayBalance() {
         System.out.println("Displaying Balance");
     }
-    public void manageStandingOrders() {
+    public static void manageStandingOrders() {
         System.out.println("Manage Standing Orders");
     }
-    public void viewStatmentHistory() {
+    public static void viewStatmentHistory() {
         System.out.println("View Statment History");
     }
-    public void deposit(Scanner scanner) {
+    public static void deposit(Scanner scanner) {
         System.out.println("Enter amount to deposit");
         try{
             double amount = scanner.nextDouble();
@@ -61,7 +65,7 @@ public class ExistingPersonalAccountPage {
             scanner.nextLine();
         }
     }
-    public void withdraw(Scanner scanner) {
+    public static void withdraw(Scanner scanner) {
         System.out.println(" Enter amount to Withdraw Money");
         try{
             double amount = scanner.nextDouble();
@@ -71,10 +75,10 @@ public class ExistingPersonalAccountPage {
             scanner.nextLine();
         }
     }
-    public void viewCardDetails() {
+    public static void viewCardDetails() {
         System.out.println("View Card Details");
     }
-    public void viewPendingPayments() {
+    public static void viewPendingPayments() {
         System.out.println("View Pending Payments");
     }
 

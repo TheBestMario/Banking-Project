@@ -20,8 +20,14 @@ public class Teller {
 
     public Boolean Login(){
         return true;
-
     }
+
+    public void goBack(){
+        String[] directoryTokens = this.currentDirectory.split("/");
+    }
+
+
+
     public String getFirstName(){
         return this.firstName;
     }

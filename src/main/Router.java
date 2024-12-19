@@ -26,8 +26,30 @@ public class Router {
                 break;
 
             case "home/customers":
-                // gets the customers for the teller
+                currentTeller = SelectCustomerPage.display(currentTeller, scanner);
+                return currentTeller;
+
+            case "home/customers/ISAAccount":
+                currentTeller = ExistingISAAccountPage.display(currentTeller, scanner);
+                return currentTeller;
+
+            case "home/customers/PersonalAccount":
+                currentTeller = ExistingPersonalAccountPage.display(currentTeller, scanner);
+                return currentTeller;
+
+            case "home/customers/BusinessAccount":
+                currentTeller = ExistingBusinessAccountPage.display(currentTeller, scanner);
+                return currentTeller;
+
+            case "home/createCustomer":
+                currentTeller = CreateAccountPage.display(currentTeller, scanner);
                 break;
+
+            case "home/customers/createISAAccount":
+                currentTeller = NewISAPage.display(currentTeller, scanner);
+                return currentTeller;
+
+
 
 
 

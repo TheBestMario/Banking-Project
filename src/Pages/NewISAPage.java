@@ -11,9 +11,7 @@ public class NewISAPage {
 
     boolean hasExistingISA = false;
 
-    public static void display(Teller teller, Scanner scanner) {
-        scanner = new Scanner(System.in);
-
+    public static Teller display(Teller teller, Scanner scanner) {
         System.out.println("ISA Account Setup");
 
         validateUser(scanner); // Makes sure that the customer does not have an existing ISA account
@@ -21,6 +19,8 @@ public class NewISAPage {
         chooseAccountType(scanner); // Choose the account type for the customer. Lifetime ISA has age validation.
 
         makeInitialDeposit(scanner); // The customer makes a deposit. Minimum of £100.
+
+        return teller;
     }
 
 

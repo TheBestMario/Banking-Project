@@ -9,7 +9,8 @@ public class CustomersPage {
         System.out.print("""
                CLI BANKING SYSTEM
                Review client accounts (1)
-               Create a new account (2)
+               Create a new customer (2)
+               Select 
                Exit (3)
                Enter your choice, (1,2,3):
                 """);
@@ -20,14 +21,14 @@ public class CustomersPage {
                 int choice = scanner.nextInt();
                 switch (choice) {
                     case 1:
-                        System.out.println("Reviewing client accounts...");
-                        break;
+                        System.out.println("Select customers...");
+                        return currentTeller;
                     case 2:
-                        System.out.println("Creating a new account...");
-                        break;
+                        System.out.println("Creating a new customer...");
+                        return currentTeller;
                     case 3:
-                        System.out.println("Exiting...");
-                        exit = true;
+                        System.out.println("Go Back");
+
                     default:
                         System.out.println("Invalid choice");
                 }

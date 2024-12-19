@@ -8,12 +8,9 @@ import java.util.Scanner;
 
 public class ExistingISAAccountPage {
 
-    public static void display(Scanner scanner, Teller teller) {
-
+    public static Teller display(Teller teller, Scanner scanner) {
         boolean isRunning = true;
-
         while (isRunning) {
-
                // ISA Account Menu
             System.out.println(
                     """
@@ -55,13 +52,15 @@ public class ExistingISAAccountPage {
                     case 6:
                         isRunning = false;
                         System.out.println("Exiting ISA Page...");
-                        break;
+                        teller.goBack();
+                        return teller;
 
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             }
         }
+        return teller;
     }
 
     public  static void displayGainsOverYears() {
@@ -70,8 +69,6 @@ public class ExistingISAAccountPage {
 
     public static void displayBalance() {
         System.out.println("Balance");
-
-
     }
 
     public static void withdraw(Scanner scanner) {
