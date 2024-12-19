@@ -1,9 +1,10 @@
 package Pages;
-
+import main.Teller;
 import java.util.Scanner;
 
+
 public class HelpPage {
-    public static void display(Scanner scanner) {
+    public static Teller display(Teller currentTeller, Scanner scanner) {
         System.out.println("====== Teller Help Page ======");
         System.out.println("1. Register New Customer");
         System.out.println("2. Handle Transactions");
@@ -34,7 +35,7 @@ public class HelpPage {
                     break;
                 case 5:
                     System.out.println("Exiting Help Page...");
-                    return;
+                    return currentTeller;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }

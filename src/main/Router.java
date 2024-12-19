@@ -11,19 +11,23 @@ public class Router {
             case "":
                 currentTeller = StartMenuPage.display(currentTeller, scanner);
                 return currentTeller;
+
             case "login":
                 currentTeller = LoginPage.display(currentTeller, scanner);
                 return currentTeller;
+
             case "help":
-                HelpPage.display(scanner);
-                break;
+                currentTeller = HelpPage.display(currentTeller, scanner);
+                return currentTeller;
+
             case "createTeller":
                 currentTeller = CreateAccountPage.display(currentTeller, scanner);
                 return currentTeller;
-            case "/home":
-                currentTeller = CustomersPage.display(currentTeller, scanner);
+
+            case "home":
                 // routes to home page, shows home page menu with options
-                break;
+                currentTeller = CustomersPage.display(currentTeller, scanner);
+                return currentTeller;
 
             case "home/customers":
                 currentTeller = SelectCustomerPage.display(currentTeller, scanner);
@@ -54,6 +58,7 @@ public class Router {
             case "home/customers/createPersonalAccount":
                 // personal account creation page goes here..
                 break;
+
             case "logout":
                 // logouts out of the system...
                 break;

@@ -22,6 +22,7 @@ public class CustomersPage {
                 switch (choice) {
                     case 1:
                         System.out.println("Select customers...");
+                        currentTeller.currentDirectory = "home/customers";
                         return currentTeller;
                     case 2:
                         System.out.println("Creating a new customer...");
