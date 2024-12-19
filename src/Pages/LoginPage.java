@@ -34,13 +34,16 @@ public class LoginPage {
 
         if (isAuthenticated) {
             System.out.println("Login successful! Welcome, " + teller.getFirstName() + " " + teller.getLastName() + ".");
-            teller.currentDirectory = "/home";
+            teller.currentDirectory = "home";
         }
         else {
-            System.out.println("Invalid username or password. Please try again.");
+            System.out.println("""
+                    Invalid username or password. Please try again.
+                    
+                    """);
             teller.currentDirectory = "";
         }
-        
+
         return teller;
     }
 }
