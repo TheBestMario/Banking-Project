@@ -33,6 +33,9 @@ public class Customer {
         this.dob = dob;
         this.accounts = new ArrayList<>();
     }
+    public Customer(){
+
+    }
 
     public String getFirstName() {
         return firstName;
@@ -80,6 +83,9 @@ public class Customer {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+    public void setDob(String dob) {
+        this.dob = new Date(dob);
     }
 
     public void addAccount(Account account) {

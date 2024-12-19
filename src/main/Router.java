@@ -50,7 +50,8 @@ public class Router {
                 return currentTeller;
 
             case "home/createCustomer":
-                break;
+                currentTeller = NewCustomerPage.display(currentTeller, scanner);
+                return currentTeller;
 
             case "home/customers/accounts/NewISAAccount":
                 currentTeller = NewISAPage.display(currentTeller, scanner);

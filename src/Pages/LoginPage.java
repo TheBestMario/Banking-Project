@@ -39,7 +39,6 @@ public class LoginPage {
         else {
             System.out.println("""
                     Invalid username or password. Please try again.
-                    
                     """);
             teller.currentDirectory = "";
         }
