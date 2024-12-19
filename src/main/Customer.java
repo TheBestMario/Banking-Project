@@ -1,6 +1,6 @@
 package main;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Customer {
@@ -11,9 +11,9 @@ public class Customer {
     private String phone_number;
     private String business_proof;
     private List<Account> accounts;
-    private Date dob;
+    private LocalDate dob;
 
-    public Customer(String name, String lastName, String photo_proof, String address_proof, String phone_number, String business_proof, Date dob) {
+    public Customer(String name, String lastName, String photo_proof, String address_proof, String phone_number, String business_proof, LocalDate dob) {
         this.firstName = name;
         this.lastName = lastName;
         this.photo_proof = photo_proof;
@@ -24,7 +24,7 @@ public class Customer {
         this.accounts = new ArrayList<>();
     }
 
-    public Customer(String name, String lastName, String photo_proof, String address_proof, String phone_number, Date dob) {
+    public Customer(String name, String lastName, String photo_proof, String address_proof, String phone_number, LocalDate dob) {
         this.firstName = name;
         this.lastName = lastName;
         this.photo_proof = photo_proof;
@@ -36,6 +36,7 @@ public class Customer {
     public Customer(){
 
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -77,15 +78,15 @@ public class Customer {
         this.phone_number = phone_number;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
     public void setDob(String dob) {
-        this.dob = new Date(dob);
+        this.dob = LocalDate.parse(dob);
     }
 
     public void addAccount(Account account) {

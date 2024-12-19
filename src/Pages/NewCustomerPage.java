@@ -96,6 +96,7 @@ public class NewCustomerPage {
                         Customer details updated successfully!""");
                 TimeUnit.SECONDS.sleep(1);
             }
+
             catch (Exception e) {
                 /*
 
@@ -123,7 +124,9 @@ public class NewCustomerPage {
                         }
 
                     } else {
-
+                        /*
+                        condition for what happens when everything is good to go.
+                         */
                         System.out.println("Customer details confirmed!");
 
                         //sleeps for better user experience
@@ -135,11 +138,11 @@ public class NewCustomerPage {
 
                         currentTeller.currentDirectory = "home/customers";
                         exit = true;
+                        currentTeller.addCustomerToDB();
                     }
                 } else {
 
                     System.out.println("Invalid input, use a number from the list given");
-                    scanner.next();
                 }
             }
         }

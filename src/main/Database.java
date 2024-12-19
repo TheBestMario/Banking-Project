@@ -1,6 +1,7 @@
 package main;
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,7 +149,7 @@ public class Database {
                 String photo_proof = rs.getString("photo_proof");
                 String address_proof = rs.getString("address_proof");
                 String business_proof = rs.getString("business_proof");
-                Date dob = rs.getDate("DOB");
+                LocalDate dob = rs.getDate("DOB").toLocalDate();
 
                 Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof,dob);
                 return customer;
@@ -157,6 +158,20 @@ public class Database {
             e.printStackTrace();
         }
         return null;
+    }
+    public void createCustomer(Customer customer){
+        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, customer.getFirstName());
+            st.setString(2, customer.getLastName());
+            st.setString(3, customer.getPhoto_proof());
+            st.setString(4, customer.getAddress_proof());
+            st.setString(5, customer.getBusiness_proof());
+            st.setDate(6, java.sql.Date.valueOf(customer.getDob()));
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List <Personal> getPersonalAccount(int customerId) {

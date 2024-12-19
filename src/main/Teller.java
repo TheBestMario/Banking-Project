@@ -81,4 +81,10 @@ public class Teller {
     public void setCurrentCustomer(Customer customer) {
         this.currentCustomer = customer;
     }
+    public void addCustomerToDB() {
+        db.createCustomer(currentCustomer);
+    }
+    public void setCurrentDirectory(String s) {
+        this.currentDirectory = s;
+    }
 }
