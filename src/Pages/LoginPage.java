@@ -37,10 +37,13 @@ public class LoginPage {
             teller.currentDirectory = "home";
         }
         else {
-            System.out.println("Invalid username or password. Please try again.");
+            System.out.println("""
+                    Invalid username or password. Please try again.
+                    
+                    """);
             teller.currentDirectory = "";
         }
-        
+
         return teller;
     }
 }
