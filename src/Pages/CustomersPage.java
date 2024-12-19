@@ -10,8 +10,9 @@ public class CustomersPage {
                CLI BANKING SYSTEM
                Show Customers (1)
                Create a new customer (2)
-               Go Back (3)
-               Enter your choice, (1,2,3):
+               Help Page (3)
+               Logout (4)
+               Enter your choice, (1,2,3, 4):
                 """);
         //amateur CLI options placeholder
         boolean exit = false;
@@ -27,10 +28,12 @@ public class CustomersPage {
                         System.out.println("Creating a new customer...");
                         return currentTeller;
                     case 3:
-                        System.out.println("Going Back...");
-                        currentTeller.currentDirectory = "home";
+                        System.out.println("Going to the help page");
+                        currentTeller.currentDirectory = "help";
                         return currentTeller;
-
+                    case 4:
+                        currentTeller.loggedIN = false;
+                        return currentTeller;
                     default:
                         System.out.println("Invalid choice");
                 }

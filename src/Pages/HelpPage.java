@@ -8,10 +8,9 @@ public class HelpPage {
         System.out.println("====== Teller Help Page ======");
         System.out.println("1. Register New Customer");
         System.out.println("2. Handle Transactions");
-        System.out.println("3. Customer Information");
-        System.out.println("4. FAQs");
-        System.out.println("5. Contact Support");
-        System.out.println("6. Exit");
+        System.out.println("3. FAQs");
+        System.out.println("4. Contact Support");
+        System.out.println("5. Exit");
 
         while (true) {
             System.out.print("Select an option: ");
@@ -20,21 +19,21 @@ public class HelpPage {
 
             switch (option) {
                 case 1:
-                        RegisterNewCustomer();
+                    RegisterNewCustomer();
                     break;
                 case 2:
-                        HandleTransactions();
+                    HandleTransactions();
                     break;
                
                 case 3:
                     displayFAQs();
                     break;
-                    
                 case 4:
                     ContactSupport();
                     break;
                 case 5:
                     System.out.println("Exiting Help Page...");
+                    currentTeller.currentDirectory = "home";
                     return currentTeller;
                 default:
                     System.out.println("Invalid option. Please try again.");
@@ -84,10 +83,5 @@ public class HelpPage {
         System.out.println("Support is available 24/7.");
         System.out.println();
     }
-/*
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        display(scanner);
-    } */
 }
 
