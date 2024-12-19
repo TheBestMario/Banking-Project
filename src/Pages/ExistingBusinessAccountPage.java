@@ -33,7 +33,7 @@ public class ExistingBusinessAccountPage {
                     case 8: viewPendingPayments();
                     case 9: isRunning = false;
                         System.out.println("Leaving Personal Account Page");
-                        currentTeller.goBack();
+                        currentTeller.currentDirectory = "home/customers/accounts";
                         return currentTeller;
                     default:
                         isRunning = false;

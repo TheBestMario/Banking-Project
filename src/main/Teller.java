@@ -1,7 +1,5 @@
 package main;
 
-import javax.xml.crypto.Data;
-
 public class Teller {
     String firstName;
     String lastName;
@@ -12,6 +10,8 @@ public class Teller {
     private String password;
     private Database db;
 
+    // teller object should also store info about the customer selected as well (when they are)
+
     public Teller(String setDirectory, Database db){
         this.currentDirectory = setDirectory;
         this.loggedIN = false;
@@ -21,7 +21,7 @@ public class Teller {
     public Boolean Login(){
         return true;
     }
-    
+
     public String getFirstName(){
         return this.firstName;
     }

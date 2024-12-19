@@ -32,7 +32,7 @@ public class ExistingPersonalAccountPage {
                     case 8:
                         isRunning = false;
                         System.out.println("Leaving Personal Account Page");
-                        currentTeller.goBack();
+                        currentTeller.currentDirectory = "home/customers/accounts";
                         return currentTeller;
                     default:
                         isRunning = true;

@@ -19,7 +19,7 @@ public class NewISAPage {
         chooseAccountType(scanner); // Choose the account type for the customer. Lifetime ISA has age validation.
 
         makeInitialDeposit(scanner); // The customer makes a deposit. Minimum of £100.
-
+        teller.currentDirectory = "home/customers/accounts";
         return teller;
     }
 

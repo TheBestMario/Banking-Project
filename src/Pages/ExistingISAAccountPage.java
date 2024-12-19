@@ -52,7 +52,7 @@ public class ExistingISAAccountPage {
                     case 6:
                         isRunning = false;
                         System.out.println("Exiting ISA Page...");
-                        teller.goBack();
+                        teller.currentDirectory = "home/customers/accounts";
                         return teller;
 
                 }

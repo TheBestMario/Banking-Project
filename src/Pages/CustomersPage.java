@@ -8,10 +8,9 @@ public class CustomersPage {
     public static Teller display(Teller currentTeller, Scanner scanner){
         System.out.print("""
                CLI BANKING SYSTEM
-               Review client accounts (1)
+               Show Customers (1)
                Create a new customer (2)
-               Select 
-               Exit (3)
+               Go Back (3)
                Enter your choice, (1,2,3):
                 """);
         //amateur CLI options placeholder
@@ -21,14 +20,16 @@ public class CustomersPage {
                 int choice = scanner.nextInt();
                 switch (choice) {
                     case 1:
-                        System.out.println("Select customers...");
+                        System.out.println("Showing all customers...");
                         currentTeller.currentDirectory = "home/customers";
                         return currentTeller;
                     case 2:
                         System.out.println("Creating a new customer...");
                         return currentTeller;
                     case 3:
-                        System.out.println("Go Back");
+                        System.out.println("Going Back...");
+                        currentTeller.currentDirectory = "home";
+                        return currentTeller;
 
                     default:
                         System.out.println("Invalid choice");
