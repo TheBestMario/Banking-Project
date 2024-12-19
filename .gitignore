@@ -27,3 +27,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+### Ignoring Config file in commits ###
+./src/main/Config.java

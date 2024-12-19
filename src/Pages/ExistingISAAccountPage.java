@@ -32,7 +32,6 @@ public class ExistingISAAccountPage {
                         displayGainsOverYears();
                         break;
 
-
                     case 2:
                         displayBalance();
                         break;
