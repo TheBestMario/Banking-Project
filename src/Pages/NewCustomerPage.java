@@ -52,54 +52,95 @@ public class NewCustomerPage {
                 Business Proof (5)
                 Date of Birth  (6)
                 ------------------
+                TO CONFIRM, enter 'confirm'
                 To go back, enter zero (0)
                 """);
+            String input = scanner.nextLine();
             try {
-                int choice = scanner.nextInt();
+                int choice = Integer.parseInt(input);
                 switch (choice) {
                     case 0:
                         currentTeller.currentDirectory = "home";
                         exit = true;
-                        break;
+                        return currentTeller;
                     case 1:
                         System.out.println("Editing First Name...");
-                        scanner.nextLine();
+
                         firstName = displayEditFirstName(currentTeller, scanner);
                         break;
                     case 2:
                         System.out.println("Editing Last Name...");
-                        scanner.nextLine();
-                        lastName = displayEditFirstName(currentTeller, scanner);
+                        lastName = displayEditLastName(currentTeller, scanner);
                         break;
 
                     case 3:
                         System.out.println("Editing Photo Proof...");
-                        scanner.nextLine();
                         photoProof = displayEditPhoto(currentTeller, scanner);
                         break;
                     case 4:
                         System.out.println("Editing Address Proof...");
-                        scanner.nextLine();
                         addressProof = displayEditAddress(currentTeller, scanner);
                         break;
                     case 5:
                         System.out.println("Editing proof of business...");
-                        scanner.nextLine();
                         businessProof = displayEditBusinessProof(currentTeller, scanner);
                         break;
                     case 6:
                         System.out.println("Editing the date of birth...");
-                        scanner.nextLine();
                         dob = displayEditDOB(currentTeller, scanner);
                         break;
                     default:
                         System.out.println("Invalid choice");
                 }
-                System.out.println("Customer details updated successfully!");
+                System.out.println("""
+                        Customer details updated successfully!""");
                 TimeUnit.SECONDS.sleep(1);
-            } catch (Exception e) {
-                System.out.println("Invalid input, use a number from the list given");
-                scanner.next();
+            }
+            catch (Exception e) {
+                /*
+
+                checks if input String is confirm and big if statement checks through
+                all the fields. If any are null, it will not confirm and ask the user to fill in all fields.
+
+                 */
+                if (input.equalsIgnoreCase("confirm")) {
+                    if (currentTeller.getCurrentCustomer().getFirstName() == null
+                            || currentTeller.getCurrentCustomer().getLastName() == null
+                            || currentTeller.getCurrentCustomer().getPhoto_proof() == null
+                            || currentTeller.getCurrentCustomer().getAddress_proof() == null
+                            || currentTeller.getCurrentCustomer().getBusiness_proof() == null
+                            || currentTeller.getCurrentCustomer().getDob() == null) {
+
+                        System.out.println("""
+                        Please fill in all the fields before confirming, or exit without saving.
+                        Loading the customer creation page again...
+                        """);
+                        //sleeps for better user experience
+                        try {
+                            TimeUnit.SECONDS.sleep(3);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+
+                    } else {
+
+                        System.out.println("Customer details confirmed!");
+
+                        //sleeps for better user experience
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+
+                        currentTeller.currentDirectory = "home/customers";
+                        exit = true;
+                    }
+                } else {
+
+                    System.out.println("Invalid input, use a number from the list given");
+                    scanner.next();
+                }
             }
         }
 
