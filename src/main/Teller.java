@@ -10,6 +10,8 @@ public class Teller {
     private String password;
     private Database db;
 
+    private Customer currentCustomer;
+
     // teller object should also store info about the customer selected as well (when they are)
 
     public Teller(String setDirectory, Database db){
@@ -53,7 +55,6 @@ public class Teller {
     public void createAccount(String firstName, String lastName, String password){
 
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -72,5 +73,12 @@ public class Teller {
 
     public String getUserName() {
         return this.userName;
+    }
+
+    public Customer getCurrentCustomer() {
+        return this.currentCustomer;
+    }
+    public void setCurrentCustomer(Customer customer) {
+        this.currentCustomer = customer;
     }
 }
