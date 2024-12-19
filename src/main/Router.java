@@ -42,17 +42,18 @@ public class Router {
                 return currentTeller;
 
             case "home/createCustomer":
-                currentTeller = CreateAccountPage.display(currentTeller, scanner);
                 break;
 
             case "home/customers/createISAAccount":
                 currentTeller = NewISAPage.display(currentTeller, scanner);
                 return currentTeller;
 
+            case "home/customers/createBusinessAccount":
+                break;
 
-
-
-
+            case "home/customers/createPersonalAccount":
+                // personal account creation page goes here..
+                break;
             case "logout":
                 // logouts out of the system...
                 break;
