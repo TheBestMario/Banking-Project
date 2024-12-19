@@ -12,10 +12,11 @@ public class Program {
         Teller currentTeller = new Teller("", db);
 
         while(!currentTeller.loggedIN){
-            router.route(currentTeller, scanner);
-            while(currentTeller.loggedIN){
-                currentTeller = router.route(currentTeller, scanner);
-            }
+
+            //after debugging, after you try to log in with correct account the currentTeller object
+            //is not being updated with the object returned by Login > Router > Program in the line underneath
+            //so I made it update the object outside the second while loop
+            currentTeller = router.route(currentTeller, scanner);
         }
         scanner.close();
         System.exit(0);
