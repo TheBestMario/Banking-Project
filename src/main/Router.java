@@ -33,29 +33,33 @@ public class Router {
                 currentTeller = SelectCustomerPage.display(currentTeller, scanner);
                 return currentTeller;
 
-            case "home/customers/ISAAccount":
+            case "home/customers/accounts":
+                currentTeller = AccountSelector.display(currentTeller, scanner);
+                return currentTeller;
+
+            case "home/customers/accounts/ISAAccount":
                 currentTeller = ExistingISAAccountPage.display(currentTeller, scanner);
                 return currentTeller;
 
-            case "home/customers/PersonalAccount":
+            case "home/customers/accounts/PersonalAccount":
                 currentTeller = ExistingPersonalAccountPage.display(currentTeller, scanner);
                 return currentTeller;
 
-            case "home/customers/BusinessAccount":
+            case "home/customers/accounts/BusinessAccount":
                 currentTeller = ExistingBusinessAccountPage.display(currentTeller, scanner);
                 return currentTeller;
 
             case "home/createCustomer":
                 break;
 
-            case "home/customers/createISAAccount":
+            case "home/customers/accounts/NewISAAccount":
                 currentTeller = NewISAPage.display(currentTeller, scanner);
                 return currentTeller;
 
-            case "home/customers/createBusinessAccount":
+            case "home/customers/accounts/NewBusinessAccount":
                 break;
 
-            case "home/customers/createPersonalAccount":
+            case "home/customers/accounts/NewPersonalAccount":
                 // personal account creation page goes here..
                 break;
 
@@ -66,3 +70,43 @@ public class Router {
         return currentTeller;
     }
 }
+
+
+
+/*
+
+
+ case 1:
+                        System.out.println("Selecting the existing ISA Account for this customer");
+                        currentTeller.currentDirectory = "home/customers/accounts/ISAAccount";
+                        return currentTeller;
+                    case 2:
+                        System.out.println("Selecting the existing Personal Account for this customer");
+                        currentTeller.currentDirectory = "home/customers/accounts/PersonalAccount";
+                        return currentTeller;
+                    case 3:
+                        System.out.println("Selecting the existing Business Account for this customer");
+                        currentTeller.currentDirectory = "home/customers/accounts/BusinessAccount";
+                        return currentTeller;
+                    case 4:
+                        System.out.println("Selecting the existing Business Account for this customer");
+                        currentTeller.currentDirectory = "home/customers/accounts/NewISAAccount";
+                        return currentTeller;
+                    case 5:
+                        System.out.println("Selecting the existing Business Account for this customer");
+                        currentTeller.currentDirectory = "home/customers/accounts/NewPersonalAccount";
+                        return currentTeller;
+                    case 6:
+                        System.out.println("Selecting the existing Business Account for this customer");
+                        currentTeller.currentDirectory = "home/customers/accounts/NewBusinessAccount";
+                        return currentTeller;
+                    case 7:
+                        System.out.println("Going Back");
+                        currentTeller.currentDirectory = "home/customers";
+                        return currentTeller;
+
+
+
+
+
+ */

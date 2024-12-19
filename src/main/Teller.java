@@ -21,20 +21,7 @@ public class Teller {
     public Boolean Login(){
         return true;
     }
-
-    public void goBack(){
-        String[] directoryTokens = this.currentDirectory.split("/");
-        this.currentDirectory = "";
-        for(int i = 0; i < directoryTokens.length; i++){
-            if(i < directoryTokens.length - 1){
-                this.currentDirectory += directoryTokens[i];
-                if(i < directoryTokens.length - 2){
-                    this.currentDirectory += "/";
-                }
-            }
-        }
-    }
-
+    
     public String getFirstName(){
         return this.firstName;
     }
