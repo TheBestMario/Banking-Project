@@ -3,6 +3,7 @@ import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class Database {
@@ -157,6 +158,73 @@ public class Database {
         }
         return null;
     }
+
+    public List <Personal> getPersonalAccount(int customerId) {
+
+        String query = """ 
+                SELECT a.id AS account_id, a.balance,a.dateCreated,pa.bank_address
+                FROM Accounts a
+                JOIN Account_Type at ON a.type_id = at.id
+                JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
+                WHERE a.account_id = ? AND a.isDeleted = 0
+                """;
+        List <Personal> personalAccounts = new ArrayList<>();
+        try (PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,customerId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()){
+                int accountId = rs.getInt("account_id");
+                double balance = rs.getDouble("balance");
+                String bankAddress = rs.getString("bank_address");
+
+                Personal personalAccount = new Personal(accountId,balance,bankAddress);
+                personalAccounts.add(personalAccount);
+
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return personalAccounts;
+
+
+    }
+
+    public List <Business> getBusinessAccount(int customerId) {
+
+        String query = """ 
+                SELECT a.id AS account_id, a.balance,a.dateCreated,ba.business_details, ba.has_Cheque_Books
+                FROM Accounts a
+                JOIN Account_Type at ON a.type_id = at.id
+                JOIN Personal_Accounts ba ON at.business_account_id = ba.id
+                WHERE a.account_id = ? AND a.isDeleted = 0
+                """;
+        List <Business> businessAccounts = new ArrayList<>();
+
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1,customerId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()){
+                int accountId = rs.getInt("account_id");
+                double balance = rs.getDouble("balance");
+                String businessDetails = rs.getString("bank_details");
+                boolean hasChequeBooks = rs.getBoolean("has_Cheque_Books");
+
+                Business businessAccount = new Business(accountId,balance,businessDetails,hasChequeBooks);
+                businessAccounts.add(businessAccount);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return businessAccounts;
+
+
+    }
+
+
 
 
 

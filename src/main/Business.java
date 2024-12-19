@@ -1,11 +1,48 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Business extends Account {
     private static final double ANNUAL_CHARGE = 120.0;
+    private String cardNumber;
+    private List<String> standingOrders;
+    private List<String> statmentHistory;
+    private List<String> pendingPayments;
+    private String businessDetails;
+    private boolean hasChequeBooks;
 
-    public Business(int accountNumber, double initialBalance) {
+
+    public Business(int accountNumber, double initialBalance,String businessDetails, boolean hasChequeBooks) {
         super(accountNumber, initialBalance);
+        this.businessDetails = businessDetails;
+        this.hasChequeBooks = hasChequeBooks;
+        this.cardNumber = generateCardNumber();
+        this.standingOrders = new ArrayList<>();
+        this.statmentHistory = new ArrayList<>();
+        this.pendingPayments = new ArrayList<>();
 
+
+    }
+
+    public String getBusinessDetails(){
+        return businessDetails;
+    }
+    public boolean hasChequeBooks(){
+        return hasChequeBooks;
+    }
+
+    private String generateCardNumber() {
+        Random rand = new Random();
+        StringBuilder number = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            number.append(rand.nextInt(10));
+        }
+        return number.toString();
+    }
+    public String getCardNumber() {
+        return cardNumber;
     }
 
     @Override
@@ -48,5 +85,30 @@ public class Business extends Account {
         System.out.println("The International Payment is: " + amount);
 
     }
+    public List<String> getStandingOrders() {
+        return List.copyOf(standingOrders);
+    }
+    public List<String> getStatmentHistory() {
+        return List.copyOf(statmentHistory);
+    }
+    public List<String> getPendingPayments() {
+        return List.copyOf(pendingPayments);
+    }
+    public void addStandingOrder(String order){
+        this.standingOrders.add(order);
+    }
+    public void addStatmentHistory(String order){
+        this.statmentHistory.add(order);
+    }
+    public void addPendingPayment(String order){
+        this.pendingPayments.add(order);
+    }
+    public void removeStandingOrder(String order){
+        this.standingOrders.remove(order);
+    }
+    public void addStamentHistory(String order){
+        this.statmentHistory.add(order);
+    }
+
 }
 

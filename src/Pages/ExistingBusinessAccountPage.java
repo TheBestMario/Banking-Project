@@ -1,5 +1,6 @@
 package Pages;
 import main.Teller;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -33,7 +34,7 @@ public class ExistingBusinessAccountPage {
                     case 8: viewPendingPayments();
                     case 9: isRunning = false;
                         System.out.println("Leaving Personal Account Page");
-                        currentTeller.currentDirectory = "home/customers/accounts";
+                        currentTeller.currentDirectory = "home/customers/account";
                         return currentTeller;
                     default:
                         isRunning = false;
@@ -47,6 +48,7 @@ public class ExistingBusinessAccountPage {
         return currentTeller;
 
     }
+
     public static void displayBalance() {
         System.out.println("Displaying Balance");
     }
