@@ -1,5 +1,10 @@
 package main;
+import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
 public class Database {
     private String dbUsername;
     private String dbPassword;
@@ -35,6 +40,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     //TELLERS
     public void createTeller(Teller teller) {
         String query = "INSERT INTO Tellers (firstName,lastName,userName, password) VALUES (?, ?, ?, ?)";
@@ -57,7 +63,7 @@ public class Database {
 
             if (rs.next()) {
 
-                Teller teller = new Teller("/home", this);
+                Teller teller = new Teller("", this);
                 teller.setFirstName(rs.getString("firstName"));
                 teller.setLastName(rs.getString("lastName"));
                 teller.setUserName(rs.getString("username"));
@@ -96,6 +102,60 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    //CUSTOMERS
+//    public void createCustomer(Customer customer) {
+//        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
+//        try (PreparedStatement st = con.prepareStatement(query)) {
+//            st.setString(1, customer.getFirstName());
+//            st.setString(2, customer.getLastName());
+//            st.setString(3, customer.getPhoto());
+//            st.setString(4, customer.getAddress());
+//            st.setString(5, customer.getBusiness());
+//            st.setString(6, customer.getDOB());
+//            st.execute();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public void displayAllCustomers() {
+        String query = "SELECT * FROM Customers";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                System.out.println(id + ": " + firstName + " " + lastName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("No customers found");
+        }
+    }
+
+    public Customer getCustomer(int id) {
+        String query = "SELECT * FROM Customers where id = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1,id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String photo_proof = rs.getString("photo_proof");
+                String address_proof = rs.getString("address_proof");
+                String business_proof = rs.getString("business_proof");
+                Date dob = rs.getDate("DOB");
+
+                Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof,dob);
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
