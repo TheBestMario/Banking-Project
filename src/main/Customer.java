@@ -93,4 +93,12 @@ public class Customer {
     public List<Account> getAccounts() {
         return accounts;
     }
+
+    public String getBusiness_proof() {
+        return business_proof;
+    }
+
+    public void setBusiness_proof(String business_proof) {
+        this.business_proof = business_proof;
+    }
 }
