@@ -17,6 +17,7 @@ public class SelectCustomerPage {
         currentTeller.getDatabase().displayAllCustomers();
         System.out.println("""
                 Select a customer to view their accounts
+                To go back, enter zero (0)
                 Enter the customer's ID: 
                 """);
 
@@ -25,17 +26,22 @@ public class SelectCustomerPage {
             try {
                 int choice = scanner.nextInt();
                 Customer selectedCustomer = currentTeller.getDatabase().getCustomer(choice);
-                if (selectedCustomer != null) {
+                if (choice == 0) {
+                    currentTeller.currentDirectory = "home";
+                    exit = true;
+                }
+                else if (selectedCustomer != null) {
                     System.out.println("Selected Customer: " + selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName());
                     currentTeller.currentDirectory = "home/customers/accounts";
                     currentTeller.setCurrentCustomer(selectedCustomer);
                     exit = true;
-                } else {
+                }
+                else {
                     System.out.println("Invalid customer ID. Please try again.");
                 }
             } catch (Exception e) {
                 System.out.println("Invalid input, use a number from the list given");
-                scanner.next(); // Clear the invalid input
+                scanner.next();
             }
         }
 
