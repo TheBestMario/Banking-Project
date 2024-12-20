@@ -182,7 +182,7 @@ INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_pro
         }
     }
     public int getCustomerId(String firstName, String lastName, String number, String email) {
-        String query = "SELECT id FROM Customers WHERE firstName = ? AND lastName = ? AND number = ? AND email = ?";
+        String query = "SELECT id FROM Customers WHERE firstName = ? AND lastName = ? AND mobile_number = ? AND email = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, firstName);
             st.setString(2, lastName);
