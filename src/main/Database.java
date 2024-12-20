@@ -149,9 +149,13 @@ public class Database {
                 String photo_proof = rs.getString("photo_proof");
                 String address_proof = rs.getString("address_proof");
                 String business_proof = rs.getString("business_proof");
+                int phone_number = rs.getInt("phone_number");
                 LocalDate dob = rs.getDate("DOB").toLocalDate();
+                String email = rs.getString("email");
+                int customer_id = rs.getInt("id");
 
-                Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof,dob);
+                Customer customer = new Customer(customer_id, firstName, lastName,
+                        photo_proof, address_proof, phone_number, email ,dob);
                 return customer;
             }
         } catch (SQLException e) {
@@ -160,7 +164,9 @@ public class Database {
         return null;
     }
     public void createCustomer(Customer customer){
-        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = """
+INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB,mobile,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+""";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, customer.getFirstName());
             st.setString(2, customer.getLastName());
@@ -168,10 +174,28 @@ public class Database {
             st.setString(4, customer.getAddress_proof());
             st.setString(5, customer.getBusiness_proof());
             st.setDate(6, java.sql.Date.valueOf(customer.getDob()));
+            st.setInt(7, customer.getPhone_number());
+            st.setString(8, customer.getEmail());
             st.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public int getCustomerId(String firstName, String lastName, String number, String email) {
+        String query = "SELECT id FROM Customers WHERE firstName = ? AND lastName = ? AND number = ? AND email = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, firstName);
+            st.setString(2, lastName);
+            st.setString(3, number);
+            st.setString(4, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public List <Personal> getPersonalAccount(int customerId) {

@@ -4,16 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
+    private int id;
     private String firstName;
     private String lastName;
+    private String email;
     private String photo_proof;
     private String address_proof;
-    private String phone_number;
+    private int phone_number;
     private String business_proof;
     private List<Account> accounts;
     private LocalDate dob;
 
-    public Customer(String name, String lastName, String photo_proof, String address_proof, String phone_number, String business_proof, LocalDate dob) {
+    public Customer(int id,
+                    String name, String lastName,
+                    String photo_proof, String address_proof,
+                    int phone_number, String email,
+                    String business_proof,
+                    LocalDate dob) {
+        this.id = id;
         this.firstName = name;
         this.lastName = lastName;
         this.photo_proof = photo_proof;
@@ -22,9 +30,15 @@ public class Customer {
         this.dob = dob;
         this.business_proof = business_proof;
         this.accounts = new ArrayList<>();
+        this.email = email;
     }
 
-    public Customer(String name, String lastName, String photo_proof, String address_proof, String phone_number, LocalDate dob) {
+    public Customer(int id,
+                    String name, String lastName,
+                    String photo_proof, String address_proof,
+                    int phone_number, String email,
+                    LocalDate dob) {
+        this.id = id;
         this.firstName = name;
         this.lastName = lastName;
         this.photo_proof = photo_proof;
@@ -32,12 +46,18 @@ public class Customer {
         this.phone_number = phone_number;
         this.dob = dob;
         this.accounts = new ArrayList<>();
+        this.email = email;
     }
     public Customer(){
 
     }
 
-
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getFirstName() {
         return firstName;
     }
@@ -70,11 +90,11 @@ public class Customer {
         this.address_proof = address_proof;
     }
 
-    public String getPhone_number() {
+    public int getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(String phone_number) {
+    public void setPhone_number(int phone_number) {
         this.phone_number = phone_number;
     }
 
@@ -107,5 +127,13 @@ public class Customer {
 
     public void setBusiness_proof(String business_proof) {
         this.business_proof = business_proof;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

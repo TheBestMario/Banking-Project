@@ -54,6 +54,8 @@ public class NewCustomerPage {
                 Photo Proof    (3)
                 Address Proof  (4)
                 Date of Birth  (5)
+                Mobile Number  (6)
+                Email Address  (7)
                 ------------------
                 TO Finish, enter '/confirm'
                 To go Back, enter '/back'
@@ -83,6 +85,14 @@ public class NewCustomerPage {
                     case 5:
                         System.out.println("Editing the date of birth...");
                         dob = displayEditDOB(currentTeller, scanner);
+                        break;
+                    case 6:
+                        System.out.println("Editing the phone number...");
+                        int phone = displayEditPhoneNumber(currentTeller, scanner);
+                        break;
+                    case 7:
+                        System.out.println("Editing the email address...");
+                        String email = displayEditEmail(currentTeller, scanner);
                         break;
                     default:
                         System.out.println("Invalid choice");
@@ -239,6 +249,7 @@ public class NewCustomerPage {
             return dobString;
         }
     }
+
     private static String displayEditBusinessProof(Teller currentTeller, Scanner scanner) {
 
         System.out.println("If opening a business account, please provide proof of business: ");
@@ -250,6 +261,30 @@ public class NewCustomerPage {
         else{
             currentTeller.getCurrentCustomer().setBusiness_proof(business);
             return business;
+        }
+    }
+    private static int displayEditPhoneNumber(Teller currentTeller, Scanner scanner) {
+
+        System.out.println("Enter the phone number of the customer: ");
+        int phone = scanner.nextInt();
+        if (phone == 0){
+            System.out.println("Phone number cannot be empty");
+            return displayEditPhoneNumber(currentTeller, scanner);
+        } else{
+            currentTeller.getCurrentCustomer().setPhone_number(phone);
+            return phone;
+        }
+    }
+    private static String displayEditEmail(Teller currentTeller, Scanner scanner) {
+
+        System.out.println("Enter the email address of the customer: ");
+        String email = scanner.nextLine();
+        if (email.isBlank()){
+            System.out.println("Email address cannot be empty");
+            return displayEditEmail(currentTeller, scanner);
+        } else{
+            currentTeller.getCurrentCustomer().setEmail(email);
+            return email;
         }
     }
 }
