@@ -28,7 +28,8 @@ create table ISA_Accounts
 (id int primary key identity(1,1),
 type_id int foreign key references ISA_Types(id),
 currentBalance int,
-dateCreated date);
+dateCreated date,
+threshold int);
 
 create table ISA_Pending_Payments
 (id int primary key identity(1,1),
