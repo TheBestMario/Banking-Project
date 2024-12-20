@@ -149,7 +149,7 @@ public class Database {
                 String photo_proof = rs.getString("photo_proof");
                 String address_proof = rs.getString("address_proof");
                 String business_proof = rs.getString("business_proof");
-                int phone_number = rs.getInt("phone_number");
+                String phone_number = rs.getString("phone_number");
                 LocalDate dob = rs.getDate("DOB").toLocalDate();
                 String email = rs.getString("email");
                 int customer_id = rs.getInt("id");
@@ -174,7 +174,7 @@ INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_pro
             st.setString(4, customer.getAddress_proof());
             st.setString(5, customer.getBusiness_proof());
             st.setDate(6, java.sql.Date.valueOf(customer.getDob()));
-            st.setInt(7, customer.getPhone_number());
+            st.setString(7, customer.getPhone_number());
             st.setString(8, customer.getEmail());
             st.execute();
         } catch (SQLException e) {

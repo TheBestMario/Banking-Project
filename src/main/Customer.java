@@ -10,7 +10,7 @@ public class Customer {
     private String email;
     private String photo_proof;
     private String address_proof;
-    private int phone_number;
+    private String phone_number;
     private String business_proof;
     private List<Account> accounts;
     private LocalDate dob;
@@ -18,7 +18,7 @@ public class Customer {
     public Customer(int id,
                     String name, String lastName,
                     String photo_proof, String address_proof,
-                    int phone_number, String email,
+                    String phone_number, String email,
                     String business_proof,
                     LocalDate dob) {
         this.id = id;
@@ -36,7 +36,7 @@ public class Customer {
     public Customer(int id,
                     String name, String lastName,
                     String photo_proof, String address_proof,
-                    int phone_number, String email,
+                    String phone_number, String email,
                     LocalDate dob) {
         this.id = id;
         this.firstName = name;
@@ -90,11 +90,11 @@ public class Customer {
         this.address_proof = address_proof;
     }
 
-    public int getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(int phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 

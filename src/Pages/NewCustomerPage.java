@@ -88,7 +88,7 @@ public class NewCustomerPage {
                         break;
                     case 6:
                         System.out.println("Editing the phone number...");
-                        int phone = displayEditPhoneNumber(currentTeller, scanner);
+                        String phone = displayEditPhoneNumber(currentTeller, scanner);
                         break;
                     case 7:
                         System.out.println("Editing the email address...");
@@ -263,16 +263,31 @@ public class NewCustomerPage {
             return business;
         }
     }
-    private static int displayEditPhoneNumber(Teller currentTeller, Scanner scanner) {
-
+    private static String displayEditPhoneNumber(Teller currentTeller, Scanner scanner) {
         System.out.println("Enter the phone number of the customer: ");
-        int phone = scanner.nextInt();
-        if (phone == 0){
-            System.out.println("Phone number cannot be empty");
+        String phone;
+        try {
+
+            phone = scanner.nextLine();
+
+            if (phone.isBlank()) {
+                System.out.println("Phone number cannot be empty");
+                return displayEditPhoneNumber(currentTeller, scanner);
+            } else if (phone.length() > 11) {
+                System.out.println("Invalid phone number.");
+                return displayEditPhoneNumber(currentTeller, scanner);
+            } else if (!phone.startsWith("0")) {
+                System.out.println("Phone number must start with 0");
+                return displayEditPhoneNumber(currentTeller, scanner);
+            } else {
+                currentTeller.getCurrentCustomer().setPhone_number(phone);
+                return phone;
+            }
+
+        }catch (Exception e){
+            System.out.println("Invalid phone number, please enter a valid number");
+            scanner.nextLine();
             return displayEditPhoneNumber(currentTeller, scanner);
-        } else{
-            currentTeller.getCurrentCustomer().setPhone_number(phone);
-            return phone;
         }
     }
     private static String displayEditEmail(Teller currentTeller, Scanner scanner) {
