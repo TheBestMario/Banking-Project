@@ -1,13 +1,20 @@
 package Pages;
 
+import main.Config;
+import main.Database;
 import main.Teller;
 
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class NewISAPage {
 
     // Access to data structure that holds existing customers with ISA accounts
+    private static final Database db = new Database(new Config());
 
     boolean hasExistingISA = false;
 
@@ -19,25 +26,21 @@ public class NewISAPage {
         chooseAccountType(scanner); // Choose the account type for the customer. Lifetime ISA has age validation.
 
         makeInitialDeposit(scanner); // The customer makes a deposit. Minimum of £100.
+
         teller.currentDirectory = "home/customers/accounts";
         return teller;
     }
 
 
     public static void validateUser(Scanner scanner) {
-        System.out.println("Enter customer name: ");
-        String customerName = scanner.nextLine();
+        System.out.println("Enter firstName name: ");
+        String firstName = scanner.nextLine();
+        System.out.println("Enter lastName name: ");
+        String lastName = scanner.nextLine();
 
-        // If statement here to check if customer isa exists within the database
+        db.hasExistingISAAccount(firstName, lastName);
 
 
-//        if (/* hashMap.contains(name)*/) {
-//            System.out.println("Customer already has a ISA account. Customer can only have one ISA account");
-//        } else {
-//            System.out.println("No ISA account associated with this customer.");
-//            // hashMap.add(customerName);
-//            hasExistingISA = true;
-//        }
     }
 
     public static void chooseAccountType(Scanner scanner) {
@@ -84,11 +87,14 @@ public class NewISAPage {
                 case 4:
                     System.out.println("Customer has selected Lifetime ISA");
                     System.out.println("You must validate the customer age to see if they are eligible for Lifetime ISA");
+
                     validateAge(scanner);
             }
         }
 
     }
+
+
 
     public static void makeInitialDeposit(Scanner scanner) {
         boolean validDeposit = false;
@@ -112,18 +118,33 @@ public class NewISAPage {
 
     }
 
+
     public static void validateAge(Scanner scanner) {
         System.out.println("HELP: Customer must be between the ages of 18 - 40 to open a Lifetime ISA");
-        int age = scanner.nextInt();
-        // If the customer is an existing customer, we can pull their DOB and calculate their age.
 
-        if (age < 18 || age > 40) {
-            System.out.println("Customer is not eligible for Lifetime ISA");
-            System.out.println("Select another ISA account");
-        } else {
-            System.out.println("Customer is eligible for Lifetime ISA");
-            makeInitialDeposit(scanner);
+        System.out.println("Enter firstName name: ");
+        String firstName = scanner.nextLine();
+        System.out.println("Enter lastName name: ");
+        String lastName = scanner.nextLine();
+
+        Date DOB = db.getDOB(firstName, lastName);
+
+        if (DOB != null) {
+            LocalDate birthDate = DOB.toLocalDate();
+            LocalDate currentDate = LocalDate.now();
+            int age = Period.between(birthDate, currentDate).getYears();
+
+
+            System.out.println("Customer's age: " + age);
+
+            if (age < 18 || age > 40) {
+                System.out.println("Customer is not eligible for Lifetime ISA");
+                System.out.println("Select another ISA account");
+            } else {
+                System.out.println("Customer is eligible for Lifetime ISA");
+                makeInitialDeposit(scanner);
+            }
+
         }
-
     }
 }

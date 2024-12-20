@@ -239,6 +239,77 @@ public class Database {
 
     }
 
+    /* ------------------------- ISA Queries ----------------------------------------------------*/
+
+//    public ISA createISAAccount(int customerId,  double initialBalance, int typeId) {
+//        String query = "INSERT INTO ISA_Accounts (customerId,type_id, currentBalance, dateCreated) VALUES (?, ?, ?)";
+//
+//        try (PreparedStatement st = con.prepareStatement(query)) {
+//            st.setInt(1, customerId);
+//            st.setInt(2, typeId);
+//            st.setDouble(3, initialBalance);
+//            st.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+//
+//
+//            st.execute();
+//            System.out.println("ISA account created");
+//            return new ISA(customerId, initialBalance, typeId, new java.sql.Date(System.currentTimeMillis()));
+//
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    public void hasExistingISAAccount(String firstName, String lastName) {
+        String query = """
+                SELECT COUNT(*)
+                FROM Accounts a 
+                JOIN Account_Type at ON a.type_id = at.id
+                WHERE customer_id = (SELECT id FROM Customers WHERE firstName = ? AND lastName = ? AND isDeleted =0)
+                AND at.ISA_account_id IS NOT NULL
+                AND a.isDeleted = 0
+                """;
+
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, firstName);
+            st.setString(2, lastName);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    System.out.println("Customer has an existing ISA account.");
+                } else {
+                    System.out.println("Customer does not have an existing ISA account.");
+                }
+            } else {
+                System.out.println("Error: Unable to determine ISA account status for the customer.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("An error occurred while checking for an existing ISA account.");
+        }
+    }
+
+    public java.sql.Date getDOB(String firstName, String lastName) {
+        String query = "SELECT DOB FROM Customers WHERE firstName = ? AND lastName = ? ";
+
+        try(PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, firstName);
+            st.setString(2, lastName);
+            ResultSet rs = st.executeQuery();
+
+            if(rs.next()) {
+                java.sql.Date dob = rs.getDate("DOB");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
 
 
 
@@ -246,4 +317,3 @@ public class Database {
 }
 
 // this class wil hold all the CRUD operations for interacting with the DB
-
