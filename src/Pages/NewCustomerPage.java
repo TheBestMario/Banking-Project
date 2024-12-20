@@ -7,8 +7,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class NewCustomerPage {
 
@@ -66,7 +65,6 @@ public class NewCustomerPage {
                 switch (choice) {
                     case 1:
                         System.out.println("Editing First Name...");
-
                         firstName = displayEditFirstName(currentTeller, scanner);
                         break;
                     case 2:
@@ -99,7 +97,7 @@ public class NewCustomerPage {
                 }
                 System.out.println("""
                         Customer details updated successfully!""");
-                TimeUnit.SECONDS.sleep(1);
+            //    TimeUnit.SECONDS.sleep(1);
             }
 
             catch (Exception e) {
@@ -123,11 +121,14 @@ public class NewCustomerPage {
                         Loading the customer creation page again...
                         """);
                         //sleeps for better user experience
+                        /*
                         try {
                             TimeUnit.SECONDS.sleep(3);
                         } catch (InterruptedException ex) {
                             throw new RuntimeException(ex);
                         }
+                        */
+
 
                     } else {
                         /*
@@ -136,12 +137,13 @@ public class NewCustomerPage {
                         System.out.println("Customer details confirmed!");
 
                         //sleeps for better user experience
+                        /*
                         try {
                             TimeUnit.SECONDS.sleep(1);
                         } catch (InterruptedException ex) {
                             throw new RuntimeException(ex);
                         }
-
+                        */
                         currentTeller.currentDirectory = "home/customers";
                         exit = true;
                         currentTeller.addCustomerToDB();

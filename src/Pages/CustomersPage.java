@@ -33,7 +33,7 @@ public class CustomersPage {
                         currentTeller.currentDirectory = "help";
                         return currentTeller;
                     case 4:
-                        currentTeller.loggedIN = false;
+                        currentTeller.currentDirectory = "logout";
                         return currentTeller;
                     default:
                         System.out.println("Invalid choice");

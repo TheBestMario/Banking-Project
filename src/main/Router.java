@@ -7,6 +7,7 @@ public class Router {
     public Router(){}
 
     Teller route(Teller currentTeller, Scanner scanner){
+        // check if current teller has logged out
         switch (currentTeller.currentDirectory){
             case "":
                 currentTeller = StartMenuPage.display(currentTeller, scanner);
@@ -65,8 +66,10 @@ public class Router {
                 break;
 
             case "logout":
-                // logouts out of the system...
-                break;
+                // TODO: clear the teller object of teller specific info
+                currentTeller.currentDirectory = "";
+                currentTeller.loggedIN = false;
+                return currentTeller;
         }
         return currentTeller;
     }
