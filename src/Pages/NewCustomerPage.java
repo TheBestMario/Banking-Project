@@ -111,10 +111,12 @@ public class NewCustomerPage {
                  */
                 if (input.equalsIgnoreCase("/confirm")) {
                     if (currentTeller.getCurrentCustomer().getFirstName() == null
-                            || currentTeller.getCurrentCustomer().getLastName() == null
-                            || currentTeller.getCurrentCustomer().getPhoto_proof() == null
-                            || currentTeller.getCurrentCustomer().getAddress_proof() == null
-                            || currentTeller.getCurrentCustomer().getDob() == null) {
+                    || currentTeller.getCurrentCustomer().getLastName() == null
+                    || currentTeller.getCurrentCustomer().getPhoto_proof() == null
+                    || currentTeller.getCurrentCustomer().getAddress_proof() == null
+                    || currentTeller.getCurrentCustomer().getDob() == null
+                    || currentTeller.getCurrentCustomer().getPhone_number() == null
+                    || currentTeller.getCurrentCustomer().getEmail() == null) {
 
                         System.out.println("""
                         Please fill in all the fields before confirming, or exit without saving.

@@ -165,7 +165,7 @@ public class Database {
     }
     public void createCustomer(Customer customer){
         String query = """
-INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB,mobile,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB,mobile_number,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 """;
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, customer.getFirstName());
