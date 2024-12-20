@@ -164,60 +164,70 @@ public class NewCustomerPage {
     private static String displayEditFirstName(Teller currentTeller, Scanner scanner) {
 
         System.out.println("Enter the first name of the customer: ");
-        String firstName = scanner.nextLine();
-        if (firstName.isBlank()){
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("/back")){
+            return null;
+        } else if (input.isBlank()){
             System.out.println("The last name cannot be empty");
             return displayEditFirstName(currentTeller, scanner);
-        } else if (firstName.length() > 255) {
+        } else if (input.length() > 255) {
             System.out.println("First name field cannot be greater than 255 characters");
             return displayEditFirstName(currentTeller, scanner);
         } else{
-            currentTeller.getCurrentCustomer().setFirstName(firstName);
-            return firstName;
+            currentTeller.getCurrentCustomer().setFirstName(input);
+            return input;
         }
     }
     private static String displayEditLastName(Teller currentTeller, Scanner scanner) {
 
         System.out.println("Enter the last name of the customer: ");
-        String lastName = scanner.nextLine();
-        if (lastName.isBlank()){
+        String input = scanner.nextLine();
+
+        if (input.equalsIgnoreCase("/back")){
+            return null;
+        } else if (input.isBlank()){
             System.out.println("The last name cannot be empty");
             return displayEditLastName(currentTeller, scanner);
-        } else if (lastName.length() > 255) {
+        } else if (input.length() > 255) {
             System.out.println("Last name field cannot be greater than 255 characters");
             return displayEditLastName(currentTeller, scanner);
         } else{
-            currentTeller.getCurrentCustomer().setLastName(lastName);
-            return lastName;
+            currentTeller.getCurrentCustomer().setLastName(input);
+            return input;
         }
     }
     private static String displayEditAddress(Teller currentTeller, Scanner scanner) {
 
         System.out.println("Enter the address of the customer: ");
-        String address = scanner.nextLine();
-        if (address.isBlank()){
+        String input = scanner.nextLine();
+
+        if (input.equalsIgnoreCase("/back")){
+            return null;
+        } else if (input.isBlank()){
             System.out.println("Address cannot be empty");
             return displayEditAddress(currentTeller, scanner);
-        } else if (address.length() > 255) {
+        } else if (input.length() > 255) {
             System.out.println("Address field cannot be greater than 255 characters");
             return displayEditAddress(currentTeller, scanner);
         } else{
-            currentTeller.getCurrentCustomer().setAddress_proof(address);
-            return address;
+            currentTeller.getCurrentCustomer().setAddress_proof(input);
+            return input;
         }
     }
 
     private static String displayEditPhoto(Teller currentTeller, Scanner scanner) {
 
         System.out.println("Enter ID proof of the customer: ");
-        String photo = scanner.nextLine();
-        if (photo.isBlank()){
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("/back")){
+            return null;
+        } else if (input.isBlank()){
             System.out.println("Proof of ID cannot be empty");
             return displayEditPhoto(currentTeller, scanner);
         }
          else{
-            currentTeller.getCurrentCustomer().setPhoto_proof(photo);
-            return photo;
+            currentTeller.getCurrentCustomer().setPhoto_proof(input);
+            return input;
         }
     }
     private static String displayEditDOB(Teller currentTeller, Scanner scanner) {
@@ -245,7 +255,9 @@ public class NewCustomerPage {
 
         }
 
-        if (dobString.isBlank()){
+        if (dobString.equalsIgnoreCase("/back")){
+            return null;
+        } else if (dobString.isBlank()){
             System.out.println("Customer date of birth cannot be empty");
             return displayEditDOB(currentTeller, scanner);
         } else{
@@ -257,35 +269,39 @@ public class NewCustomerPage {
     private static String displayEditBusinessProof(Teller currentTeller, Scanner scanner) {
 
         System.out.println("If opening a business account, please provide proof of business: ");
-        String business = scanner.nextLine();
-        if (business.isBlank()){
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("/back")){
+            return null;
+        } else if (input.isBlank()){
             System.out.println("Proof of business cannot be empty");
             return displayEditBusinessProof(currentTeller, scanner);
         }
         else{
-            currentTeller.getCurrentCustomer().setBusiness_proof(business);
-            return business;
+            currentTeller.getCurrentCustomer().setBusiness_proof(input);
+            return input;
         }
     }
     private static String displayEditPhoneNumber(Teller currentTeller, Scanner scanner) {
         System.out.println("Enter the phone number of the customer: ");
-        String phone;
+        String input;
         try {
 
-            phone = scanner.nextLine();
+            input = scanner.nextLine();
 
-            if (phone.isBlank()) {
+            if (input.equalsIgnoreCase("/back")){
+                return null;
+            } else if (input.isBlank()) {
                 System.out.println("Phone number cannot be empty");
                 return displayEditPhoneNumber(currentTeller, scanner);
-            } else if (phone.length() > 11) {
+            } else if (input.length() > 11) {
                 System.out.println("Invalid phone number.");
                 return displayEditPhoneNumber(currentTeller, scanner);
-            } else if (!phone.startsWith("0")) {
+            } else if (!input.startsWith("0")) {
                 System.out.println("Phone number must start with 0");
                 return displayEditPhoneNumber(currentTeller, scanner);
             } else {
-                currentTeller.getCurrentCustomer().setPhone_number(phone);
-                return phone;
+                currentTeller.getCurrentCustomer().setPhone_number(input);
+                return input;
             }
 
         }catch (Exception e){
@@ -297,13 +313,15 @@ public class NewCustomerPage {
     private static String displayEditEmail(Teller currentTeller, Scanner scanner) {
 
         System.out.println("Enter the email address of the customer: ");
-        String email = scanner.nextLine();
-        if (email.isBlank()){
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("/back")){
+            return null;
+        } else if (input.isBlank()){
             System.out.println("Email address cannot be empty");
             return displayEditEmail(currentTeller, scanner);
         } else{
-            currentTeller.getCurrentCustomer().setEmail(email);
-            return email;
+            currentTeller.getCurrentCustomer().setEmail(input);
+            return input;
         }
     }
 }
