@@ -3,6 +3,10 @@ package Pages;
 import main.Customer;
 import main.Teller;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -49,20 +53,15 @@ public class NewCustomerPage {
                 Last Name      (2)
                 Photo Proof    (3)
                 Address Proof  (4)
-                Business Proof (5)
-                Date of Birth  (6)
+                Date of Birth  (5)
                 ------------------
-                TO CONFIRM, enter 'confirm'
-                To go back, enter zero (0)
+                TO Finish, enter '/confirm'
+                To go Back, enter '/back'
                 """);
             String input = scanner.nextLine();
             try {
                 int choice = Integer.parseInt(input);
                 switch (choice) {
-                    case 0:
-                        currentTeller.currentDirectory = "home";
-                        exit = true;
-                        return currentTeller;
                     case 1:
                         System.out.println("Editing First Name...");
 
@@ -82,10 +81,6 @@ public class NewCustomerPage {
                         addressProof = displayEditAddress(currentTeller, scanner);
                         break;
                     case 5:
-                        System.out.println("Editing proof of business...");
-                        businessProof = displayEditBusinessProof(currentTeller, scanner);
-                        break;
-                    case 6:
                         System.out.println("Editing the date of birth...");
                         dob = displayEditDOB(currentTeller, scanner);
                         break;
@@ -104,12 +99,11 @@ public class NewCustomerPage {
                 all the fields. If any are null, it will not confirm and ask the user to fill in all fields.
 
                  */
-                if (input.equalsIgnoreCase("confirm")) {
+                if (input.equalsIgnoreCase("/confirm")) {
                     if (currentTeller.getCurrentCustomer().getFirstName() == null
                             || currentTeller.getCurrentCustomer().getLastName() == null
                             || currentTeller.getCurrentCustomer().getPhoto_proof() == null
                             || currentTeller.getCurrentCustomer().getAddress_proof() == null
-                            || currentTeller.getCurrentCustomer().getBusiness_proof() == null
                             || currentTeller.getCurrentCustomer().getDob() == null) {
 
                         System.out.println("""
@@ -140,6 +134,9 @@ public class NewCustomerPage {
                         exit = true;
                         currentTeller.addCustomerToDB();
                     }
+                } else if (input.equalsIgnoreCase("/back")) {
+                    currentTeller.currentDirectory = "home";
+                    exit = true;
                 } else {
 
                     System.out.println("Invalid input, use a number from the list given");
@@ -210,16 +207,36 @@ public class NewCustomerPage {
         }
     }
     private static String displayEditDOB(Teller currentTeller, Scanner scanner) {
+        String input = null;
+        String dobString = "";
+        LocalDate dob;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            System.out.println("Enter customer's birth date, day-month-year: ");
+            input = scanner.nextLine();
+            dob = LocalDate.parse(input, formatter);
+            dobString = String.valueOf(dob);
 
-        System.out.println("Enter customer's birth date: ");
-        String dob = scanner.nextLine();
-        if (dob.isBlank()){
+        }catch (DateTimeParseException e){
+            System.out.println(e);
+
+            if (input.isBlank()){
+                System.out.println("Customer date of birth cannot be empty");
+            } else if (input.length() > 10){
+                System.out.println("Invalid date format, please use a correct format");
+            } else if (e.getMessage().contains("Invalid value for MonthOfYear")) {
+                System.out.println("The month needs to be valid.");
+            }
+            return displayEditDOB(currentTeller, scanner);
+
+        }
+
+        if (dobString.isBlank()){
             System.out.println("Customer date of birth cannot be empty");
             return displayEditDOB(currentTeller, scanner);
-        }
-        else{
-            currentTeller.getCurrentCustomer().setDob(dob);
-            return dob;
+        } else{
+            currentTeller.getCurrentCustomer().setDob(dobString);
+            return dobString;
         }
     }
     private static String displayEditBusinessProof(Teller currentTeller, Scanner scanner) {
