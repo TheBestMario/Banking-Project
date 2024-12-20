@@ -16,6 +16,8 @@ photo_proof varchar(255),
 address_proof varchar(255),
 business_proof varchar(255),
 DOB date,
+mobile_number int,
+email varchar(255),
 isDeleted tinyint);
 
 create table ISA_Types
