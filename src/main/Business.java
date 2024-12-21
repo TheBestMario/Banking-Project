@@ -33,6 +33,8 @@ public class Business extends Account {
         return hasChequeBooks;
     }
 
+
+
     private String generateCardNumber() {
         Random rand = new Random();
         StringBuilder number = new StringBuilder();
@@ -85,6 +87,7 @@ public class Business extends Account {
         System.out.println("The International Payment is: " + amount);
 
     }
+
     public List<String> getStandingOrders() {
         return List.copyOf(standingOrders);
     }

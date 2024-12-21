@@ -1,4 +1,5 @@
 package main;
+
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public class Database {
     private String dbUsername;
     private String dbPassword;
     private String connectionUrl;
-    private Connection con;
+    private static Connection con;
 
     // create a BankingAppDB within your azure data studios
     // DB == BankingAppDB
@@ -22,13 +23,12 @@ public class Database {
         this.connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=BankingAppDB;user=" + this.dbUsername + ";password=" + this.dbPassword + ";encrypt=false;";
     }
 
-    public Boolean establishConnection(){
+    public Boolean establishConnection() {
         try {
             System.out.println(this.connectionUrl);
             this.con = DriverManager.getConnection(this.connectionUrl);
             return true;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -56,6 +56,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     public Teller getTeller(String username, String password) {
         String query = "SELECT * FROM Tellers WHERE username = ? and password = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -80,6 +81,7 @@ public class Database {
         }
         return null;
     }
+
     public void updateTeller(Teller teller) {
         String query = "UPDATE Tellers SET password = ?, firstName = ?, lastName = ? WHERE id = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -154,19 +156,26 @@ public class Database {
                 String email = rs.getString("email");
                 int customer_id = rs.getInt("id");
 
-                Customer customer = new Customer(customer_id, firstName, lastName,
-                        photo_proof, address_proof, phone_number, email ,dob);
-                return customer;
+                //Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof, dob);
+               // return customer;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    public void updateBalance(int accountId, double newBalance) throws SQLException {
+        String query = "UPDATE Accounts SET balance = ?, dateUpdated = GETDATE() WHERE id = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setDouble(1, newBalance);
+            st.setInt(2, accountId);
+            st.executeUpdate();
+        }
+    }
+
     public void createCustomer(Customer customer){
-        String query = """
-INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB,mobile_number,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-""";
+        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, customer.getFirstName());
             st.setString(2, customer.getLastName());
@@ -174,8 +183,6 @@ INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_pro
             st.setString(4, customer.getAddress_proof());
             st.setString(5, customer.getBusiness_proof());
             st.setDate(6, java.sql.Date.valueOf(customer.getDob()));
-            st.setString(7, customer.getPhone_number());
-            st.setString(8, customer.getEmail());
             st.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -262,6 +269,92 @@ INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_pro
 
 
     }
+    //write
+    public Personal getPersonalAccountById(int accountId) throws SQLException {
+        String query = """
+            SELECT a.id AS account_id, a.balance, pa.bank_address
+            FROM Accounts a
+            JOIN Account_Type at ON a.type_id = at.id
+            JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
+            WHERE a.id = ? AND a.isDeleted = 0
+            """;
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1, accountId);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("account_id");
+                double balance = rs.getDouble("balance");
+                String bankAddress = rs.getString("bank_address");
+
+                return new Personal(id, balance, bankAddress);
+            }
+        }
+        return null; // Account not found
+    }
+
+//write
+    public Business getBusinessAccountById(int accountId) throws SQLException {
+        String query = """
+            SELECT a.id AS account_id, a.balance, ba.business_details, ba.has_Cheque_Books
+            FROM Accounts a
+            JOIN Account_Type at ON a.type_id = at.id
+            JOIN Business_Accounts ba ON at.business_account_id = ba.id
+            WHERE a.id = ? AND a.isDeleted = 0
+            """;
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1, accountId);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("account_id");
+                double balance = rs.getDouble("balance");
+                String businessDetails = rs.getString("business_details");
+                boolean hasChequeBooks = rs.getBoolean("has_Cheque_Books");
+
+                return new Business(id, balance, businessDetails, hasChequeBooks);
+            }
+        }
+        return null; // Account not found
+    }
+
+
+
+
+    public static int createPersonalAccount(double initialDeposit, String bankAddress) throws SQLException {
+        String query = "INSERT INTO Accounts (customer_id,type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
+                "OUTPUT INSERTED.id VALUES (?,?,?,?, GETDATE(),GETDATE(),0)";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1, 1);//replace with customer id
+            st.setDouble(2, 1); //type of id
+            st.setDouble(3, initialDeposit);
+            st.setDouble(4, initialDeposit);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // return the account id
+
+            }
+        }
+        throw new SQLException("Account not created");
+    }
+
+    public static int createBusinessAccount(double initialDeposit, String businessDetails, boolean hasChequeBooks) throws SQLException {
+        String query = "INSERT INTO Accounts (customer_id,type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
+                "OUTPUT INSERTED.id VALUES (?,?,?,?, GETDATE(),GETDATE(),0)";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1, 1);//replace with customer id
+            st.setDouble(2, 2); //type of id
+            st.setDouble(3, initialDeposit);
+            st.setDouble(4, initialDeposit);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // return the account id
+
+            }
+        }
+        throw new SQLException("Account not created");
+    }
+
 
     /* ------------------------- ISA Queries ----------------------------------------------------*/
 

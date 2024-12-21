@@ -1,5 +1,7 @@
 package main;
 
+import java.util.List;
+
 public class Teller {
     String firstName;
     String lastName;
@@ -11,6 +13,8 @@ public class Teller {
     private Database db;
 
     private Customer currentCustomer;
+    private List<Personal> personalAccounts;
+    private List<Business> businessAccounts;
 
     // teller object should also store info about the customer selected as well (when they are)
 
@@ -86,5 +90,18 @@ public class Teller {
     }
     public void setCurrentDirectory(String s) {
         this.currentDirectory = s;
+    }
+
+    public void addPersonalAccount(Personal account) {
+        this.personalAccounts.add(account);
+    }
+    public List<Personal> getPersonalAccounts() {
+        return personalAccounts;
+    }
+    public void addBusinessAccount(Business account) {
+        this.businessAccounts.add(account);
+    }
+    public List<Business> getBusinessAccounts() {
+        return businessAccounts;
     }
 }
