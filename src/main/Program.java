@@ -7,7 +7,7 @@ public class Program {
     public static void main(String[] args) {
         Config config = new Config();
         Database db = new Database(config);
-        Router router = new Router();
+        Router router = new Router(db);
         db.establishConnection();
         Teller currentTeller = new Teller("", db);
 
