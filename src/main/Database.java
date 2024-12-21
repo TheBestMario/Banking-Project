@@ -151,7 +151,7 @@ public class Database {
                 String photo_proof = rs.getString("photo_proof");
                 String address_proof = rs.getString("address_proof");
                 String business_proof = rs.getString("business_proof");
-                String phone_number = rs.getString("phone_number");
+                String phone_number = rs.getString("mobile_number");
                 LocalDate dob = rs.getDate("DOB").toLocalDate();
                 String email = rs.getString("email");
                 int customer_id = rs.getInt("id");
