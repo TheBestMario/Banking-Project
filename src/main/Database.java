@@ -141,9 +141,9 @@ public class Database {
         String query = "SELECT * FROM Customers where id = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setInt(1, id);
+
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 String photo_proof = rs.getString("photo_proof");
@@ -154,8 +154,8 @@ public class Database {
                 String email = rs.getString("email");
                 int customer_id = rs.getInt("id");
 
-                //Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof, dob);
-                // return customer;
+                Customer customer = new Customer(customer_id, firstName, lastName, photo_proof, address_proof, phone_number, email, business_proof, dob);
+                 return customer;
             }
         } catch (SQLException e) {
             e.printStackTrace();

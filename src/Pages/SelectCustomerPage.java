@@ -26,6 +26,7 @@ public class SelectCustomerPage {
             try {
                 int choice = scanner.nextInt();
                 Customer selectedCustomer = currentTeller.getDatabase().getCustomer(choice);
+
                 if (choice == 0) {
                     currentTeller.currentDirectory = "home";
                     exit = true;
@@ -37,6 +38,7 @@ public class SelectCustomerPage {
                     exit = true;
                 }
                 else {
+                    System.out.println(selectedCustomer);
                     System.out.println("Invalid customer ID. Please try again.");
                 }
             } catch (Exception e) {
