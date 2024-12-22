@@ -60,67 +60,71 @@ public class NewCustomerPage {
                 To go Back, enter '/back'
                 """);
             String input = scanner.nextLine();
-            try {
-                int choice = Integer.parseInt(input);
-                switch (choice) {
-                    case 1:
+
+            switch (input) {
+                    case "1":
                         System.out.println("Editing First Name...");
                         firstName = displayEditFirstName(currentTeller, scanner);
                         break;
-                    case 2:
+                    case "2":
                         System.out.println("Editing Last Name...");
                         lastName = displayEditLastName(currentTeller, scanner);
                         break;
-
-                    case 3:
+                    case "3":
                         System.out.println("Editing Photo Proof...");
                         photoProof = displayEditPhoto(currentTeller, scanner);
                         break;
-                    case 4:
+                    case "4":
                         System.out.println("Editing Address Proof...");
                         addressProof = displayEditAddress(currentTeller, scanner);
                         break;
-                    case 5:
+                    case "5":
                         System.out.println("Editing the date of birth...");
                         dob = displayEditDOB(currentTeller, scanner);
                         break;
-                    case 6:
+                    case "6":
                         System.out.println("Editing the phone number...");
                         String phone = displayEditPhoneNumber(currentTeller, scanner);
                         break;
-                    case 7:
+                    case "7":
                         System.out.println("Editing the email address...");
                         String email = displayEditEmail(currentTeller, scanner);
                         break;
+                    case "/confirm":
+                        exit = handleConfirm(currentTeller);
+                        if(exit){
+                            System.out.println("""
+                            Customer details updated successfully!""");
+                        }
+                        else{
+                            System.out.println("Please fill out the other details");
+                        }
+                    case "/back":
+                        currentTeller.currentDirectory = "home";
+                        exit = true;
                     default:
                         System.out.println("Invalid choice");
                 }
-                System.out.println("""
-                        Customer details updated successfully!""");
             //    TimeUnit.SECONDS.sleep(1);
-            }
+        }
 
-            catch (Exception e) {
-                /*
+        return currentTeller;
+    }
 
-                checks if input String is confirm and big if statement checks through
-                all the fields. If any are null, it will not confirm and ask the user to fill in all fields.
+    private static Boolean handleConfirm(Teller currentTeller){
+        if (currentTeller.getCurrentCustomer().getFirstName() == null
+                || currentTeller.getCurrentCustomer().getLastName() == null
+                || currentTeller.getCurrentCustomer().getPhoto_proof() == null
+                || currentTeller.getCurrentCustomer().getAddress_proof() == null
+                || currentTeller.getCurrentCustomer().getDob() == null
+                || currentTeller.getCurrentCustomer().getPhone_number() == null
+                || currentTeller.getCurrentCustomer().getEmail() == null) {
 
-                 */
-                if (input.equalsIgnoreCase("/confirm")) {
-                    if (currentTeller.getCurrentCustomer().getFirstName() == null
-                    || currentTeller.getCurrentCustomer().getLastName() == null
-                    || currentTeller.getCurrentCustomer().getPhoto_proof() == null
-                    || currentTeller.getCurrentCustomer().getAddress_proof() == null
-                    || currentTeller.getCurrentCustomer().getDob() == null
-                    || currentTeller.getCurrentCustomer().getPhone_number() == null
-                    || currentTeller.getCurrentCustomer().getEmail() == null) {
-
-                        System.out.println("""
+            System.out.println("""
                         Please fill in all the fields before confirming, or exit without saving.
                         Loading the customer creation page again...
                         """);
-                        //sleeps for better user experience
+            //sleeps for better user experience
                         /*
                         try {
                             TimeUnit.SECONDS.sleep(3);
@@ -128,15 +132,15 @@ public class NewCustomerPage {
                             throw new RuntimeException(ex);
                         }
                         */
-
-
-                    } else {
+            return false;
+        }
+        else {
                         /*
                         condition for what happens when everything is good to go.
                          */
-                        System.out.println("Customer details confirmed!");
+            System.out.println("Customer details confirmed!");
 
-                        //sleeps for better user experience
+            //sleeps for better user experience
                         /*
                         try {
                             TimeUnit.SECONDS.sleep(1);
@@ -144,21 +148,10 @@ public class NewCustomerPage {
                             throw new RuntimeException(ex);
                         }
                         */
-                        currentTeller.currentDirectory = "home/customers";
-                        exit = true;
-                        currentTeller.addCustomerToDB();
-                    }
-                } else if (input.equalsIgnoreCase("/back")) {
-                    currentTeller.currentDirectory = "home";
-                    exit = true;
-                } else {
-
-                    System.out.println("Invalid input, use a number from the list given");
-                }
-            }
+            currentTeller.currentDirectory = "home/customers";
+            currentTeller.addCustomerToDB();
+            return true;
         }
-
-        return currentTeller;
     }
 
     private static String displayEditFirstName(Teller currentTeller, Scanner scanner) {
@@ -236,7 +229,7 @@ public class NewCustomerPage {
         LocalDate dob;
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            System.out.println("Enter customer's birth date, day-month-year: ");
+            System.out.println("Enter customer's birth date, day-month-year in dd-MM-yyyy: ");
             input = scanner.nextLine();
             dob = LocalDate.parse(input, formatter);
             dobString = String.valueOf(dob);

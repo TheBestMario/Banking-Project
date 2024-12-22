@@ -5,7 +5,6 @@ import main.Customer;
 import main.Database;
 import main.Teller;
 
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.InputMismatchException;
