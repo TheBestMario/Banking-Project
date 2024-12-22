@@ -79,7 +79,6 @@ public class HelpPage {
         System.out.println("====== Contact Support ======");
         System.out.println("For further assistance, contact the support team:");
         System.out.println("Email: teller.support@financialservices.com");
-        System.out.println("Phone: +1-800-987-6543");
         System.out.println("Support is available 24/7.");
         System.out.println();
     }
