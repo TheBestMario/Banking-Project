@@ -1,13 +1,16 @@
 package Pages;
 
-import main.ISA;
+import main.Config;
+import main.Customer;
+import main.Database;
 import main.Teller;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExistingISAAccountPage {
-
+    private static final Database db = new Database(new Config());
+    static int isaTypeId;
     public static Teller display(Teller teller, Scanner scanner) {
         boolean isRunning = true;
         while (isRunning) {
@@ -33,7 +36,7 @@ public class ExistingISAAccountPage {
                         break;
 
                     case 2:
-                        displayBalance();
+                        displayBalance(teller);
                         break;
 
                     case 3:
@@ -41,7 +44,7 @@ public class ExistingISAAccountPage {
                       break;
 
                     case 4:
-                        deposit(scanner);
+                        deposit(scanner, isaTypeId);
                         break;
 
                     case 5:
@@ -66,16 +69,39 @@ public class ExistingISAAccountPage {
         System.out.println("Gains Over Years");
     }
 
-    public static void displayBalance() {
-        System.out.println("Balance");
+    public static void displayBalance(Teller teller) {
+        Customer currentCustomer = teller.getCurrentCustomer();
+        int customerId  = currentCustomer.getId();
+
+        db.getISABalance(customerId);
+
     }
 
     public static void withdraw(Scanner scanner) {
-        System.out.println("Withdraw");
+
+        System.out.println("Cannot withdraw from ISA Account");
     }
 
-    public static void deposit(Scanner scanner) {
-        System.out.println("Deposit");
+    public static void deposit(Scanner scanner, int isaTypeId) {
+        boolean validDeposit = false;
+        double depositAmount = 0;
+
+        while (!validDeposit) {
+            try {
+                System.out.println("Enter the amount you want to deposit: ");
+                depositAmount = scanner.nextDouble();
+
+                if(db.checkLimit(isaTypeId, depositAmount)){
+                    System.out.println( "Enter deposit amount that does not exceed the limits");
+                } else{
+                    validDeposit = true;
+                    System.out.println("Deposit Successful");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
     public static void displayPendingPayments() {

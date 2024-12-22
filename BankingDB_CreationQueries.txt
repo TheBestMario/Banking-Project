@@ -99,3 +99,10 @@ balance_before int,
 balance_after int,
 type_id int foreign key references Account_Transaction_Type(id),
 dateCreated datetime);
+
+INSERT INTO ISA_Types (type, limit)
+VALUES
+('Cash ISA', 20000),
+('Stocks and Shares ISA', 20000),
+('Innovative Finance ISA', 20000),
+('Lifetime ISA', 4000);
