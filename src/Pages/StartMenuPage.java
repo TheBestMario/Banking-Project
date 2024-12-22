@@ -8,7 +8,8 @@ public class StartMenuPage {
                 Welcome to ACME Bank, Would you like to:
                 Login: (1)
                 Create an Account: (2)
-                Enter your choice, (1,2):
+                Turn off Application: (3)
+                Enter your choice, (1,2,3):
                  """);
         boolean exit = false;
 
@@ -21,6 +22,9 @@ public class StartMenuPage {
                         return teller;
                     case 2:
                         teller.currentDirectory = "createTeller";
+                        return teller;
+                    case 3:
+                        teller.ApplicationON = false;
                         return teller;
                     default:
                         System.out.println("Invalid input, use a number from the list given");

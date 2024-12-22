@@ -9,8 +9,10 @@ public class Teller {
     public String userName;
     int teller_id;
     public Boolean loggedIN;
+    public Boolean ApplicationON;
     private String password;
     private Database db;
+
 
     private Customer currentCustomer;
     private List<Personal> personalAccounts;
@@ -22,6 +24,7 @@ public class Teller {
         this.currentDirectory = setDirectory;
         this.loggedIN = false;
         this.db = db;
+        this.ApplicationON = true;
     }
 
     public Boolean Login(){

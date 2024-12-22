@@ -11,7 +11,7 @@ public class Program {
         db.establishConnection();
         Teller currentTeller = new Teller("", db);
 
-        while(!currentTeller.loggedIN){
+        while(!currentTeller.loggedIN && currentTeller.ApplicationON){
 
             //after debugging, after you try to log in with correct account the currentTeller object
             //is not being updated with the object returned by Login > Router > Program in the line underneath

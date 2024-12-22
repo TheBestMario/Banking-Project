@@ -25,7 +25,6 @@ public class NewISAPage {
             return teller;
         }
 
-
         // Choose the account type for the customer. Lifetime ISA will have age validation.
         chooseAccountType(scanner, teller);
 

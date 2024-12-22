@@ -12,7 +12,7 @@ public class CustomersPage {
                Create a new customer (2)
                Help Page (3)
                Logout (4)
-               Enter your choice, (1,2,3, 4):
+               Enter your choice, (1,2,3,4):
                 """);
         //amateur CLI options placeholder
         boolean exit = false;
