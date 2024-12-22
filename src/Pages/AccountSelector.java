@@ -14,7 +14,7 @@ public class AccountSelector {
                 Create a Personal Account for this customer (5)
                 Create a Business Account for this customer (6)
                 Go Back(7)
-                Enter your choice, (1,2,3, 4, 5, 6, 7):
+                Enter your choice, (1,2,3,4,5,6,7):
                 """);
 
         boolean exit = false;

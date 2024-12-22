@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class NewBusinessAccountPage {
 
-    public static Teller display(Teller teller, Scanner scanner, Database db) {
+    public static Teller display(Teller teller, Scanner scanner) {
         System.out.println("Create a New Business Account");
         System.out.print("Enter initial deposit amount: ");
         double initialDeposit = scanner.nextDouble();

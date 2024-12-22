@@ -3,7 +3,6 @@ package Pages;
 import main.Database;
 import main.Personal;
 import main.Teller;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.SQLException;
@@ -11,13 +10,12 @@ import java.sql.SQLException;
 
 public class ExistingPersonalAccountPage {
 
-
-    public static Teller display(Teller currentTeller, Scanner scanner, Database db) {
+    public static Teller display(Teller currentTeller, Scanner scanner) {
         System.out.println("Enter Existing Account Number");
         int accountId = scanner.nextInt();
         scanner.nextLine();
         try {
-            Personal account = db.getPersonalAccountById(accountId);
+            Personal account = currentTeller.getDatabase().getPersonalAccountById(accountId);
 
             if (account != null) {
                 boolean isRunning = true;
@@ -43,9 +41,9 @@ public class ExistingPersonalAccountPage {
                             case 3:
                                 viewStatmentHistory(account);
                             case 4:
-                                deposit(scanner,account,db);
+                                deposit(scanner,account, currentTeller.getDatabase());
                             case 5:
-                                withdraw(scanner,account,db);
+                                withdraw(scanner,account, currentTeller.getDatabase());
                             case 6:
                                 viewCardDetails(account);
                             case 7:

@@ -11,12 +11,12 @@ import java.util.Scanner;
 public class ExistingBusinessAccountPage {
 
 
-    public static Teller display(Teller currentTeller, Scanner scanner, Database db) {
+    public static Teller display(Teller currentTeller, Scanner scanner) {
         System.out.println("Entering Existing Businnes Account");
         int accountId = scanner.nextInt();
         scanner.nextLine();
         try{
-            Business account = db.getBusinessAccountById(accountId);
+            Business account = currentTeller.getDatabase().getBusinessAccountById(accountId);
             if (account != null) {
                 boolean isRunning = true;
                 while (isRunning) {
@@ -38,10 +38,10 @@ public class ExistingBusinessAccountPage {
                             case 1: displayBalance(account);
                             case 2: manageStandingOrders(account);
                             case 3: viewStatmentHistory(account);
-                            case 4: deposit(scanner,account,db);
-                            case 5: withdraw(scanner,account,db);
+                            case 4: deposit(scanner,account,  currentTeller.getDatabase());
+                            case 5: withdraw(scanner,account, currentTeller.getDatabase());
                             case 6: viewCardDetails(account);
-                            case 7: makeInternationalPayments(scanner,account,db);
+                            case 7: makeInternationalPayments(scanner,account, currentTeller.getDatabase());
                             case 8: viewPendingPayments(account);
                             case 9: isRunning = false;
                                 System.out.println("Leaving Personal Account Page");

@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class NewPersonalAccountPage {
+    // please use teller.getDatabase to access database functions
 
-    public static Teller display(Teller teller, Scanner scanner, Database db) {
+    public static Teller display(Teller teller, Scanner scanner) {
         System.out.println("Create a New Personal Account");
         System.out.print("Enter initial deposit amount: ");
         double initialDeposit = scanner.nextDouble();
