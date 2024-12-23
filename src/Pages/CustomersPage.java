@@ -29,8 +29,7 @@ public class CustomersPage {
                         currentTeller.currentDirectory = "home/createCustomer";
                         return currentTeller;
                     case 3:
-                        System.out.println("Going to the help page");
-                        currentTeller.currentDirectory = "help";
+                        currentTeller.currentDirectory = "home/help";
                         return currentTeller;
                     case 4:
                         currentTeller.currentDirectory = "logout";

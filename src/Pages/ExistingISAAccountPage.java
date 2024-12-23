@@ -6,8 +6,6 @@ import main.ISA;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static Pages.NewISAPage.validateUser;
-
 public class ExistingISAAccountPage {
     private static final Database db = new Database(new Config());
     static int isaTypeId;
@@ -15,10 +13,6 @@ public class ExistingISAAccountPage {
 
     public static Teller display(Teller teller, Scanner scanner) {
         boolean isRunning = true;
-        if (!validateUser(teller)) {
-            teller.currentDirectory = "home/customers/accounts";
-            return teller;
-        }
         while (isRunning) {
             // ISA Account Menu
             System.out.println(
