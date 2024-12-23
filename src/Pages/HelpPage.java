@@ -6,8 +6,6 @@ public class HelpPage {
     public static Teller display(Teller currentTeller, Scanner scanner) {
 
         switch (currentTeller.currentDirectory) {
-
-            // HELP page should contain help for creating a teller and logging in
             case "help":
                 startHelp(scanner);
                 currentTeller.currentDirectory = "";
@@ -188,8 +186,6 @@ public class HelpPage {
             userInput = scanner.nextLine().trim();
         }
     }
-
-
 
     private static void HandleTransactions(Scanner scanner) {
         System.out.println("====== Handle Transactions ======");

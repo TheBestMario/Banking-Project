@@ -44,7 +44,6 @@ public class ExistingISAAccountPage {
                         break;
 
                     case 4:
-
                         deposit(scanner, isaTypeId, teller);
                         break;
 

@@ -16,10 +16,6 @@ public class Router {
             return currentTeller;
         }
         else{
-            System.out.println("directory:");
-            System.out.println(currentTeller.currentDirectory);
-
-
             switch (currentTeller.currentDirectory){
                 case "":
                     currentTeller = StartMenuPage.display(currentTeller, scanner);
