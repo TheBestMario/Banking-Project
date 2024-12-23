@@ -33,21 +33,6 @@ public class Customer {
         this.email = email;
     }
 
-    public Customer(int id,
-                    String name, String lastName,
-                    String photo_proof, String address_proof,
-                    String phone_number, String email,
-                    LocalDate dob) {
-        this.id = id;
-        this.firstName = name;
-        this.lastName = lastName;
-        this.photo_proof = photo_proof;
-        this.address_proof = address_proof;
-        this.phone_number = phone_number;
-        this.dob = dob;
-        this.accounts = new ArrayList<>();
-        this.email = email;
-    }
     public Customer(){
 
     }
