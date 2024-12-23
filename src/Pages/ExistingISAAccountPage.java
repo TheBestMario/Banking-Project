@@ -1,9 +1,7 @@
 package Pages;
 
-import main.Config;
-import main.Customer;
-import main.Database;
-import main.Teller;
+import main.*;
+import main.ISA;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -11,10 +9,12 @@ import java.util.Scanner;
 public class ExistingISAAccountPage {
     private static final Database db = new Database(new Config());
     static int isaTypeId;
+
+
     public static Teller display(Teller teller, Scanner scanner) {
         boolean isRunning = true;
         while (isRunning) {
-               // ISA Account Menu
+            // ISA Account Menu
             System.out.println(
                     """
                             ISA Account Page
@@ -40,11 +40,12 @@ public class ExistingISAAccountPage {
                         break;
 
                     case 3:
-                      withdraw(scanner);
-                      break;
+                        withdraw(scanner);
+                        break;
 
                     case 4:
-                        deposit(scanner, isaTypeId);
+
+                        deposit(scanner, isaTypeId, teller);
                         break;
 
                     case 5:
@@ -65,15 +66,15 @@ public class ExistingISAAccountPage {
         return teller;
     }
 
-    public  static void displayGainsOverYears() {
+    public static void displayGainsOverYears() {
         System.out.println("Gains Over Years");
     }
 
     public static void displayBalance(Teller teller) {
         Customer currentCustomer = teller.getCurrentCustomer();
-        int customerId  = currentCustomer.getId();
+        int customerId = currentCustomer.getId();
 
-        db.getISABalance(customerId);
+        System.out.println(db.getISABalance(customerId));
 
     }
 
@@ -82,25 +83,46 @@ public class ExistingISAAccountPage {
         System.out.println("Cannot withdraw from ISA Account");
     }
 
-    public static void deposit(Scanner scanner, int isaTypeId) {
+    public static void deposit(Scanner scanner, int isaTypeId, Teller teller) {
         boolean validDeposit = false;
         double depositAmount = 0;
+        double currentBalance = 0;
+        double newBalance = 0;
+
+        Customer currentCustomer = teller.getCurrentCustomer();
+        int customerId = currentCustomer.getId();
 
         while (!validDeposit) {
             try {
                 System.out.println("Enter the amount you want to deposit: ");
                 depositAmount = scanner.nextDouble();
 
-                if(db.checkLimit(isaTypeId, depositAmount)){
-                    System.out.println( "Enter deposit amount that does not exceed the limits");
-                } else{
-                    validDeposit = true;
-                    System.out.println("Deposit Successful");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+                // Get current balance
+                currentBalance = db.getISABalance(customerId);
+                newBalance = currentBalance + depositAmount; // Calculate the new balance
 
+
+                if (db.checkLimit(isaTypeId, newBalance)) {
+                    // Update the balance in the database
+                    boolean updated = db.updateISABalance(customerId, newBalance); // Use customerId for update
+
+                    if (updated) {
+                        System.out.println("Deposit successful! Your new balance is " + newBalance);
+                        validDeposit = true;
+                    } else {
+                        System.out.println("Failed to update the balance. Please try again.");
+                    }
+
+                } else {
+                    System.out.println("Deposit exceeds the ISA limit. ");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+
+            } catch (RuntimeException e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
         }
     }
 
