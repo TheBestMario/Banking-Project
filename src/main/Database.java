@@ -398,7 +398,7 @@ public class Database {
     }
 
     public boolean saveISAAccount(int isaTypeId, int customerId, double initialDepositAmount) {
-        String insertISAQuery = "INSERT INTO ISA_Accounts (type_id, currentBalance, dateCreated,threshold) VALUES (?,?,?,?)";
+        String insertISAQuery = "INSERT INTO ISA_Accounts (type_id, currentBalance, dateCreated, threshold) VALUES (?,?,?,?)";
         String insertAccountTypeQuery = "INSERT INTO Account_Type (ISA_account_id) VALUES (?)";
         String insertAccountQuery = "INSERT INTO Accounts (customer_id, type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted) VALUES (?,?,?,?,?,?,?)";
 
@@ -451,7 +451,9 @@ public class Database {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error:");
+            System.out.println(e);
+           // throw new RuntimeException(e);
         }
         return false;
     }

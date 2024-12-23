@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class NewISAPage {
 
-    private static final Database db = new Database(new Config());
+  //  private static final Database db = new Database(new Config());
 
     static int isaTypeId;
 
@@ -38,13 +38,13 @@ public class NewISAPage {
 
     public static boolean validateUser(Teller teller) {
         // Establish a connection to the database
-        if (db.establishConnection()) {
+        if (teller.getDatabase().establishConnection()) {
             // If the connection is successful, proceed with checking the ISA account
             Customer customer = teller.getCurrentCustomer();
             int customerId = customer.getId();
 
             // Check if the customer has an ISA account. Return true or false
-            boolean hasISA = db.hasExistingISAAccount(customerId);
+            boolean hasISA = teller.getDatabase().hasExistingISAAccount(customerId);
 
             if (hasISA) {
                 System.out.println("This customer already has an ISA account. Returning to Customer account options....");
@@ -125,7 +125,7 @@ public class NewISAPage {
                 System.out.println("Enter deposit amount: ");
                 initialDepositAmount = scanner.nextDouble();
 
-                if (db.checkLimit(isaTypeId, initialDepositAmount)) {
+                if (teller.getDatabase().checkLimit(isaTypeId, initialDepositAmount)) {
                     System.out.println("Enter deposit amount that does not exceed the limits");
                 } else {
                     validDeposit = true;
@@ -142,7 +142,7 @@ public class NewISAPage {
         int customerId = customer.getId();
 
         // Save the ISA account and link it to the customer
-        boolean success = db.saveISAAccount(isaTypeId, customerId, initialDepositAmount);
+        boolean success = teller.getDatabase().saveISAAccount(isaTypeId, customerId, initialDepositAmount);
         if (success) {
             System.out.println("ISA account successfully created.");
         } else {

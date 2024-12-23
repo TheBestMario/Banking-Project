@@ -44,6 +44,8 @@ public class Customer {
         this.dob = dob;
     }
 
+    public Customer(){}
+
 
     public int getId() {
         return id;
