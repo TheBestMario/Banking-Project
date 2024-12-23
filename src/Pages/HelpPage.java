@@ -80,12 +80,16 @@ public class HelpPage {
 
     private static void RegisterNewCustomerHelp(Scanner scanner) {
         // Display Page
-        System.out.println("====== Register New Customer ======");
-        System.out.println("To register a new customer, follow these steps:");
-        System.out.println("1. Collect customer's personal information including first name, middle name, last name, date of birth, email address, and passport number.");
-        System.out.println("2. Use the system's 'Register' feature to input the collected information.");
-        System.out.println("3. Confirm the information and complete the registration process.");
-        System.out.println("4. Provide the customer with their account details.");
+        System.out.println("""
+                ====== Register New Customer ======
+                You can choose a field to fill in and type '/back'
+                 to discard the registration during the process.
+                
+                Ensure information is accurate before submitting, this will update the database.
+                To FINISH and SUBMIT the registration, type '/submit'.
+                *All fields are required to finish and submit.
+                
+                """);
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -95,6 +99,7 @@ public class HelpPage {
 
     private static void createTellerHelp(Scanner scanner){
         // Prints out for the help page here...
+
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -104,7 +109,12 @@ public class HelpPage {
 
     private static void homeNavigationHelp(Scanner scanner){
         // Prints out for the help page here...
-
+        System.out.println("====== Register New Accounts ======");
+        System.out.println("To register a new customer, follow these steps:");
+        System.out.println("1. Collect customer's personal information including first name, middle name, last name, date of birth, email address, and passport number.");
+        System.out.println("2. Use the system's 'Register' feature to input the collected information.");
+        System.out.println("3. Confirm the information and complete the registration process.");
+        System.out.println("4. Provide the customer with their account details.");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){

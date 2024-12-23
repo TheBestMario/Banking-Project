@@ -32,7 +32,6 @@ public class NewCustomerPage {
         String dob;
         customer = new Customer();
         currentTeller.setCurrentCustomer(customer);
-        scanner.nextLine();
         boolean exit = false;
 
         /*
@@ -44,10 +43,7 @@ public class NewCustomerPage {
             System.out.println("""
                 CLI BANKING SYSTEM
                 ------------------
-                You are adding a new customer!
-                
-                Please choose the details you would like to enter
-                from the list bellow, one by one.
+                Customer Registration
                 ------------------
                 First Name     (1)
                 Last Name      (2)
@@ -57,10 +53,11 @@ public class NewCustomerPage {
                 Mobile Number  (6)
                 Email Address  (7)
                 ------------------
-                TO Finish, enter '/confirm'
-                To go Back, enter '/back'
+                '/help' for help.
                 """);
+            scanner.nextLine();
             String input = scanner.nextLine();
+            input = input.trim();
 
             switch (input) {
                     case "1":
@@ -98,9 +95,12 @@ public class NewCustomerPage {
                             Customer details updated successfully!""");
                         }
                         else{
-                            System.out.println("Please fill out the other details");
                             break;
                         }
+                    case "/help":
+                        currentTeller.currentDirectory = "home/createCustomer/help";
+                        return currentTeller;
+
                     case "/back":
                         currentTeller.currentDirectory = "home";
                         exit = true;
