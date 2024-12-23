@@ -2,6 +2,7 @@ package main;
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class Database {
     // create a BankingAppDB within your azure data studios
     // DB == BankingAppDB
 
-    public Database(Config config){
+    public Database(Config config) {
         this.dbUsername = config.userName;
         this.dbPassword = config.password;
         this.connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=BankingAppDB;user=" + this.dbUsername + ";password=" + this.dbPassword + ";encrypt=false;";
@@ -34,11 +35,10 @@ public class Database {
         }
     }
 
-    public void closeConnection(){
+    public void closeConnection() {
         try {
             this.con.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -60,8 +60,8 @@ public class Database {
     public Teller getTeller(String username, String password) {
         String query = "SELECT * FROM Tellers WHERE username = ? and password = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setString(1,username);
-            st.setString(2,password);
+            st.setString(1, username);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
@@ -96,6 +96,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     public void deleteTeller(String username) {
         String query = "DELETE FROM Tellers WHERE username = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -107,6 +108,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     //CUSTOMERS
 //    public void createCustomer(Customer customer) {
 //        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
@@ -142,7 +144,7 @@ public class Database {
     public Customer getCustomer(int id) {
         String query = "SELECT * FROM Customers where id = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1,id);
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
 
@@ -162,7 +164,7 @@ public class Database {
                         phone_number, email,
                         business_proof, dob);
 
-                 return customer;
+                return customer;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -181,7 +183,7 @@ public class Database {
         }
     }
 
-    public void createCustomer(Customer customer){
+    public void createCustomer(Customer customer) {
         String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB, mobile_number, email)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -198,6 +200,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     public int getCustomerId(String firstName, String lastName, String number, String email) {
         String query = "SELECT id FROM Customers WHERE firstName = ? AND lastName = ? AND mobile_number = ? AND email = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -215,7 +218,7 @@ public class Database {
         return 0;
     }
 
-    public List <Personal> getPersonalAccount(int customerId) {
+    public List<Personal> getPersonalAccount(int customerId) {
         List<Personal> personalAccounts = new ArrayList<>();
 
         String query = """ 
@@ -225,8 +228,8 @@ public class Database {
                 JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
                 WHERE a.id = ? AND a.isDeleted = 0
                 """;
-        try (PreparedStatement st = con.prepareStatement(query)){
-            st.setInt(1,customerId);
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -238,13 +241,14 @@ public class Database {
                 ));
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return personalAccounts;
 
 
     }
+
     public Boolean setBusinessProof(int customerId, String businessProof) {
         String query = "UPDATE Customers SET business_proof = ? WHERE id = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -258,8 +262,8 @@ public class Database {
         }
     }
 
-    public List <Business> getBusinessAccount(int customerId) {
-        List <Business> businessAccounts = new ArrayList<>();
+    public List<Business> getBusinessAccount(int customerId) {
+        List<Business> businessAccounts = new ArrayList<>();
 
         String query = """ 
                 SELECT a.id AS account_id, a.balance,a.dateCreated,ba.business_details, ba.has_Cheque_Books
@@ -271,36 +275,37 @@ public class Database {
 
 
         try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1,customerId);
+            st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 businessAccounts.add(new Business(
                         rs.getInt("account_id"),
-                rs.getDouble("balance"),
-                rs.getString("bank_details"),
-                rs.getInt("customer_id"),
+                        rs.getDouble("balance"),
+                        rs.getString("bank_details"),
+                        rs.getInt("customer_id"),
                         rs.getBoolean("has_Cheque_Books"),
                         rs.getDouble("initial_deposit")
                 ));
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return businessAccounts;
 
 
     }
+
     //write
     public Personal getPersonalAccountById(int accountId) throws SQLException {
         String query = """
-            SELECT a.id AS account_id, a.balance, pa.bank_address
-            FROM Accounts a
-            JOIN Account_Type at ON a.type_id = at.id
-            JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
-            WHERE a.id = ? AND a.isDeleted = 0
-            """;
+                SELECT a.id AS account_id, a.balance, pa.bank_address
+                FROM Accounts a
+                JOIN Account_Type at ON a.type_id = at.id
+                JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
+                WHERE a.id = ? AND a.isDeleted = 0
+                """;
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setInt(1, accountId);
             ResultSet rs = st.executeQuery();
@@ -311,21 +316,21 @@ public class Database {
                 int customerId = rs.getInt("customer_id");
                 String bankAddress = rs.getString("bank_address");
 
-                return new Personal(id, balance,customerId, bankAddress);
+                return new Personal(id, balance, customerId, bankAddress);
             }
         }
         return null; // Account not found
     }
 
-//write
+    //write
     public Business getBusinessAccountById(int accountId) throws SQLException {
         String query = """
-            SELECT a.id AS account_id, a.balance, ba.business_details, ba.has_Cheque_Books
-            FROM Accounts a
-            JOIN Account_Type at ON a.type_id = at.id
-            JOIN Business_Accounts ba ON at.business_account_id = ba.id
-            WHERE a.id = ? AND a.isDeleted = 0
-            """;
+                SELECT a.id AS account_id, a.balance, ba.business_details, ba.has_Cheque_Books
+                FROM Accounts a
+                JOIN Account_Type at ON a.type_id = at.id
+                JOIN Business_Accounts ba ON at.business_account_id = ba.id
+                WHERE a.id = ? AND a.isDeleted = 0
+                """;
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setInt(1, accountId);
             ResultSet rs = st.executeQuery();
@@ -338,13 +343,11 @@ public class Database {
                 boolean hasChequeBooks = rs.getBoolean("has_Cheque_Books");
                 double initialDeposit = rs.getDouble("initial_deposit");
 
-                return new Business(id, balance, businessDetails,customerId,hasChequeBooks, initialDeposit);
+                return new Business(id, balance, businessDetails, customerId, hasChequeBooks, initialDeposit);
             }
         }
         return null; // Account not found
     }
-
-
 
 
     public static int createPersonalAccount(Personal account) throws SQLException {
@@ -360,7 +363,7 @@ public class Database {
                 return rs.getInt(1); // return the account id
 
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
@@ -370,8 +373,8 @@ public class Database {
     public static int createBusinessAccount(Business account) throws SQLException {
         String query = "INSERT INTO Accounts (type_id,customer_id,initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
                 "VALUES (?,?,?, GETDATE(),GETDATE(),0); "
-                +"insert into Business_Accounts (business_details, has_Cheque_Books) VALUES (?,?);"
-                +"SELECT id from accounts where id = (select max(id) from accounts)";
+                + "insert into Business_Accounts (business_details, has_Cheque_Books) VALUES (?,?);"
+                + "SELECT id from accounts where id = (select max(id) from accounts)";
         try (PreparedStatement st = con.prepareStatement(query)) {
             //st.setInt(1, account.getCustomerId());//replace with customer id
             //st.setDouble(1, 2); //type of id
@@ -422,7 +425,6 @@ public class Database {
     }
 
 
-
     public boolean saveISAAccount(int isaTypeId, int customerId, double initialDeposit) {
         // Query to insert into ISA_Accounts
         String insertISAQuery = "INSERT INTO ISA_Accounts (type_id, currentBalance, dateCreated, threshold) VALUES (?, ?, ?, ?)";
@@ -450,7 +452,7 @@ public class Database {
                         Accounts.setInt(1, customerId);
                         Accounts.setInt(2, newISAAccountId);
                         Accounts.setDouble(3, initialDeposit);
-                        Accounts.setDouble(4,initialDeposit); // balance set as initial deposit
+                        Accounts.setDouble(4, initialDeposit); // balance set as initial deposit
                         Accounts.setDate(5, java.sql.Date.valueOf(LocalDate.now()));
                         Accounts.setDate(6, java.sql.Date.valueOf(LocalDate.now()));
 
@@ -507,37 +509,40 @@ public class Database {
                 WHERE a.customer_id = ?
                 """;
 
-        try(PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1,customerId);
+        DecimalFormat df = new DecimalFormat("£#,##0.00");
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setInt(1, customerId);
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return rs.getDouble("currentBalance");
+                double isaBalance = rs.getDouble("currentBalance");
+
+                String formattedBalance = df.format(isaBalance);
+                System.out.println("ISA Account Balance: " + formattedBalance);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("No balance returned");
+
         return 0;
     }
 
-    public boolean updateISABalance(int customerId, double newBalance){
+    public boolean updateISABalance(int customerId, double newBalance) {
         String query = """
                 SELECT isa.id FROM ISA_ACCOUNTS isa
                 LEFT JOIN Accounts a ON a.ISA_account_id = isa.id
                 WHERE a.customer_id = ?
                 """;
 
-        int isaAccountId =0; // Initialize variable to store results (isa account id) from above query
+        int isaAccountId = 0; // Initialize variable to store results (isa account id) from above query
 
 
-
-        try(PreparedStatement st = con.prepareStatement(query)) {
+        try (PreparedStatement st = con.prepareStatement(query)) {
             st.setInt(1, customerId);
 
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 isaAccountId = rs.getInt("id"); // Store the isaAccountId in this variable. Will use this to update the current balance.
             }
         } catch (SQLException e) {
@@ -547,15 +552,74 @@ public class Database {
         // Update currentBalance in ISAAccount Table
         String updateCurrentBalance = "UPDATE ISA_Accounts SET currentBalance = ?  WHERE id = ? ";
 
-        try(PreparedStatement st = con.prepareStatement(updateCurrentBalance)) {
-            st.setDouble(1,newBalance);
-            st.setInt(2,isaAccountId);
+        try (PreparedStatement st = con.prepareStatement(updateCurrentBalance)) {
+            st.setDouble(1, newBalance);
+            st.setInt(2, isaAccountId);
 
             int updateRecord = st.executeUpdate();
             return updateRecord > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+
+    }
+
+    public void getISAPendingPayments(int customerId) throws SQLException {
+        // query for Account to get isa_id
+        String accountQuery = "SELECT ISA_account_id FROM Accounts WHERE customer_id = ?";
+        // type_id in ISA accounts - using isaid from account table
+        String isaAccoutQuery = "SELECT type_id FROM ISA_Accounts WHERE id = ?";
+        // using type id in ISA types to get limit and type name of account - using type id
+        String isaTypeQuery = "SELECT limit, type FROM ISA_Types WHERE id = ?";
+
+        int isaAccountId = 0;
+        int typeId = 0;
+        int limit = 0;
+        String isaType = "";
+
+        // Use customer id to get isa account id
+        try (PreparedStatement account = con.prepareStatement(accountQuery)) {
+            account.setInt(1, customerId);
+
+            ResultSet rs = account.executeQuery();
+
+            if (rs.next()) {
+                isaAccountId = rs.getInt("ISA_account_id");
+            }
+
+        }
+
+        // ISA Account
+        try (PreparedStatement isaAccount = con.prepareStatement(isaAccoutQuery)) {
+            isaAccount.setInt(1, isaAccountId);
+            ResultSet rs = isaAccount.executeQuery();
+            if (rs.next()) {
+                typeId = rs.getInt("type_id");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        // ISA Type
+        try(PreparedStatement isaTypeTable = con.prepareStatement(isaTypeQuery)) {
+            isaTypeTable.setInt(1, typeId);
+            ResultSet rs = isaTypeTable.executeQuery();
+            if (rs.next()) {
+                isaType = rs.getString("type");
+                limit = rs.getInt("limit");
+            }
+
+        }
+
+        double monthlyPayments = limit / 12.0;
+        DecimalFormat df = new DecimalFormat("£#,##0.00");
+
+        System.out.println("ISA Type: " + isaType);
+        System.out.println("Monthly payments: " + df.format(monthlyPayments));
+        System.out.println("Annual Limit: " + df.format(limit));
 
 
     }
