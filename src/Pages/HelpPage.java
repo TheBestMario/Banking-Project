@@ -100,8 +100,7 @@ public class HelpPage {
     }
 
     private static void createTellerHelp(Scanner scanner){
-        // Prints out for the help page here...
-
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -110,7 +109,6 @@ public class HelpPage {
     }
 
     private static void homeNavigationHelp(Scanner scanner){
-        // Prints out for the help page here...
         System.out.println("====== Register New Accounts ======");
         System.out.println("To register a new customer, follow these steps:");
         System.out.println("1. Collect customer's personal information including first name, middle name, last name, date of birth, email address, and passport number.");
@@ -125,7 +123,7 @@ public class HelpPage {
     }
 
     private static void customersPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -134,7 +132,7 @@ public class HelpPage {
     }
 
     private static void accountsPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -143,7 +141,7 @@ public class HelpPage {
     }
 
     private static void existingISAAccountPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -153,7 +151,7 @@ public class HelpPage {
     }
 
     private static void existingPersonalAccountPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -163,7 +161,7 @@ public class HelpPage {
     }
 
     private static void existingBusinessAccountPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -173,7 +171,7 @@ public class HelpPage {
     }
 
     private static void newISAAccountPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -183,7 +181,7 @@ public class HelpPage {
     }
 
     private static void newBusinessAccountPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
@@ -193,7 +191,7 @@ public class HelpPage {
     }
 
     private static void newPersonalAccountPageHelp(Scanner scanner){
-        // Prints out for the help page here...
+        System.out.println("No help page currently exists");
         System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
