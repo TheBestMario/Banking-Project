@@ -14,19 +14,7 @@ public class ExistingBusinessAccountPage {
 
 
     public static Teller display(Teller currentTeller, Scanner scanner) {
-        System.out.println("Entering Existing Business Account");
-
-        while (currentTeller.getBusinessAccounts() == null) {
-            System.out.println("No Business Accounts Found");
-            System.out.println("""
-                    To go Back, Enter 0
-                    """);
-            String choice = scanner.nextLine();
-            if (choice == "0") {
-                currentTeller.currentDirectory = "home/customers/accounts";
-                return currentTeller;
-            }
-        }
+        System.out.println("Entering Existing Businnes Account");
         currentTeller.getBusinessAccounts().forEach(account -> {
             System.out.println("Account ID " + account.getAccountNumber() + " Balance £ " + account.getBalance());
 
