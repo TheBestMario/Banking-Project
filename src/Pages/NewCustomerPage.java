@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class NewCustomerPage {
 
@@ -98,6 +99,7 @@ public class NewCustomerPage {
                         }
                         else{
                             System.out.println("Please fill out the other details");
+                            break;
                         }
                     case "/back":
                         currentTeller.currentDirectory = "home";
@@ -158,8 +160,9 @@ public class NewCustomerPage {
 
         System.out.println("Enter the first name of the customer: ");
         String input = scanner.nextLine();
+        input = input.trim();
         if (input.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getFirstName();
         } else if (input.isBlank()){
             System.out.println("The last name cannot be empty");
             return displayEditFirstName(currentTeller, scanner);
@@ -175,9 +178,9 @@ public class NewCustomerPage {
 
         System.out.println("Enter the last name of the customer: ");
         String input = scanner.nextLine();
-
+        input = input.trim();
         if (input.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getLastName();
         } else if (input.isBlank()){
             System.out.println("The last name cannot be empty");
             return displayEditLastName(currentTeller, scanner);
@@ -193,9 +196,9 @@ public class NewCustomerPage {
 
         System.out.println("Enter the address of the customer: ");
         String input = scanner.nextLine();
-
+        input = input.trim();
         if (input.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getAddress_proof();
         } else if (input.isBlank()){
             System.out.println("Address cannot be empty");
             return displayEditAddress(currentTeller, scanner);
@@ -212,8 +215,9 @@ public class NewCustomerPage {
 
         System.out.println("Enter ID proof of the customer: ");
         String input = scanner.nextLine();
+        input = input.trim();
         if (input.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getPhoto_proof();
         } else if (input.isBlank()){
             System.out.println("Proof of ID cannot be empty");
             return displayEditPhoto(currentTeller, scanner);
@@ -231,6 +235,7 @@ public class NewCustomerPage {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             System.out.println("Enter customer's birth date, day-month-year in dd-MM-yyyy: ");
             input = scanner.nextLine();
+            input = input.trim();
             dob = LocalDate.parse(input, formatter);
             dobString = String.valueOf(dob);
 
@@ -249,7 +254,7 @@ public class NewCustomerPage {
         }
 
         if (dobString.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getDob().toString();
         } else if (dobString.isBlank()){
             System.out.println("Customer date of birth cannot be empty");
             return displayEditDOB(currentTeller, scanner);
@@ -263,8 +268,9 @@ public class NewCustomerPage {
 
         System.out.println("If opening a business account, please provide proof of business: ");
         String input = scanner.nextLine();
+        input = input.trim();
         if (input.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getBusiness_proof();
         } else if (input.isBlank()){
             System.out.println("Proof of business cannot be empty");
             return displayEditBusinessProof(currentTeller, scanner);
@@ -280,9 +286,9 @@ public class NewCustomerPage {
         try {
 
             input = scanner.nextLine();
-
+            input = input.trim();
             if (input.equalsIgnoreCase("/back")){
-                return null;
+                return currentTeller.getCurrentCustomer().getPhone_number();
             } else if (input.isBlank()) {
                 System.out.println("Phone number cannot be empty");
                 return displayEditPhoneNumber(currentTeller, scanner);
@@ -304,13 +310,18 @@ public class NewCustomerPage {
         }
     }
     private static String displayEditEmail(Teller currentTeller, Scanner scanner) {
-
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         System.out.println("Enter the email address of the customer: ");
         String input = scanner.nextLine();
+        input = input.trim();
         if (input.equalsIgnoreCase("/back")){
-            return null;
+            return currentTeller.getCurrentCustomer().getEmail();
         } else if (input.isBlank()){
             System.out.println("Email address cannot be empty");
+            return displayEditEmail(currentTeller, scanner);
+        } else if (!VALID_EMAIL_ADDRESS_REGEX.matcher(input).find()){
+            System.out.println("Invalid email address");
             return displayEditEmail(currentTeller, scanner);
         } else{
             currentTeller.getCurrentCustomer().setEmail(input);
