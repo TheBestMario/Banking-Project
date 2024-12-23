@@ -2,67 +2,79 @@ package Pages;
 import main.Teller;
 import java.util.Scanner;
 
-
 public class HelpPage {
     public static Teller display(Teller currentTeller, Scanner scanner) {
 
         switch (currentTeller.currentDirectory) {
-            case "createTeller/help":
-                createTellerHelp(scanner);
-                currentTeller.navigateFromHelp();
+
+            // HELP page should contain help for creating a teller and logging in
+            case "help":
+                startHelp(scanner);
+                currentTeller.currentDirectory = "";
                 return currentTeller;
 
             case "home/help":
                 homeNavigationHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home";
                 return currentTeller;
 
             case "home/customers/help":
                 customersPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers";
                 return currentTeller;
 
             case "home/customers/accounts/help":
                 accountsPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts";
                 return currentTeller;
 
             case "home/customers/accounts/ISAAccount/help":
                 existingISAAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/ISAAccount";
                 return currentTeller;
 
             case "home/customers/accounts/PersonalAccount/help":
                 existingPersonalAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/PersonalAccount";
                 return currentTeller;
 
             case "home/customers/accounts/BusinessAccount/help":
                 existingBusinessAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/BusinessAccount";
                 return currentTeller;
 
             case "home/createCustomer/help":
                 RegisterNewCustomerHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/createCustomer";
                 return currentTeller;
 
             case "home/customers/accounts/NewISAAccount/help":
                 newISAAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/NewISAAccount";
                 return currentTeller;
 
             case "home/customers/accounts/NewBusinessAccount/help":
                 newBusinessAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/NewBusinessAccount";
                 return currentTeller;
 
             case "home/customers/accounts/NewPersonalAccount/help":
                 newPersonalAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/NewPersonalAccount";
                 return currentTeller;
             default:
                 return currentTeller;
+        }
+    }
+
+
+    private static void startHelp(Scanner scanner){
+        System.out.println("====== Starting help page ======");
+        System.out.println("blah");
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
         }
     }
 

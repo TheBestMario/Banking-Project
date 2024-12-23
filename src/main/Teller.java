@@ -141,22 +141,5 @@ public class Teller {
         this.personalAccounts = null;
         this.businessAccounts = null;
     }
-    // removes /help from end of directory from teller object
-    public void navigateFromHelp(){
-        String[] tokens = this.currentDirectory.split("/");
-        String newDirectory = "";
-        for(int i =0; i < tokens.length; i++){
-            if(i == tokens.length - 1){
-                continue;
-            }
-            else if(i == tokens.length - 2){
-                newDirectory += tokens[i];
-            }
-            else{
-                newDirectory += tokens[i] + '/';
-            }
-        }
-        this.currentDirectory = newDirectory;
-    }
 
 }
