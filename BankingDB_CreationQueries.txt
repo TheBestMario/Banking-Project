@@ -58,7 +58,6 @@ amount int,
 payerName varchar(255),
 isDeleted tinyint);
 
-
 create table Personal_Accounts
 (id int primary key identity(1,1),
 bank_address varchar(120) not null,
@@ -72,12 +71,6 @@ sellerName varchar(255),
 dateCreated datetime,
 isDeleted tinyint);
 
-create table Account_Type
-(id int primary key identity(1,1),
-personal_account_id int foreign key references Personal_Accounts(id),
-business_account_id int foreign key references Business_Accounts(id),
-ISA_account_id int foreign key references ISA_Accounts(id));
-
 create table Account_Transaction_Type
 (id int primary key identity(1,1),
 name varchar(255));
@@ -85,7 +78,9 @@ name varchar(255));
 create table Accounts
 (id int primary key identity(1,1),
 customer_id int foreign key references Customers(id),
-type_id int foreign key references Account_Type(id),
+personal_account_id foreign key references Personal_Accounts(id),
+business_account_id foreign key references Business_Accounts(id),
+ISA_account_id foreign key references ISA_Accounts(id),
 initial_deposit int,
 balance int,
 dateCreated datetime,
