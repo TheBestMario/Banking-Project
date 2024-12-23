@@ -157,7 +157,6 @@ public class Teller {
             }
         }
         this.currentDirectory = newDirectory;
-        System.out.println(newDirectory);
     }
 
 }
