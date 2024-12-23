@@ -33,8 +33,6 @@ public class Customer {
         this.email = email;
     }
     //needed empty constructor for temporary info
-    public Customer() {}
-
     public Customer(String firstName, String lastName, String photoProof, String addressProof, String businessProof, LocalDate dob) {
         /* Constructor for creating a new customer,
          is used when getting details from database and creating an object out of it. */
