@@ -6,24 +6,36 @@ import java.util.Random;
 
 public class Business extends Account {
     private static final double ANNUAL_CHARGE = 120.0;
+    private int customerId;
     private String cardNumber;
     private List<String> standingOrders;
     private List<String> statmentHistory;
     private List<String> pendingPayments;
     private String businessDetails;
     private boolean hasChequeBooks;
+    private double initialDeposit;
 
 
-    public Business(int accountNumber, double initialBalance,String businessDetails, boolean hasChequeBooks) {
+    public Business(int accountNumber, double initialBalance,String businessDetails,int customerId ,boolean hasChequeBooks, double initialDeposit) {
         super(accountNumber, initialBalance);
+        this.customerId = customerId;
         this.businessDetails = businessDetails;
         this.hasChequeBooks = hasChequeBooks;
         this.cardNumber = generateCardNumber();
         this.standingOrders = new ArrayList<>();
         this.statmentHistory = new ArrayList<>();
         this.pendingPayments = new ArrayList<>();
+        this.initialDeposit = initialDeposit;
 
 
+    }
+
+    public double getInitialDeposit() {
+        return initialDeposit;
+    }
+
+    public int getCustomerId() {
+        return customerId;
     }
 
     public String getBusinessDetails(){

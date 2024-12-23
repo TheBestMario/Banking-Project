@@ -3,6 +3,7 @@ package Pages;
 import main.Database;
 import main.Personal;
 import main.Teller;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.SQLException;
@@ -10,72 +11,87 @@ import java.sql.SQLException;
 
 public class ExistingPersonalAccountPage {
 
-    public static Teller display(Teller currentTeller, Scanner scanner) {
-        System.out.println("Enter Existing Account Number");
-        int accountId = scanner.nextInt();
-        scanner.nextLine();
-        try {
-            Personal account = currentTeller.getDatabase().getPersonalAccountById(accountId);
 
-            if (account != null) {
-                boolean isRunning = true;
-                while (isRunning) {
-                    System.out.println("""
-                            Perosnal Account Page
-                            1. Check Balance
-                            2. Manage Standing Order
-                            3. View Statment History
-                            4. Deposit Money
-                            5. Withdraw Money
-                            6. View Card Details
-                            7. View Pending Payments
-                            8. Exit
-                            """);
-                    try {
-                        int choice = scanner.nextInt();
-                        switch (choice) {
-                            case 1:
-                                displayBalance(account);
-                            case 2:
-                                manageStandingOrders(scanner,account);
-                            case 3:
-                                viewStatmentHistory(account);
-                            case 4:
-                                deposit(scanner,account, currentTeller.getDatabase());
-                            case 5:
-                                withdraw(scanner,account, currentTeller.getDatabase());
-                            case 6:
-                                viewCardDetails(account);
-                            case 7:
-                                viewPendingPayments(account);
-                            case 8:
-                                isRunning = false;
-                                System.out.println("Leaving Personal Account Page");
-                                currentTeller.currentDirectory = "home/customers/account";
-                                return currentTeller;
-                            default:
-                                isRunning = true;
+    public static Teller display(Teller currentTeller, Scanner scanner) {
+        System.out.println("Welcome to CLI Banking System");
+        System.out.println("Select Personal Account Number");
+        currentTeller.getPersonalAccounts().forEach(account -> {
+            System.out.println("Account Number: " + account.getAccountNumber() + "Balance £" + account.getBalance());
+
+        });
+
+        boolean exit = false;
+        while (!exit) {
+            try {
+                int choice = scanner.nextInt();
+                if (choice == 0) {
+                    currentTeller.currentDirectory = "home/customers/accounts";
+                    exit = true;
+                } else {
+                    Personal selectedAccount = currentTeller.getDatabase().getPersonalAccountById(choice);
+                    if (selectedAccount != null) {
+                        System.out.println("Selected Account " + selectedAccount.getAccountNumber() + " Balance: £ " + selectedAccount.getBalance());
+                        currentTeller.setCurrentAccount(selectedAccount);
+
+                        boolean isRunning = true;
+                        while (isRunning) {
+                            System.out.println("""
+                                    Perosnal Account Page
+                                    1. Check Balance
+                                    2. Manage Standing Order
+                                    3. View Statment History
+                                    4. Deposit Money
+                                    5. Withdraw Money
+                                    6. View Card Details
+                                    7. View Pending Payments
+                                    8. Exit
+                                    """);
+                            try {
+                                int actionChoice = scanner.nextInt();
+                                switch (actionChoice) {
+                                    case 1:
+                                        displayBalance(selectedAccount);
+                                    case 2:
+                                        manageStandingOrders(scanner, selectedAccount);
+                                    case 3:
+                                        viewStatmentHistory(selectedAccount);
+                                    case 4:
+                                        deposit(scanner, selectedAccount, currentTeller.getDatabase());
+                                    case 5:
+                                        withdraw(scanner, selectedAccount, currentTeller.getDatabase());
+                                    case 6:
+                                        viewCardDetails(selectedAccount);
+                                    case 7:
+                                        viewPendingPayments(selectedAccount);
+                                    case 8:
+                                        isRunning = false;
+                                        System.out.println("Leaving Personal Account Page");
+                                        currentTeller.currentDirectory = "home/customers/account";
+                                        isRunning = false;
+                                    default:
+                                        System.out.println("Invalid Action");
+
+                                }
+
+
+                            } catch (InputMismatchException e) {
+                                System.out.println("Please enter a valid choice");
+                                scanner.nextLine();
+                            }
 
                         }
-
-
-                    } catch (InputMismatchException e) {
-                        System.out.println("Please enter a valid choice");
-                        scanner.nextLine();
+                        exit = true;
+                    } else {
+                        System.out.println("Account not found");
                     }
                 }
-            } else {
-                System.out.println("Account not found");
+
+            } catch (Exception e) {
+                System.out.println("Error" + e.getMessage());
+                scanner.nextLine();
             }
-
-
-        }catch (SQLException e){
-            System.out.println("Error" + e.getMessage());
         }
-
-
         return currentTeller;
-
     }
 
     public static void displayBalance(Personal account) {
@@ -117,14 +133,11 @@ public class ExistingPersonalAccountPage {
                 default: {
                     System.out.println("Invalid choice. Try again.");
                 }
-
-
             }
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid choice");
             scanner.nextLine();
         }
-
     }
 
     public static void viewStatmentHistory(Personal account) {
@@ -135,10 +148,8 @@ public class ExistingPersonalAccountPage {
             for (String statment : account.getStatmentHistory()) {
                 System.out.println(statment);
             }
-
         }
     }
-
 
 
     public static void deposit(Scanner scanner, Personal account, Database db) {
@@ -146,7 +157,7 @@ public class ExistingPersonalAccountPage {
         try {
             double amount = scanner.nextDouble();
             account.deposit(amount);
-            db.updateBalance(account.getAccountNumber(),account.getBalance());
+            db.updateBalance(account.getAccountNumber(), account.getBalance());
             System.out.println("Amount deposited is £ " + amount);
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid amount");
@@ -158,12 +169,12 @@ public class ExistingPersonalAccountPage {
         }
     }
 
-    public static void withdraw(Scanner scanner,Personal account,Database db) {
+    public static void withdraw(Scanner scanner, Personal account, Database db) {
         System.out.println(" Enter amount to Withdraw Money");
         try {
             double amount = scanner.nextDouble();
             account.withdraw(amount);
-            db.updateBalance(account.getAccountNumber(),account.getBalance());
+            db.updateBalance(account.getAccountNumber(), account.getBalance());
             System.out.println("The amount being withdrawn is £ " + amount);
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid amount");

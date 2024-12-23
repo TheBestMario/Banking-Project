@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Teller {
@@ -15,6 +16,7 @@ public class Teller {
 
 
     private Customer currentCustomer;
+    private Account currentAccount;
     private List<Personal> personalAccounts;
     private List<Business> businessAccounts;
 
@@ -24,6 +26,9 @@ public class Teller {
         this.currentDirectory = setDirectory;
         this.loggedIN = false;
         this.db = db;
+        this.currentCustomer = null;
+        this.currentAccount = null;
+
         this.ApplicationON = true;
     }
 
@@ -94,17 +99,39 @@ public class Teller {
     public void setCurrentDirectory(String s) {
         this.currentDirectory = s;
     }
+    public Account getCurrentAccount(Account account) {
+        return this.currentAccount;
+
+    }
+    public void setCurrentAccount(Account account) {
+        this.currentAccount = account;
+    }
+
 
     public void addPersonalAccount(Personal account) {
-        this.personalAccounts.add(account);
+        try{
+            db.createPersonalAccount(account);
+        }catch(SQLException e){
+            System.out.println("Error creating Personal account " + e.getMessage());
+        }
     }
     public List<Personal> getPersonalAccounts() {
-        return personalAccounts;
+        if (currentCustomer != null) {
+            return db.getPersonalAccount(currentCustomer.getId());
+        }
+        return null;
     }
     public void addBusinessAccount(Business account) {
-        this.businessAccounts.add(account);
+        try{
+            db.createBusinessAccount(account);
+        }catch(SQLException e){
+            System.out.println("Error creating Business account " + e.getMessage());
+        }
     }
     public List<Business> getBusinessAccounts() {
-        return businessAccounts;
+        if (currentAccount != null) {
+            return db.getBusinessAccount(currentCustomer.getId());
+        }
+        return null;
     }
 }

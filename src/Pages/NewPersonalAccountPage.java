@@ -7,19 +7,26 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class NewPersonalAccountPage {
-    // please use teller.getDatabase to access database functions
 
-    public static Teller display(Teller teller, Scanner scanner) {
+    public static Teller display(Teller currentTeller, Scanner scanner) {
+        System.out.println("Welcome to CLI Banking System");
         System.out.println("Create a New Personal Account");
         System.out.print("Enter initial deposit amount: ");
         double initialDeposit = scanner.nextDouble();
         System.out.println("Enter Bank Address");
         String bankAddress = scanner.next();
+        int customerId = currentTeller.getCurrentCustomer().getId();
 
-         try {
-            // Insert account into DB and get auto-incremented account_number
-            int accountNumber = Database.createPersonalAccount(initialDeposit,bankAddress);
-
+        try {
+            Personal newAccount = new Personal(currentTeller.getCurrentCustomer().getId(), initialDeposit,customerId ,bankAddress);
+            currentTeller.getDatabase().createPersonalAccount(newAccount);
+            System.out.println("New personal account created");
+        } catch (Exception e) {
+            System.out.println("Error" + e.getMessage());
+        }
+        currentTeller.currentDirectory = "home/customers/accounts";
+        return currentTeller;
+/*
             // Create new Personal account object
             Personal newPersonalAccount = new Personal(accountNumber,initialDeposit,bankAddress);
             teller.addPersonalAccount(newPersonalAccount);
@@ -31,5 +38,7 @@ public class NewPersonalAccountPage {
         }
 
         return teller;
+    }
+    */
     }
 }

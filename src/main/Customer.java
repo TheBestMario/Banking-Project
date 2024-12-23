@@ -52,6 +52,10 @@ public class Customer {
 
     }
 
+    public Customer(String firstName, String lastName, String photoProof, String addressProof, String businessProof, LocalDate dob) {
+    }
+
+
     public int getId() {
         return id;
     }

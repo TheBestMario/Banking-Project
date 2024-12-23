@@ -1,6 +1,8 @@
 package Pages;
+
 import main.*;
 import main.Teller;
+
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
@@ -13,77 +15,108 @@ public class ExistingBusinessAccountPage {
 
     public static Teller display(Teller currentTeller, Scanner scanner) {
         System.out.println("Entering Existing Businnes Account");
-        int accountId = scanner.nextInt();
-        scanner.nextLine();
-        try{
-            Business account = currentTeller.getDatabase().getBusinessAccountById(accountId);
-            if (account != null) {
-                boolean isRunning = true;
-                while (isRunning) {
-                    System.out.println("""
-                    Perosnal Account Page
-                    1. Check Balance
-                    2. Manage Standing Order
-                    3. View Statment History
-                    4. Deposit Money
-                    5. Withdraw Money
-                    6. View Card Details
-                    7. Make International Payments
-                    8. View Pending Payments
-                    9. Exit
-                    """);
-                    try{
-                        int choice = scanner.nextInt();
-                        switch (choice) {
-                            case 1: displayBalance(account);
-                            case 2: manageStandingOrders(account);
-                            case 3: viewStatmentHistory(account);
-                            case 4: deposit(scanner,account,  currentTeller.getDatabase());
-                            case 5: withdraw(scanner,account, currentTeller.getDatabase());
-                            case 6: viewCardDetails(account);
-                            case 7: makeInternationalPayments(scanner,account, currentTeller.getDatabase());
-                            case 8: viewPendingPayments(account);
-                            case 9: isRunning = false;
-                                System.out.println("Leaving Personal Account Page");
-                                currentTeller.currentDirectory = "home/customers/account";
-                                return currentTeller;
-                            default:
-                                isRunning = false;
-                        }
+        currentTeller.getBusinessAccounts().forEach(account -> {
+            System.out.println("Account ID " + account.getAccountNumber() + " Balance £ " + account.getBalance());
 
-                    }catch (InputMismatchException e) {
-                        System.out.println("Please enter a valid choice");
-                        scanner.nextLine();
+        });
+        System.out.println("""
+                To go Back, Enter 0
+                Enter Account ID
+                
+                """);
+        boolean exit = false;
+        while (!exit) {
+            try {
+                int choice = scanner.nextInt();
+                if (choice == 0) {
+                    currentTeller.currentDirectory = "home/customers/accounts";
+                    exit = true;
+                } else {
+                    Business selectedAccount = currentTeller.getDatabase().getBusinessAccountById(choice);
+                    if (selectedAccount != null) {
+                        System.out.println("Selected Account ID " + selectedAccount.getAccountNumber() + " Balance £ " + selectedAccount.getBalance());
+                        currentTeller.setCurrentAccount(selectedAccount);
+
+                        boolean isRunning = true;
+                        while (isRunning) {
+                            System.out.println("""
+                                    Perosnal Account Page
+                                    1. Check Balance
+                                    2. Manage Standing Order
+                                    3. View Statment History
+                                    4. Deposit Money
+                                    5. Withdraw Money
+                                    6. View Card Details
+                                    7. Make International Payments
+                                    8. View Pending Payments
+                                    9. Exit
+                                    """);
+                            try {
+                                int actionChoice = scanner.nextInt();
+                                switch (actionChoice) {
+                                    case 1:
+                                        displayBalance(selectedAccount);
+                                    case 2:
+                                        manageStandingOrders(selectedAccount);
+                                    case 3:
+                                        viewStatmentHistory(selectedAccount);
+                                    case 4:
+                                        deposit(scanner, selectedAccount, currentTeller.getDatabase());
+                                    case 5:
+                                        withdraw(scanner, selectedAccount, currentTeller.getDatabase());
+                                    case 6:
+                                        viewCardDetails(selectedAccount);
+                                    case 7:
+                                        makeInternationalPayments(scanner, selectedAccount, currentTeller.getDatabase());
+                                    case 8:
+                                        viewPendingPayments(selectedAccount);
+                                    case 9: {
+                                        System.out.println("Leaving Personal Account Page");
+                                        currentTeller.currentDirectory = "home/customers/account";
+                                        isRunning = false;
+                                    }
+
+                                    default:
+                                        System.out.println("Invalid Action");
+                                }
+                            } catch (InputMismatchException e) {
+                                System.out.println("Please enter a valid choice");
+                                scanner.nextLine();
+                            }
+                        }
+                        exit = true;
+                    } else {
+                        System.out.println("Select a valid choice");
                     }
                 }
+            } catch (Exception e) {
+                System.out.println("Invalid Input");
+                scanner.nextLine();
+
             }
-
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-
-
         return currentTeller;
-
     }
+
 
     public static void displayBalance(Business account) {
         System.out.println("Displaying Balance" + account.getBalance());
     }
+
     public static void manageStandingOrders(Business account) {
         System.out.println("Manage Standing Orders");
     }
+
     public static void viewStatmentHistory(Business account) {
         System.out.println("View Statment History");
     }
-    public static void deposit(Scanner scanner,Business account,Database db) {
+
+    public static void deposit(Scanner scanner, Business account, Database db) {
         System.out.println("Enter amount to deposit");
         try {
             double amount = scanner.nextDouble();
             account.deposit(amount);
-            db.updateBalance(account.getAccountNumber(),account.getBalance());
+            db.updateBalance(account.getAccountNumber(), account.getBalance());
             System.out.println("Amount deposited is £ " + amount + "Updatetd Balance" + account.getBalance());
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid amount");
@@ -92,7 +125,8 @@ public class ExistingBusinessAccountPage {
             System.out.println(e.getMessage());
         }
     }
-    private static void withdraw(Scanner scanner,Business account,Database db) {
+
+    private static void withdraw(Scanner scanner, Business account, Database db) {
         System.out.print("Enter amount to withdraw: ");
         try {
             double amount = scanner.nextDouble();
@@ -118,7 +152,8 @@ public class ExistingBusinessAccountPage {
     public static void viewCardDetails(Business account) {
         System.out.println("View Card Details");
     }
-    private static void makeInternationalPayments(Scanner scanner,Business account,Database db) {
+
+    private static void makeInternationalPayments(Scanner scanner, Business account, Database db) {
         System.out.print("Enter amount for international payment: ");
         try {
             double amount = scanner.nextDouble();
@@ -140,6 +175,7 @@ public class ExistingBusinessAccountPage {
             System.out.println("Error updating balance in database: " + e.getMessage());
         }
     }
+
     public static void viewPendingPayments(Business account) {
         System.out.println("View Pending Payments");
     }

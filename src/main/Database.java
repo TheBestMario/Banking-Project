@@ -1,9 +1,12 @@
 package main;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Database {
     private String dbUsername;
@@ -93,7 +96,6 @@ public class Database {
             e.printStackTrace();
         }
     }
-
     public void deleteTeller(String username) {
         String query = "DELETE FROM Tellers WHERE username = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -105,7 +107,6 @@ public class Database {
             e.printStackTrace();
         }
     }
-
     //CUSTOMERS
 //    public void createCustomer(Customer customer) {
 //        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
@@ -156,7 +157,7 @@ public class Database {
                 int customer_id = rs.getInt("id");
 
                 //Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof, dob);
-               // return customer;
+                // return customer;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,6 +171,8 @@ public class Database {
             st.setDouble(1, newBalance);
             st.setInt(2, accountId);
             st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -205,6 +208,7 @@ public class Database {
     }
 
     public List <Personal> getPersonalAccount(int customerId) {
+        List<Personal> personalAccounts = new ArrayList<>();
 
         String query = """ 
                 SELECT a.id AS account_id, a.balance,a.dateCreated,pa.bank_address
@@ -213,19 +217,17 @@ public class Database {
                 JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
                 WHERE a.account_id = ? AND a.isDeleted = 0
                 """;
-        List <Personal> personalAccounts = new ArrayList<>();
         try (PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,customerId);
             ResultSet rs = st.executeQuery();
 
-            while (rs.next()){
-                int accountId = rs.getInt("account_id");
-                double balance = rs.getDouble("balance");
-                String bankAddress = rs.getString("bank_address");
-
-                Personal personalAccount = new Personal(accountId,balance,bankAddress);
-                personalAccounts.add(personalAccount);
-
+            while (rs.next()) {
+                personalAccounts.add(new Personal(
+                        rs.getInt("account_id"),
+                        rs.getDouble("balance"),
+                        rs.getInt("customer_id"),
+                        rs.getString("bank_address")
+                ));
             }
 
         }catch (SQLException e){
@@ -237,6 +239,7 @@ public class Database {
     }
 
     public List <Business> getBusinessAccount(int customerId) {
+        List <Business> businessAccounts = new ArrayList<>();
 
         String query = """ 
                 SELECT a.id AS account_id, a.balance,a.dateCreated,ba.business_details, ba.has_Cheque_Books
@@ -245,20 +248,21 @@ public class Database {
                 JOIN Personal_Accounts ba ON at.business_account_id = ba.id
                 WHERE a.account_id = ? AND a.isDeleted = 0
                 """;
-        List <Business> businessAccounts = new ArrayList<>();
+
 
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setInt(1,customerId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()){
-                int accountId = rs.getInt("account_id");
-                double balance = rs.getDouble("balance");
-                String businessDetails = rs.getString("bank_details");
-                boolean hasChequeBooks = rs.getBoolean("has_Cheque_Books");
-
-                Business businessAccount = new Business(accountId,balance,businessDetails,hasChequeBooks);
-                businessAccounts.add(businessAccount);
+                businessAccounts.add(new Business(
+                        rs.getInt("account_id"),
+                rs.getDouble("balance"),
+                rs.getString("bank_details"),
+                rs.getInt("customer_id"),
+                        rs.getBoolean("has_Cheque_Books"),
+                        rs.getDouble("initial_deposit")
+                ));
             }
 
         }catch (SQLException e){
@@ -284,9 +288,10 @@ public class Database {
             if (rs.next()) {
                 int id = rs.getInt("account_id");
                 double balance = rs.getDouble("balance");
+                int customerId = rs.getInt("customer_id");
                 String bankAddress = rs.getString("bank_address");
 
-                return new Personal(id, balance, bankAddress);
+                return new Personal(id, balance,customerId, bankAddress);
             }
         }
         return null; // Account not found
@@ -309,9 +314,11 @@ public class Database {
                 int id = rs.getInt("account_id");
                 double balance = rs.getDouble("balance");
                 String businessDetails = rs.getString("business_details");
+                int customerId = rs.getInt("customer_id");
                 boolean hasChequeBooks = rs.getBoolean("has_Cheque_Books");
+                double initialDeposit = rs.getDouble("initial_deposit");
 
-                return new Business(id, balance, businessDetails, hasChequeBooks);
+                return new Business(id, balance, businessDetails,customerId,hasChequeBooks, initialDeposit);
             }
         }
         return null; // Account not found
@@ -320,38 +327,43 @@ public class Database {
 
 
 
-    public static int createPersonalAccount(double initialDeposit, String bankAddress) throws SQLException {
+    public static int createPersonalAccount(Personal account) throws SQLException {
         String query = "INSERT INTO Accounts (customer_id,type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
                 "OUTPUT INSERTED.id VALUES (?,?,?,?, GETDATE(),GETDATE(),0)";
         try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1, 1);//replace with customer id
+            st.setInt(1, account.getCustomerId());//replace with customer id
             st.setDouble(2, 1); //type of id
-            st.setDouble(3, initialDeposit);
-            st.setDouble(4, initialDeposit);
+            st.setDouble(3, account.getInitialBalance());
+            st.setDouble(4, account.getBalance());
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1); // return the account id
 
             }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
-        throw new SQLException("Account not created");
+        return -1;
+
     }
 
-    public static int createBusinessAccount(double initialDeposit, String businessDetails, boolean hasChequeBooks) throws SQLException {
+    public static int createBusinessAccount(Business account) throws SQLException {
         String query = "INSERT INTO Accounts (customer_id,type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
                 "OUTPUT INSERTED.id VALUES (?,?,?,?, GETDATE(),GETDATE(),0)";
         try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1, 1);//replace with customer id
+            st.setInt(1, account.getCustomerId());//replace with customer id
             st.setDouble(2, 2); //type of id
-            st.setDouble(3, initialDeposit);
-            st.setDouble(4, initialDeposit);
+            st.setDouble(3, account.getInitialDeposit());
+            st.setDouble(4, account.getBalance());
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1); // return the account id
 
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        throw new SQLException("Account not created");
+        return -1;
     }
 
 

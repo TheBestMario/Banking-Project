@@ -8,31 +8,45 @@ import java.util.Random;
 
 public class Personal extends Account {
     private static final float min_opening_balance = 1.0F;
+    private int customerId;
     private String cardNumber;
     private List<String> standingOrders;
     private List<String> statmentHistory;
     private List<String> pendingPayments;
     private String bankAddress;
+    private double initialBalance;
 
 
 
 
 
-    public Personal(int accountNumber, double initialBalance, String bankAddress) {
+    public Personal(int accountNumber, double initialBalance,int customerId, String bankAddress) {
         super(accountNumber, initialBalance);
         if (initialBalance < min_opening_balance) {
             throw new IllegalArgumentException("Initial balance cannot be less than min_opening_balance");
         }
+        this.customerId = customerId;
         this.bankAddress = bankAddress;
         this.cardNumber = generateCardNumber();
         this.standingOrders = new ArrayList<>();
         this.statmentHistory = new ArrayList<>();
         this.pendingPayments = new ArrayList<>();
+        this.initialBalance = initialBalance;
 
+    }
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public int getCustomerId() {
+        return customerId;
     }
 
     public String getBankAddress() {
         return bankAddress;
+    }
+    public void setBankAddress(String bankAddress) {
+        this.bankAddress = bankAddress;
     }
 
 
@@ -101,7 +115,6 @@ public class Personal extends Account {
     public void addPendingPayment(String pendingPayment) {
         this.pendingPayments.add(pendingPayment);
     }
-
 
 
 }

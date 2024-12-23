@@ -3,10 +3,10 @@ import Pages.*;
 import java.util.Scanner;
 
 public class Router {
-    private final Database db;
 
-    public Router(Database db) {
-        this.db = db;
+
+    public Router() {
+
     }
 
     Teller route(Teller currentTeller, Scanner scanner){
@@ -46,11 +46,11 @@ public class Router {
                 return currentTeller;
 
             case "home/customers/accounts/PersonalAccount":
-                currentTeller = ExistingPersonalAccountPage.display(currentTeller, scanner, db);
+                currentTeller = ExistingPersonalAccountPage.display(currentTeller, scanner);
                 return currentTeller;
 
             case "home/customers/accounts/BusinessAccount":
-                currentTeller = ExistingBusinessAccountPage.display(currentTeller, scanner, db);
+                currentTeller = ExistingBusinessAccountPage.display(currentTeller, scanner);
                 return currentTeller;
 
             case "home/createCustomer":
@@ -62,18 +62,20 @@ public class Router {
                 return currentTeller;
 
             case "home/customers/accounts/NewBusinessAccount":
-                currentTeller = NewBusinessAccountPage.display(currentTeller,scanner, db);
+                currentTeller = NewBusinessAccountPage.display(currentTeller,scanner);
                 return currentTeller;
 
             case "home/customers/accounts/NewPersonalAccount":
                 // personal account creation page goes here..
-                currentTeller = NewPersonalAccountPage.display(currentTeller,scanner, db);
+                currentTeller = NewPersonalAccountPage.display(currentTeller,scanner);
                 return currentTeller;
 
 
             case "logout":
                 // logouts out of the system...
-                break;
+                currentTeller.currentDirectory = "";
+                currentTeller.loggedIN = false;
+                return currentTeller;
         }
         return currentTeller;
     }
