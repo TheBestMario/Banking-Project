@@ -2,64 +2,65 @@ package Pages;
 import main.Teller;
 import java.util.Scanner;
 
-
 public class HelpPage {
     public static Teller display(Teller currentTeller, Scanner scanner) {
 
         switch (currentTeller.currentDirectory) {
-            case "createTeller/help":
-                createTellerHelp(scanner);
-                currentTeller.navigateFromHelp();
+
+            // HELP page should contain help for creating a teller and logging in
+            case "help":
+                startHelp(scanner);
+                currentTeller.currentDirectory = "";
                 return currentTeller;
 
             case "home/help":
                 homeNavigationHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home";
                 return currentTeller;
 
             case "home/customers/help":
                 customersPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers";
                 return currentTeller;
 
             case "home/customers/accounts/help":
                 accountsPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts";
                 return currentTeller;
 
             case "home/customers/accounts/ISAAccount/help":
                 existingISAAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/ISAAccount";
                 return currentTeller;
 
             case "home/customers/accounts/PersonalAccount/help":
                 existingPersonalAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/PersonalAccount";
                 return currentTeller;
 
             case "home/customers/accounts/BusinessAccount/help":
                 existingBusinessAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/BusinessAccount";
                 return currentTeller;
 
             case "home/createCustomer/help":
                 RegisterNewCustomerHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/createCustomer";
                 return currentTeller;
 
             case "home/customers/accounts/NewISAAccount/help":
                 newISAAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/NewISAAccount";
                 return currentTeller;
 
             case "home/customers/accounts/NewBusinessAccount/help":
                 newBusinessAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/NewBusinessAccount";
                 return currentTeller;
 
             case "home/customers/accounts/NewPersonalAccount/help":
                 newPersonalAccountPageHelp(scanner);
-                currentTeller.navigateFromHelp();
+                currentTeller.currentDirectory = "home/customers/accounts/NewPersonalAccount";
                 return currentTeller;
             default:
                 return currentTeller;
@@ -67,59 +68,125 @@ public class HelpPage {
     }
 
 
-    // need to do while looops inside of methods...
+    private static void startHelp(Scanner scanner){
+        System.out.println("====== Starting help page ======");
+        System.out.println("blah");
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
+    }
 
     private static void RegisterNewCustomerHelp(Scanner scanner) {
+        // Display Page
         System.out.println("====== Register New Customer ======");
         System.out.println("To register a new customer, follow these steps:");
         System.out.println("1. Collect customer's personal information including first name, middle name, last name, date of birth, email address, and passport number.");
         System.out.println("2. Use the system's 'Register' feature to input the collected information.");
         System.out.println("3. Confirm the information and complete the registration process.");
         System.out.println("4. Provide the customer with their account details.");
-        System.out.println();
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
     }
 
     private static void createTellerHelp(Scanner scanner){
-
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
     }
 
     private static void homeNavigationHelp(Scanner scanner){
+        // Prints out for the help page here...
 
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
     }
 
     private static void customersPageHelp(Scanner scanner){
-
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
     }
 
     private static void accountsPageHelp(Scanner scanner){
-        System.out.println("Looks to show the help page!");
-        // build out the pages here...
-        // waits on user command
-
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
     }
 
     private static void existingISAAccountPageHelp(Scanner scanner){
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
 
     }
 
     private static void existingPersonalAccountPageHelp(Scanner scanner){
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
 
     }
 
     private static void existingBusinessAccountPageHelp(Scanner scanner){
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
 
     }
 
     private static void newISAAccountPageHelp(Scanner scanner){
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
 
     }
 
     private static void newBusinessAccountPageHelp(Scanner scanner){
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
 
     }
 
     private static void newPersonalAccountPageHelp(Scanner scanner){
-
+        // Prints out for the help page here...
+        System.out.println("Please click 1 to return back to previous Page");
+        String userInput = scanner.nextLine().trim();
+        while(!userInput.equals("1")){
+            userInput = scanner.nextLine().trim();
+        }
     }
 
 
@@ -153,93 +220,5 @@ public class HelpPage {
         System.out.println();
     }
 
-
-
 }
-/*
 
-
- private static void displayHelpPage(BufferedReader reader) throws IOException {
-        while (true) {
-            System.out.println("====== Teller Help Page ======");
-            System.out.println("1. Register New Customer");
-            System.out.println("2. Handle Transactions");
-            System.out.println("3. FAQs");
-            System.out.println("4. Contact Support");
-            System.out.println("5. Back to Main Menu");
-
-            System.out.print("Select an option: ");
-            int option = Integer.parseInt(reader.readLine());
-
-            switch (option) {
-                case 1:
-                    registerNewCustomer();
-                    break;
-                case 2:
-                    handleTransactions();
-                    break;
-                case 3:
-                    displayFAQs();
-                    break;
-                case 4:
-                    contactSupport();
-                    break;
-                case 5:
-                    return; // Return to main menu
-                default:
-                    System.out.println("Invalid option. Please try again.");
-            }
-        }
-    }
-
-    private static void displayExistingCustomersPage(BufferedReader reader) throws IOException {
-        System.out.println("====== Existing Customers Page ======");
-        
-        // Going to call existing customers page here otherwise return to Main menu 
-        
-        System.out.println("Returning to Main Menu...");
-    }
-
-    private static void displayNewCustomersPage(BufferedReader reader) throws IOException {
-        System.out.println("====== New Customers Page ======");
-        
-        // Same procedure with NewCustomer
-        
-        System.out.println("Returning to Main Menu...");
-    }
-
-    private static void registerNewCustomer() {
-        System.out.println("====== Register New Customer ======");
-        System.out.println("To register a new customer, follow these steps:");
-        System.out.println("1. Collect customer's personal information.");
-        System.out.println("2. Use the system's 'Register' feature.");
-        System.out.println("3. Confirm and complete the registration.");
-        System.out.println("4. Provide the customer with their account details.");
-        System.out.println();
-    }
-
-    private static void handleTransactions() {
-        System.out.println("====== Handle Transactions ======");
-        System.out.println("To handle transactions, follow these steps:");
-        System.out.println("1. Log into the teller system.");
-        System.out.println("2. Navigate to the 'Transactions' section.");
-        System.out.println("3. Select the type of transaction.");
-        System.out.println("4. Enter and confirm the transaction details.");
-        System.out.println("5. Provide the customer with a receipt.");
-        System.out.println();
-    }
-
-    private static void displayFAQs() {
-        System.out.println("====== FAQs ======");
-        System.out.println("Q1: How do I register a new customer?");
-        System.out.println("A1: Use the 'Register New Customer' feature.");
-        System.out.println();
-        System.out.println("Q2: What should I do if a transaction fails?");
-        System.out.println("A2: Ensure all details are correct and retry.");
-        System.out.println("If the issue persists, contact support.");
-        System.out.println();
-    }
-
-
-
-*/

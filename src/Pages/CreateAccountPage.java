@@ -14,6 +14,7 @@ public class CreateAccountPage {
         Boolean validPassword = false;
         scanner.nextLine();
 
+
         while (firstName.length() == 0) {
             System.out.print("Please enter your first name: ");
             firstName = scanner.nextLine();

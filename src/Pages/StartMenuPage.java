@@ -8,8 +8,9 @@ public class StartMenuPage {
                 Welcome to ACME Bank, Would you like to:
                 Login: (1)
                 Create an Account: (2)
-                Turn off Application: (3)
-                Enter your choice, (1,2,3):
+                Help: (3)
+                Turn off Application: (4)
+                Enter your choice, (1,2,3,4):
                  """);
         boolean exit = false;
 
@@ -24,6 +25,9 @@ public class StartMenuPage {
                         teller.currentDirectory = "createTeller";
                         return teller;
                     case 3:
+                        teller.currentDirectory = "help";
+                        return teller;
+                    case 4:
                         teller.ApplicationON = false;
                         return teller;
                     default:
