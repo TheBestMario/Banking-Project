@@ -395,13 +395,12 @@ public class Database {
     /* ------------------------- ISA Queries ----------------------------------------------------*/
 
     public boolean hasExistingISAAccount(int customerId) {
+        System.out.println("Customer id" + customerId);
         String query = """
                 SELECT COUNT(*)
-                FROM Accounts a 
-                JOIN Account_Type at ON a.type_id = at.id
-                WHERE customer_id = ?
-                AND at.ISA_account_id IS NOT NULL
-                
+                FROM Accounts a
+                WHERE a.customer_id = ?
+                AND a.ISA_account_id IS NOT NULL
                 """;
 
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -422,65 +421,61 @@ public class Database {
         return false;
     }
 
-    public boolean saveISAAccount(int isaTypeId, int customerId, double initialDepositAmount) {
-        String insertISAQuery = "INSERT INTO ISA_Accounts (type_id, currentBalance, dateCreated, threshold) VALUES (?,?,?,?)";
-        String insertAccountTypeQuery = "INSERT INTO Account_Type (ISA_account_id) VALUES (?)";
-        String insertAccountQuery = "INSERT INTO Accounts (customer_id, type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted) VALUES (?,?,?,?,?,?,?)";
 
 
-        int accountTypeId = 0;
-        int isaAccountId = 0;
+    public boolean saveISAAccount(int isaTypeId, int customerId, double initialDeposit) {
+        // Query to insert into ISA_Accounts
+        String insertISAQuery = "INSERT INTO ISA_Accounts (type_id, currentBalance, dateCreated, threshold) VALUES (?, ?, ?, ?)";
+        String insertAccounts = "INSERT INTO Account (customer_id, ISA_account_id, initial_deposit, balance, dateCreated, dateUpdated) VALUES(?,?,?,?,?,?,)";
 
-        try {
-            try (PreparedStatement ISA = con.prepareStatement(insertISAQuery, Statement.RETURN_GENERATED_KEYS)) {
-                // Step 1: Insert into ISA_Account table
-                ISA.setInt(1, isaTypeId);
-                ISA.setDouble(2, initialDepositAmount);
-                ISA.setDate(3, new java.sql.Date(System.currentTimeMillis()));
-                ISA.setDouble(4, 0);
+        try (PreparedStatement insertISAStmt = con.prepareStatement(insertISAQuery, Statement.RETURN_GENERATED_KEYS)) {
+            // Set for ISA_Accounts
+            insertISAStmt.setInt(1, isaTypeId);
+            insertISAStmt.setDouble(2, initialDeposit);
+            insertISAStmt.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+            insertISAStmt.setInt(4, 0);
 
-                int insertNewRow = ISA.executeUpdate();  // Executes the insert of the ISA account data
-                if (insertNewRow > 0) {
-                    try (ResultSet rs = ISA.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            isaAccountId = rs.getInt(1); // Stores the ISA_Account id
+            // Execute the insert statement
+            int rowsInserted = insertISAStmt.executeUpdate();
+
+            // Check if the insert was successful
+            if (rowsInserted > 0) {
+                // Retrieve the generated ISA_Accounts ID
+                ResultSet rs = insertISAStmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int newISAAccountId = rs.getInt(1);
+
+
+                    try (PreparedStatement Accounts = con.prepareStatement(insertAccounts)) {
+                        Accounts.setInt(1, customerId);
+                        Accounts.setInt(2, newISAAccountId);
+                        Accounts.setDouble(3, initialDeposit);
+                        Accounts.setDouble(4,initialDeposit); // balance set as initial deposit
+                        Accounts.setDate(5, java.sql.Date.valueOf(LocalDate.now()));
+                        Accounts.setDate(6, java.sql.Date.valueOf(LocalDate.now()));
+
+
+                        // Execute the update statement
+                        int rowsUpdated = Accounts.executeUpdate();
+
+                        // Confirm if the update was successful
+                        if (rowsUpdated > 0) {
+                            System.out.println("Successfully created ISA account and linked it to the customer.");
+                            return true;
+                        } else {
+                            System.out.println("Failed to update the Accounts table with the new ISA account.");
                         }
-                    }
-
-                    // Step 2: Insert into Account_Type table
-                    try (PreparedStatement AccountType = con.prepareStatement(insertAccountTypeQuery, Statement.RETURN_GENERATED_KEYS)) {
-                        AccountType.setInt(1, isaAccountId);
-                        int insertAccountTypeRow = AccountType.executeUpdate();
-                        if (insertAccountTypeRow > 0) {
-                            try (ResultSet rs = AccountType.getGeneratedKeys()) {
-                                if (rs.next()) {
-                                    accountTypeId = rs.getInt(1); // Stores the Account_Type id
-                                }
-                            }
-                        }
-                    }
-
-                    // Step 3: Insert into Accounts table
-                    try (PreparedStatement Account = con.prepareStatement(insertAccountQuery, Statement.RETURN_GENERATED_KEYS)) {
-                        Account.setInt(1, customerId);
-                        Account.setInt(2, accountTypeId);
-                        Account.setDouble(3, initialDepositAmount);
-                        Account.setDouble(4, initialDepositAmount); // Assuming balance is the same as initial deposit
-                        Account.setDate(5, new java.sql.Date(System.currentTimeMillis()));
-                        Account.setDate(6, new java.sql.Date(System.currentTimeMillis()));
-                        Account.setInt(7, 0); // Assuming 0 is for isDeleted (not deleted)
-
-                        int insertAccountRow = Account.executeUpdate();
-                        return insertAccountRow > 0;  // Return true if the row was inserted
                     }
                 }
+            } else {
+                System.out.println("Failed to insert into ISA_Accounts.");
             }
         } catch (SQLException e) {
-            System.out.println("Error:");
-            System.out.println(e);
-           // throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred while creating the ISA account.", e);
         }
-        return false;
+
+        return false; // Return false if any part of the process fails
     }
 
     public boolean checkLimit(int isaTypeId, double initialDeposit) {
@@ -491,7 +486,7 @@ public class Database {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                double limit = rs.getDouble(1);
+                double limit = rs.getDouble("limit");
 
                 if (initialDeposit > limit) {
                     System.out.println("Initial deposit exceeds the limit for this ISA account.");
@@ -510,9 +505,8 @@ public class Database {
     public double getISABalance(int customerId) {
         String query = """
                 SELECT currentBalance FROM ISA_ACCOUNTS isa
-                LEFT JOIN Account_Type at ON isa.id = at.ISA_account_id
-                LEFT JOIN Accounts acc ON acc.type_id = at.id
-                WHERE customer_id = ?
+                LEFT JOIN Accounts a  ON a.ISA_account_id = isa.id
+                WHERE a.customer_id = ?
                 """;
 
         try(PreparedStatement st = con.prepareStatement(query)) {
@@ -533,9 +527,8 @@ public class Database {
     public boolean updateISABalance(int customerId, double newBalance){
         String query = """
                 SELECT isa.id FROM ISA_ACCOUNTS isa
-                LEFT JOIN Account_Type at ON isa.id = at.ISA_account_id
-                LEFT JOIN Accounts acc ON acc.type_id = at.id
-                WHERE customer_id = ?
+                LEFT JOIN Accounts a ON a.ISA_account_id = isa.id
+                WHERE a.customer_id = ?
                 """;
 
         int isaAccountId =0; // Initialize variable to store results (isa account id) from above query
@@ -554,7 +547,7 @@ public class Database {
         }
 
         // Update currentBalance in ISAAccount Table
-        String updateCurrentBalance = "UPDATE ISA_ACCOUNTS SET currentBalance = ?  WHERE id = ? ";
+        String updateCurrentBalance = "UPDATE ISA_Accounts SET currentBalance = ?  WHERE id = ? ";
 
         try(PreparedStatement st = con.prepareStatement(updateCurrentBalance)) {
             st.setDouble(1,newBalance);
@@ -565,7 +558,10 @@ public class Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+
     }
+
 }
 
 // this class wil hold all the CRUD operations for interacting with the DB

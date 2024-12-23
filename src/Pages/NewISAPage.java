@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class NewISAPage {
 
-  //  private static final Database db = new Database(new Config());
+    //  private static final Database db = new Database(new Config());
 
     static int isaTypeId;
 
@@ -108,7 +108,7 @@ public class NewISAPage {
                 case 4:
                     isaTypeId = 4;
                     System.out.println("Customer has selected Lifetime ISA");
-                    validateAge(scanner, teller); // Validate eligibility for Lifetime Account
+                    validateAge(scanner, teller);
                     break;
             }
         }
@@ -143,7 +143,7 @@ public class NewISAPage {
 
         // Save the ISA account and link it to the customer
         boolean success = teller.getDatabase().saveISAAccount(isaTypeId, customerId, initialDepositAmount);
-        if (success) {
+        if (!success) {
             System.out.println("ISA account successfully created.");
         } else {
             System.out.println("Failed to create ISA account.");
