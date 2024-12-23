@@ -467,8 +467,6 @@ public class Database {
                         }
                     }
                 }
-            } else {
-                System.out.println("Failed to insert into ISA_Accounts.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
