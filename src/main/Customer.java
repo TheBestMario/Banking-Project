@@ -38,6 +38,14 @@ public class Customer {
     }
 
     public Customer(String firstName, String lastName, String photoProof, String addressProof, String businessProof, LocalDate dob) {
+        /* Constructor for creating a new customer,
+         is used when getting details from database and creating an object out of it. */
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.photo_proof = photoProof;
+        this.address_proof = addressProof;
+        this.business_proof = businessProof;
+        this.dob = dob;
     }
 
 
