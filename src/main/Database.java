@@ -177,7 +177,8 @@ public class Database {
     }
 
     public void createCustomer(Customer customer){
-        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Customers (firstName,lastName,photo_proof,address_proof,business_proof,DOB, mobile_number, email)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, customer.getFirstName());
             st.setString(2, customer.getLastName());
@@ -185,6 +186,8 @@ public class Database {
             st.setString(4, customer.getAddress_proof());
             st.setString(5, customer.getBusiness_proof());
             st.setDate(6, java.sql.Date.valueOf(customer.getDob()));
+            st.setString(7, customer.getPhone_number());
+            st.setString(8, customer.getEmail());
             st.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -215,7 +218,7 @@ public class Database {
                 FROM Accounts a
                 JOIN Account_Type at ON a.type_id = at.id
                 JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
-                WHERE a.account_id = ? AND a.isDeleted = 0
+                WHERE a.id = ? AND a.isDeleted = 0
                 """;
         try (PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,customerId);
@@ -223,7 +226,7 @@ public class Database {
 
             while (rs.next()) {
                 personalAccounts.add(new Personal(
-                        rs.getInt("account_id"),
+                        rs.getInt("id"),
                         rs.getDouble("balance"),
                         rs.getInt("customer_id"),
                         rs.getString("bank_address")
@@ -246,7 +249,7 @@ public class Database {
                 FROM Accounts a
                 JOIN Account_Type at ON a.type_id = at.id
                 JOIN Personal_Accounts ba ON at.business_account_id = ba.id
-                WHERE a.account_id = ? AND a.isDeleted = 0
+                WHERE a.id = ? AND a.isDeleted = 0
                 """;
 
 
@@ -348,16 +351,21 @@ public class Database {
     }
 
     public static int createBusinessAccount(Business account) throws SQLException {
-        String query = "INSERT INTO Accounts (customer_id,type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
-                "OUTPUT INSERTED.id VALUES (?,?,?,?, GETDATE(),GETDATE(),0)";
+        String query = "INSERT INTO Accounts (type_id,customer_id,initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
+                "VALUES (?,?,?, GETDATE(),GETDATE(),0); "
+                +"insert into Business_Accounts (business_details, has_Cheque_Books) VALUES (?,?);"
+                +"SELECT id from accounts where id = (select max(id) from accounts)";
         try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1, account.getCustomerId());//replace with customer id
-            st.setDouble(2, 2); //type of id
-            st.setDouble(3, account.getInitialDeposit());
-            st.setDouble(4, account.getBalance());
+            //st.setInt(1, account.getCustomerId());//replace with customer id
+            //st.setDouble(1, 2); //type of id
+            st.setDouble(1, account.getInitialDeposit());
+            st.setDouble(2, account.getBalance());
+            st.setString(3, account.getBusinessDetails());
+            st.setBoolean(4, account.hasChequeBooks());
+
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1); // return the account id
+                return rs.getInt("id"); // return the account id
 
             }
         } catch (SQLException e) {
