@@ -71,11 +71,9 @@ public class HelpPage {
         System.out.print("""
                 This page will allow you to create a teller account to login or login as a teller.
                 As a teller you will use this application to talk to users of the bank and handle their money 
-                on their behald using this application.
-                
+                on their behalf using this application.
                 Please click 1 to return back to previous Page
                 """);
-        System.out.println("Please click 1 to return back to previous Page");
         String userInput = scanner.nextLine().trim();
         while(!userInput.equals("1")){
             userInput = scanner.nextLine().trim();
