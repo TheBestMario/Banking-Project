@@ -426,7 +426,7 @@ public class Database {
     public boolean saveISAAccount(int isaTypeId, int customerId, double initialDeposit) {
         // Query to insert into ISA_Accounts
         String insertISAQuery = "INSERT INTO ISA_Accounts (type_id, currentBalance, dateCreated, threshold) VALUES (?, ?, ?, ?)";
-        String insertAccounts = "INSERT INTO Account (customer_id, ISA_account_id, initial_deposit, balance, dateCreated, dateUpdated) VALUES(?,?,?,?,?,?,)";
+        String insertAccounts = "INSERT INTO Accounts (customer_id, ISA_account_id, initial_deposit, balance, dateCreated, dateUpdated) VALUES(?,?,?,?,?,?)";
 
         try (PreparedStatement insertISAStmt = con.prepareStatement(insertISAQuery, Statement.RETURN_GENERATED_KEYS)) {
             // Set for ISA_Accounts
