@@ -51,6 +51,10 @@ public class NewISAPage {
 
                 teller.currentDirectory = "home/customers/accounts";
                 return true;
+            } else if (!hasISA && teller.currentDirectory.equals("home/customers/accounts/ISAAccount")) {
+                System.out.println("This customer does not have an ISA account. Returning to Customer account options....");
+                return false;
+
             } else {
                 System.out.println("This customer does not have an ISA account. Proceeding with setup...");
                 return false;
