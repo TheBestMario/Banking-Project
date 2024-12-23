@@ -100,6 +100,7 @@ public class Customer {
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
+
     public void setDob(String dob) {
         this.dob = LocalDate.parse(dob);
     }

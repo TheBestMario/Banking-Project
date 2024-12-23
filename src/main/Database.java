@@ -156,7 +156,12 @@ public class Database {
                 String email = rs.getString("email");
                 int customer_id = rs.getInt("id");
 
-                Customer customer = new Customer(firstName, lastName, photo_proof, address_proof, business_proof, dob);
+                Customer customer = new Customer(customer_id,
+                        firstName, lastName,
+                        photo_proof, address_proof,
+                        phone_number, email,
+                        business_proof, dob);
+
                  return customer;
             }
         } catch (SQLException e) {
@@ -239,6 +244,18 @@ public class Database {
         return personalAccounts;
 
 
+    }
+    public Boolean setBusinessProof(int customerId, String businessProof) {
+        String query = "UPDATE Customers SET business_proof = ? WHERE id = ?";
+        try (PreparedStatement st = con.prepareStatement(query)) {
+            st.setString(1, businessProof);
+            st.setInt(2, customerId);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List <Business> getBusinessAccount(int customerId) {
