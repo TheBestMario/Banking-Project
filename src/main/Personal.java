@@ -17,9 +17,6 @@ public class Personal extends Account {
     private double initialBalance;
 
 
-
-
-
     public Personal(int accountNumber, double initialBalance,int customerId, String bankAddress) {
         super(accountNumber, initialBalance);
         if (initialBalance < min_opening_balance) {

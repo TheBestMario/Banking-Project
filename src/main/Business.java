@@ -26,8 +26,6 @@ public class Business extends Account {
         this.statmentHistory = new ArrayList<>();
         this.pendingPayments = new ArrayList<>();
         this.initialDeposit = initialDeposit;
-
-
     }
 
     public double getInitialDeposit() {

@@ -1,7 +1,7 @@
 package main;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 public class Teller {
     String firstName;
@@ -28,7 +28,6 @@ public class Teller {
         this.db = db;
         this.currentCustomer = null;
         this.currentAccount = null;
-
         this.ApplicationON = true;
     }
 
@@ -134,4 +133,31 @@ public class Teller {
         }
         return null;
     }
+    // clears teller session after logout for security
+    public void clearUserSession(){
+        this.currentCustomer = null;
+        this.currentAccount = null;
+        this.teller_id = 0;
+        this.personalAccounts = null;
+        this.businessAccounts = null;
+    }
+    // removes /help from end of directory from teller object
+    public void navigateFromHelp(){
+        String[] tokens = this.currentDirectory.split("/");
+        String newDirectory = "";
+        for(int i =0; i < tokens.length; i++){
+            if(i == tokens.length - 1){
+                continue;
+            }
+            else if(i == tokens.length - 2){
+                newDirectory += tokens[i];
+            }
+            else{
+                newDirectory += tokens[i] + '/';
+            }
+        }
+        this.currentDirectory = newDirectory;
+        System.out.println(newDirectory);
+    }
+
 }

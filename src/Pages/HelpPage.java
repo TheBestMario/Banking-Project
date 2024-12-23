@@ -5,43 +5,71 @@ import java.util.Scanner;
 
 public class HelpPage {
     public static Teller display(Teller currentTeller, Scanner scanner) {
-        System.out.println("====== Teller Help Page ======");
-        System.out.println("1. Register New Customer");
-        System.out.println("2. Handle Transactions");
-        System.out.println("3. FAQs");
-        System.out.println("4. Contact Support");
-        System.out.println("5. Exit");
 
-        while (true) {
-            System.out.print("Select an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine(); 
+        switch (currentTeller.currentDirectory) {
+            case "createTeller/help":
+                createTellerHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
 
-            switch (option) {
-                case 1:
-                    RegisterNewCustomer();
-                    break;
-                case 2:
-                    HandleTransactions();
-                    break;
-               
-                case 3:
-                    displayFAQs();
-                    break;
-                case 4:
-                    ContactSupport();
-                    break;
-                case 5:
-                    System.out.println("Exiting Help Page...");
-                    currentTeller.currentDirectory = "home";
-                    return currentTeller;
-                default:
-                    System.out.println("Invalid option. Please try again.");
-            }
+            case "home/help":
+                homeNavigationHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/help":
+                customersPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/help":
+                accountsPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/ISAAccount/help":
+                existingISAAccountPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/PersonalAccount/help":
+                existingPersonalAccountPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/BusinessAccount/help":
+                existingBusinessAccountPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/createCustomer/help":
+                RegisterNewCustomerHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/NewISAAccount/help":
+                newISAAccountPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/NewBusinessAccount/help":
+                newBusinessAccountPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+
+            case "home/customers/accounts/NewPersonalAccount/help":
+                newPersonalAccountPageHelp(scanner);
+                currentTeller.navigateFromHelp();
+                return currentTeller;
+            default:
+                return currentTeller;
         }
     }
 
-    private static void RegisterNewCustomer() {
+
+    // need to do while looops inside of methods...
+
+    private static void RegisterNewCustomerHelp(Scanner scanner) {
         System.out.println("====== Register New Customer ======");
         System.out.println("To register a new customer, follow these steps:");
         System.out.println("1. Collect customer's personal information including first name, middle name, last name, date of birth, email address, and passport number.");
@@ -51,7 +79,52 @@ public class HelpPage {
         System.out.println();
     }
 
-    private static void HandleTransactions() {
+    private static void createTellerHelp(Scanner scanner){
+
+    }
+
+    private static void homeNavigationHelp(Scanner scanner){
+
+    }
+
+    private static void customersPageHelp(Scanner scanner){
+
+    }
+
+    private static void accountsPageHelp(Scanner scanner){
+        System.out.println("Looks to show the help page!");
+        // build out the pages here...
+        // waits on user command
+
+    }
+
+    private static void existingISAAccountPageHelp(Scanner scanner){
+
+    }
+
+    private static void existingPersonalAccountPageHelp(Scanner scanner){
+
+    }
+
+    private static void existingBusinessAccountPageHelp(Scanner scanner){
+
+    }
+
+    private static void newISAAccountPageHelp(Scanner scanner){
+
+    }
+
+    private static void newBusinessAccountPageHelp(Scanner scanner){
+
+    }
+
+    private static void newPersonalAccountPageHelp(Scanner scanner){
+
+    }
+
+
+
+    private static void HandleTransactions(Scanner scanner) {
         System.out.println("====== Handle Transactions ======");
         System.out.println("To handle transactions, follow these steps:");
         System.out.println("1. Log into the teller system with your credentials.");
@@ -62,9 +135,7 @@ public class HelpPage {
         System.out.println();
     }
 
-
-
-    private static void displayFAQs() {
+    private static void displayFAQs(Scanner scanner) {
         System.out.println("====== FAQs ======");
         System.out.println("Q1: How do I register a new customer?");
         System.out.println("A1: Use the 'Register New Customer' feature and input the required information.");
@@ -72,15 +143,17 @@ public class HelpPage {
         System.out.println("Q2: What should I do if a transaction fails?");
         System.out.println("A2: Ensure that all details are correct and retry. If the issue persists, contact support.");
         System.out.println();
-        // Add more if we need to do so
     }
 
-    private static void ContactSupport() {
+    private static void ContactSupport(Scanner scanner) {
         System.out.println("====== Contact Support ======");
         System.out.println("For further assistance, contact the support team:");
         System.out.println("Email: teller.support@financialservices.com");
         System.out.println("Support is available 24/7.");
         System.out.println();
     }
+
+
+
 }
 

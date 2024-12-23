@@ -565,11 +565,7 @@ public class Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
-
-
 }
 
 // this class wil hold all the CRUD operations for interacting with the DB
