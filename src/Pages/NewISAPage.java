@@ -46,7 +46,7 @@ public class NewISAPage {
             // Check if the customer has an ISA account. Return true or false
             boolean hasISA = teller.getDatabase().hasExistingISAAccount(customerId);
 
-            if (hasISA) {
+            if (hasISA && teller.currentDirectory.equals("home/customers/accounts/NewISAAccount")) {
                 System.out.println("This customer already has an ISA account. Returning to Customer account options....");
 
                 teller.currentDirectory = "home/customers/accounts";
