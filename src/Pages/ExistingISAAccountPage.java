@@ -3,6 +3,8 @@ package Pages;
 import main.*;
 import main.ISA;
 
+import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -48,7 +50,7 @@ public class ExistingISAAccountPage {
                         break;
 
                     case 5:
-                        displayPendingPayments();
+                        displayPendingPayments(teller);
                         break;
 
                     case 6:
@@ -60,6 +62,8 @@ public class ExistingISAAccountPage {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
         return teller;
@@ -73,7 +77,7 @@ public class ExistingISAAccountPage {
         Customer currentCustomer = teller.getCurrentCustomer();
         int customerId = currentCustomer.getId();
 
-        System.out.println(db.getISABalance(customerId));
+        db.getISABalance(customerId);
 
     }
 
@@ -103,14 +107,14 @@ public class ExistingISAAccountPage {
                 double annualCharge = (annualChargePercentage /100.0) * newBalance;
 
 
-
+                DecimalFormat df = new DecimalFormat("£#,##0.00");
                 if (db.checkLimit(isaTypeId, newBalance)) {
                     // Update the balance in the database
                     boolean updated = db.updateISABalance(customerId, newBalance); // Use customerId for update
 
                     if (updated) {
-                        System.out.println("Deposit successful! Your new balance is  £" + newBalance);
-                        System.out.println("The Annual Charge to be applied at the end of the year is £" + annualCharge);
+                        System.out.println("Deposit successful! Your new balance is " + df.format(newBalance));
+                        System.out.println("The Annual Charge to be applied at the end of the year is" + df.format(annualCharge));
                         validDeposit = true;
                     } else {
                         System.out.println("Failed to update the balance. Please try again.");
@@ -129,7 +133,10 @@ public class ExistingISAAccountPage {
         }
     }
 
-    public static void displayPendingPayments() {
-        System.out.println("Pending Payments");
+    public static void displayPendingPayments(Teller teller) throws SQLException {
+        Customer currentCustomer = teller.getCurrentCustomer();
+        int customerId = currentCustomer.getId();
+
+       db.getISAPendingPayments(customerId);
     }
 }

@@ -5,6 +5,7 @@ import main.Customer;
 import main.Database;
 import main.Teller;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.InputMismatchException;
@@ -132,9 +133,10 @@ public class NewISAPage {
                 if (teller.getDatabase().checkLimit(isaTypeId, initialDepositAmount)) {
                     System.out.println("Enter deposit amount that does not exceed the limits");
                 } else {
+                    DecimalFormat df = new DecimalFormat("£#,##0.00");
                     validDeposit = true;
                     System.out.println("You are able to deposit this amount into your ISA account.");
-                    System.out.println("Initial deposit amount is: " + initialDepositAmount);
+                    System.out.println("Initial deposit amount is: " + df.format(initialDepositAmount));
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a valid input.");
