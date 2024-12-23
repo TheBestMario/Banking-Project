@@ -32,13 +32,13 @@ public class SelectCustomerPage {
                     exit = true;
                 }
                 else if (selectedCustomer != null) {
+                    currentTeller.setCurrentCustomer(selectedCustomer);
+                    System.out.println();
                     System.out.println("Selected Customer: " + selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName());
                     currentTeller.currentDirectory = "home/customers/accounts";
-                    currentTeller.setCurrentCustomer(selectedCustomer);
                     exit = true;
                 }
                 else {
-                    System.out.println(selectedCustomer);
                     System.out.println("Invalid customer ID. Please try again.");
                 }
             } catch (Exception e) {
