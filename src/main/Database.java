@@ -556,8 +556,6 @@ public class Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
 }
