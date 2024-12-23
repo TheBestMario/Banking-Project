@@ -67,7 +67,7 @@ public class ExistingISAAccountPage {
     }
 
     public static void displayGainsOverYears() {
-        System.out.println("Gains Over Years");
+        System.out.println("The customer account is newly opened. They will be able to requests to view their gains over the year.");
     }
 
     public static void displayBalance(Teller teller) {
@@ -88,6 +88,7 @@ public class ExistingISAAccountPage {
         double depositAmount = 0;
         double currentBalance = 0;
         double newBalance = 0;
+        double annualChargePercentage = 2.75;
 
         Customer currentCustomer = teller.getCurrentCustomer();
         int customerId = currentCustomer.getId();
@@ -100,6 +101,8 @@ public class ExistingISAAccountPage {
                 // Get current balance
                 currentBalance = db.getISABalance(customerId);
                 newBalance = currentBalance + depositAmount; // Calculate the new balance
+                double annualCharge = (annualChargePercentage /100.0) * newBalance;
+
 
 
                 if (db.checkLimit(isaTypeId, newBalance)) {
@@ -107,7 +110,8 @@ public class ExistingISAAccountPage {
                     boolean updated = db.updateISABalance(customerId, newBalance); // Use customerId for update
 
                     if (updated) {
-                        System.out.println("Deposit successful! Your new balance is " + newBalance);
+                        System.out.println("Deposit successful! Your new balance is  £" + newBalance);
+                        System.out.println("The Annual Charge to be applied at the end of the year is £" + annualCharge);
                         validDeposit = true;
                     } else {
                         System.out.println("Failed to update the balance. Please try again.");
