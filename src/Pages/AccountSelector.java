@@ -15,9 +15,8 @@ public class AccountSelector {
                 Create an ISA Account for this customer (4)
                 Create a Personal Account for this customer (5)
                 Create a Business Account for this customer (6)
-                Show Help Page (7)
-                Go Back (8)
-                Enter your choice, (1,2,3,4,5,6,7,8):
+                Go Back (7)
+                Enter your choice, (1,2,3,4,5,6,7):
                 """);
 
         boolean exit = false;
@@ -61,10 +60,6 @@ public class AccountSelector {
                             return currentTeller;
                         }
                     case 7:
-                        currentTeller.currentDirectory = "home/customers/accounts/help";
-                        currentTeller = HelpPage.display(currentTeller, scanner);
-                        return currentTeller;
-                    case 8:
                         System.out.println("Going Back");
                         currentTeller.currentDirectory = "home/customers";
                         return currentTeller;
