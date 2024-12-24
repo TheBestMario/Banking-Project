@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -14,8 +15,16 @@ public class ExistingBusinessAccountPage {
 
 
     public static Teller display(Teller currentTeller, Scanner scanner) {
-        System.out.println("Entering Existing Businnes Account");
-        currentTeller.getBusinessAccounts().forEach(account -> {
+        System.out.println("Weolcome to CLI Business Banking");
+        System.out.println("Entering Existing Business Account");
+        List<Business> businessAccounts = currentTeller.getBusinessAccounts();
+        if (businessAccounts.isEmpty()) {
+            System.out.println("There are no business accounts");
+            currentTeller.currentDirectory = "home/customers";
+            return currentTeller;
+        }
+
+        businessAccounts.forEach(account -> {
             System.out.println("Account ID " + account.getAccountNumber() + " Balance £ " + account.getBalance());
 
         });
@@ -32,7 +41,8 @@ public class ExistingBusinessAccountPage {
                     currentTeller.currentDirectory = "home/customers/accounts";
                     exit = true;
                 } else {
-                    Business selectedAccount = currentTeller.getDatabase().getBusinessAccountById(choice);
+                    Business selectedAccount = businessAccounts.stream().filter(account -> account.getAccountNumber() == choice).findFirst().orElse(null);
+
                     if (selectedAccount != null) {
                         System.out.println("Selected Account ID " + selectedAccount.getAccountNumber() + " Balance £ " + selectedAccount.getBalance());
                         currentTeller.setCurrentAccount(selectedAccount);
@@ -56,28 +66,38 @@ public class ExistingBusinessAccountPage {
                                 switch (actionChoice) {
                                     case 1:
                                         displayBalance(selectedAccount);
+                                        break;
                                     case 2:
                                         manageStandingOrders(selectedAccount);
+                                        break;
                                     case 3:
                                         viewStatmentHistory(selectedAccount);
+                                        break;
                                     case 4:
                                         deposit(scanner, selectedAccount, currentTeller.getDatabase());
+                                        break;
                                     case 5:
                                         withdraw(scanner, selectedAccount, currentTeller.getDatabase());
+                                        break;
                                     case 6:
                                         viewCardDetails(selectedAccount);
+                                        break;
                                     case 7:
                                         makeInternationalPayments(scanner, selectedAccount, currentTeller.getDatabase());
+                                        break;
                                     case 8:
                                         viewPendingPayments(selectedAccount);
+                                        break;
                                     case 9: {
                                         System.out.println("Leaving Personal Account Page");
                                         currentTeller.currentDirectory = "home/customers/account";
                                         isRunning = false;
+                                        break;
                                     }
 
                                     default:
                                         System.out.println("Invalid Action");
+                                        break;
                                 }
                             } catch (InputMismatchException e) {
                                 System.out.println("Please enter a valid choice");

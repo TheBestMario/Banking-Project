@@ -108,11 +108,7 @@ public class Teller {
 
 
     public void addPersonalAccount(Personal account) {
-        try{
-            db.createPersonalAccount(account);
-        }catch(SQLException e){
-            System.out.println("Error creating Personal account " + e.getMessage());
-        }
+        db.createPersonalAccount(account);
     }
     public List<Personal> getPersonalAccounts() {
         if (currentCustomer != null) {
@@ -121,17 +117,19 @@ public class Teller {
         return null;
     }
     public void addBusinessAccount(Business account) {
-        try{
-            db.createBusinessAccount(account);
-        }catch(SQLException e){
-            System.out.println("Error creating Business account " + e.getMessage());
-        }
+        db.createBusinessAccount(account);
     }
     public List<Business> getBusinessAccounts() {
-        if (currentAccount != null) {
-            return db.getBusinessAccount(currentCustomer.getId());
+        if (currentCustomer != null) {
+            List<Business> accounts = db.getBusinessAccount(currentCustomer.getId());
+            if (accounts == null || accounts.isEmpty()) {
+
+                return new ArrayList<>();
+            }
+            return accounts;
         }
-        return null;
+        System.out.println("DEBUG: Current customer is null.");
+        return new ArrayList<>(); // Return an empty list if currentCustomer is null
     }
     // clears teller session after logout for security
     public void clearUserSession(){

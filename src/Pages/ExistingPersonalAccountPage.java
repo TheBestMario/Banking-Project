@@ -16,17 +16,20 @@ public class ExistingPersonalAccountPage {
         System.out.println("Welcome to CLI Banking System");
         System.out.println("Select Personal Account Number");
         currentTeller.getPersonalAccounts().forEach(account -> {
-            System.out.println("Account Number: " + account.getAccountNumber() + "Balance £" + account.getBalance());
+            System.out.println("Account Number: " + account.getAccountNumber() + " Balance £" + account.getBalance());
 
         });
+
 
         boolean exit = false;
         while (!exit) {
             try {
+                System.out.println("Enter Your Choice, (0) to go back");
                 int choice = scanner.nextInt();
                 if (choice == 0) {
                     currentTeller.currentDirectory = "home/customers/accounts";
                     exit = true;
+                    return currentTeller;
                 } else {
                     Personal selectedAccount = currentTeller.getDatabase().getPersonalAccountById(choice);
                     if (selectedAccount != null) {
@@ -51,45 +54,52 @@ public class ExistingPersonalAccountPage {
                                 switch (actionChoice) {
                                     case 1:
                                         displayBalance(selectedAccount);
+                                        break;
                                     case 2:
                                         manageStandingOrders(scanner, selectedAccount);
+                                        break;
                                     case 3:
                                         viewStatmentHistory(selectedAccount);
+                                        break;
                                     case 4:
                                         deposit(scanner, selectedAccount, currentTeller.getDatabase());
+                                        break;
                                     case 5:
                                         withdraw(scanner, selectedAccount, currentTeller.getDatabase());
+                                        break;
                                     case 6:
                                         viewCardDetails(selectedAccount);
+                                        break;
                                     case 7:
                                         viewPendingPayments(selectedAccount);
+                                        break;
                                     case 8:
-                                        isRunning = false;
+
                                         System.out.println("Leaving Personal Account Page");
                                         currentTeller.currentDirectory = "home/customers/account";
                                         isRunning = false;
+                                        break;
                                     default:
                                         System.out.println("Invalid Action");
-
+                                        break;
                                 }
-
-
                             } catch (InputMismatchException e) {
                                 System.out.println("Please enter a valid choice");
                                 scanner.nextLine();
                             }
-
                         }
-                        exit = true;
                     } else {
                         System.out.println("Account not found");
                     }
                 }
-
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid choice");
+                scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Error" + e.getMessage());
                 scanner.nextLine();
             }
+
         }
         return currentTeller;
     }

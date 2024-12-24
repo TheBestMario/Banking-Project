@@ -18,7 +18,7 @@ public class Database {
     // create a BankingAppDB within your azure data studios
     // DB == BankingAppDB
 
-    public Database(Config config) {
+    public Database(Config config){
         this.dbUsername = config.userName;
         this.dbPassword = config.password;
         this.connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=BankingAppDB;user=" + this.dbUsername + ";password=" + this.dbPassword + ";encrypt=false;";
@@ -201,7 +201,7 @@ public class Database {
         }
     }
 
-    public int getCustomerId(String firstName, String lastName, String number, String email) {
+   /* public int getCustomerId(String firstName, String lastName, String number, String email) {
         String query = "SELECT id FROM Customers WHERE firstName = ? AND lastName = ? AND mobile_number = ? AND email = ?";
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setString(1, firstName);
@@ -216,17 +216,16 @@ public class Database {
             e.printStackTrace();
         }
         return 0;
-    }
+    }*/
 
     public List<Personal> getPersonalAccount(int customerId) {
         List<Personal> personalAccounts = new ArrayList<>();
 
         String query = """ 
-                SELECT a.id AS account_id, a.balance,a.dateCreated,pa.bank_address
+                SELECT a.id AS account_id, a.balance,a.initial_deposit,a.dateCreated,pa.bank_address,pa.payment_limit
                 FROM Accounts a
-                JOIN Account_Type at ON a.type_id = at.id
-                JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
-                WHERE a.id = ? AND a.isDeleted = 0
+                JOIN Personal_Accounts pa ON a.personal_account_id = pa.id
+                WHERE a.customer_id = ? AND a.isDeleted = 0
                 """;
         try (PreparedStatement st = con.prepareStatement(query)) {
             st.setInt(1, customerId);
@@ -234,15 +233,19 @@ public class Database {
 
             while (rs.next()) {
                 personalAccounts.add(new Personal(
-                        rs.getInt("id"),
+                        rs.getInt("account_id"),
                         rs.getDouble("balance"),
-                        rs.getInt("customer_id"),
-                        rs.getString("bank_address")
+                        customerId,
+                        rs.getString("bank_address"),
+                        rs.getInt("payment_limit")
                 ));
             }
+            System.out.println("Retrieved Personal Account " + personalAccounts);
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("An error occured while getting personal accounts" + e.getMessage());
+
         }
         return personalAccounts;
 
@@ -266,11 +269,10 @@ public class Database {
         List<Business> businessAccounts = new ArrayList<>();
 
         String query = """ 
-                SELECT a.id AS account_id, a.balance,a.dateCreated,ba.business_details, ba.has_Cheque_Books
+                SELECT a.id AS account_id, a.balance,a.initial_deposit,a.dateCreated,ba.business_details, ba.has_Cheque_Books
                 FROM Accounts a
-                JOIN Account_Type at ON a.type_id = at.id
-                JOIN Personal_Accounts ba ON at.business_account_id = ba.id
-                WHERE a.id = ? AND a.isDeleted = 0
+                JOIN Business_Accounts ba ON a.business_account_id = ba.id
+                WHERE a.customer_id = ? AND a.isDeleted = 0
                 """;
 
 
@@ -282,8 +284,8 @@ public class Database {
                 businessAccounts.add(new Business(
                         rs.getInt("account_id"),
                         rs.getDouble("balance"),
-                        rs.getString("bank_details"),
-                        rs.getInt("customer_id"),
+                        rs.getString("business_details"),
+                        customerId,
                         rs.getBoolean("has_Cheque_Books"),
                         rs.getDouble("initial_deposit")
                 ));
@@ -300,10 +302,9 @@ public class Database {
     //write
     public Personal getPersonalAccountById(int accountId) throws SQLException {
         String query = """
-                SELECT a.id AS account_id, a.balance, pa.bank_address
+                SELECT a.id AS account_id, a.balance, pa.bank_address,pa.payment_limit,a.customer_id
                 FROM Accounts a
-                JOIN Account_Type at ON a.type_id = at.id
-                JOIN Personal_Accounts pa ON at.personal_account_id = pa.id
+                JOIN Personal_Accounts pa ON a.personal_account_id = pa.id
                 WHERE a.id = ? AND a.isDeleted = 0
                 """;
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -315,8 +316,10 @@ public class Database {
                 double balance = rs.getDouble("balance");
                 int customerId = rs.getInt("customer_id");
                 String bankAddress = rs.getString("bank_address");
+                int paymentLimit = rs.getInt("payment_limit");
 
-                return new Personal(id, balance, customerId, bankAddress);
+
+                return new Personal(id, balance, customerId, bankAddress,paymentLimit);
             }
         }
         return null; // Account not found
@@ -325,10 +328,9 @@ public class Database {
     //write
     public Business getBusinessAccountById(int accountId) throws SQLException {
         String query = """
-                SELECT a.id AS account_id, a.balance, ba.business_details, ba.has_Cheque_Books
+                SELECT a.id AS account_id, a.balance, a.initial_deposit,a.dateCreated,ba.business_details, ba.has_Cheque_Books
                 FROM Accounts a
-                JOIN Account_Type at ON a.type_id = at.id
-                JOIN Business_Accounts ba ON at.business_account_id = ba.id
+                JOIN Business_Accounts ba ON a.business_account_id = ba.id
                 WHERE a.id = ? AND a.isDeleted = 0
                 """;
         try (PreparedStatement st = con.prepareStatement(query)) {
@@ -350,49 +352,108 @@ public class Database {
     }
 
 
-    public static int createPersonalAccount(Personal account) throws SQLException {
-        String query = "INSERT INTO Accounts (customer_id,type_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
-                "OUTPUT INSERTED.id VALUES (?,?,?,?, GETDATE(),GETDATE(),0)";
-        try (PreparedStatement st = con.prepareStatement(query)) {
-            st.setInt(1, account.getCustomerId());//replace with customer id
-            st.setDouble(2, 1); //type of id
-            st.setDouble(3, account.getInitialBalance());
-            st.setDouble(4, account.getBalance());
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1); // return the account id
+    public int createPersonalAccount(Personal account) {
+        String insertPersonalQuery = """
+        INSERT INTO Personal_Accounts (bank_address, payment_limit)
+        OUTPUT INSERTED.id
+        VALUES (?, ?)
+    """;
 
+        String insertAccountsQuery = """
+        INSERT INTO Accounts (customer_id, personal_account_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)
+        OUTPUT INSERTED.id
+        VALUES (?, ?, ?, ?, GETDATE(), GETDATE(), 0)
+    """;
+
+        try {
+            // Step 1: Insert into Personal_Accounts table
+            int personalAccountId;
+            try (PreparedStatement insertPersonalStmt = con.prepareStatement(insertPersonalQuery)) {
+                insertPersonalStmt.setString(1, account.getBankAddress());
+                insertPersonalStmt.setInt(2, account.getPaymentLimit());
+
+                ResultSet rs = insertPersonalStmt.executeQuery(); // Use executeQuery because of OUTPUT clause
+                if (rs.next()) {
+                    personalAccountId = rs.getInt(1); // Retrieve generated Personal Account ID
+                } else {
+                    throw new SQLException("Failed to retrieve Personal Account ID.");
+                }
+            }
+
+            // Step 2: Insert into Accounts table
+            try (PreparedStatement insertAccountsStmt = con.prepareStatement(insertAccountsQuery)) {
+                insertAccountsStmt.setInt(1, account.getCustomerId());
+                insertAccountsStmt.setInt(2, personalAccountId);
+                insertAccountsStmt.setDouble(3, account.getInitialBalance());
+                insertAccountsStmt.setDouble(4, account.getBalance());
+
+                ResultSet accountRs = insertAccountsStmt.executeQuery(); // Use executeQuery because of OUTPUT clause
+                if (accountRs.next()) {
+                    return accountRs.getInt(1); // Return the generated Account ID
+                } else {
+                    throw new SQLException("Failed to retrieve Account ID.");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("An error occurred while creating the Personal account.", e);
         }
-        return -1;
-
     }
 
-    public static int createBusinessAccount(Business account) throws SQLException {
-        String query = "INSERT INTO Accounts (type_id,customer_id,initial_deposit, balance, dateCreated, dateUpdated, isDeleted)" +
-                "VALUES (?,?,?, GETDATE(),GETDATE(),0); "
-                + "insert into Business_Accounts (business_details, has_Cheque_Books) VALUES (?,?);"
-                + "SELECT id from accounts where id = (select max(id) from accounts)";
-        try (PreparedStatement st = con.prepareStatement(query)) {
-            //st.setInt(1, account.getCustomerId());//replace with customer id
-            //st.setDouble(1, 2); //type of id
-            st.setDouble(1, account.getInitialDeposit());
-            st.setDouble(2, account.getBalance());
-            st.setString(3, account.getBusinessDetails());
-            st.setBoolean(4, account.hasChequeBooks());
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id"); // return the account id
 
+
+    public int createBusinessAccount(Business account) {
+        // Step 1: Insert into Business_Accounts table
+        String insertBusinessQuery = """
+        INSERT INTO Business_Accounts (business_details, has_Cheque_Books)
+        OUTPUT INSERTED.id
+        VALUES (?, ?)
+    """;
+
+        // Step 2: Insert into Accounts table
+        String insertAccountsQuery = """
+        INSERT INTO Accounts (customer_id, business_account_id, initial_deposit, balance, dateCreated, dateUpdated, isDeleted)
+        OUTPUT INSERTED.id
+        VALUES (?, ?, ?, ?, GETDATE(), GETDATE(), 0)
+    """;
+
+        try {
+            // Step 1: Insert into Business_Accounts table
+            int businessAccountId;
+            try (PreparedStatement insertBusinessStmt = con.prepareStatement(insertBusinessQuery)) {
+                insertBusinessStmt.setString(1, account.getBusinessDetails());
+                insertBusinessStmt.setBoolean(2, account.hasChequeBooks());
+
+                ResultSet rs = insertBusinessStmt.executeQuery(); // Use executeQuery because of OUTPUT clause
+                if (rs.next()) {
+                    businessAccountId = rs.getInt(1); // Retrieve generated Business Account ID
+                } else {
+                    throw new SQLException("Failed to retrieve Business Account ID.");
+                }
+            }
+
+            // Step 2: Insert into Accounts table
+            try (PreparedStatement insertAccountsStmt = con.prepareStatement(insertAccountsQuery)) {
+                insertAccountsStmt.setInt(1, account.getCustomerId());
+                insertAccountsStmt.setInt(2, businessAccountId);
+                insertAccountsStmt.setDouble(3, account.getInitialDeposit());
+                insertAccountsStmt.setDouble(4, account.getBalance());
+
+                ResultSet accountRs = insertAccountsStmt.executeQuery(); // Use executeQuery because of OUTPUT clause
+                if (accountRs.next()) {
+                    return accountRs.getInt(1); // Return the generated Account ID
+                } else {
+                    throw new SQLException("Failed to retrieve Account ID.");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("An error occurred while creating the Business account.", e);
         }
-        return -1;
     }
+
+
 
 
     /* ------------------------- ISA Queries ----------------------------------------------------*/

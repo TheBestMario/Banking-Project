@@ -3,6 +3,7 @@ package Pages;
 import main.Database;
 import main.Personal;
 import main.Teller;
+import main.*;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -16,29 +17,23 @@ public class NewPersonalAccountPage {
         System.out.println("Enter Bank Address");
         String bankAddress = scanner.next();
         int customerId = currentTeller.getCurrentCustomer().getId();
+        System.out.println("Please enter payment limit");
+        int paymentLimit = scanner.nextInt();
+
 
         try {
-            Personal newAccount = new Personal(currentTeller.getCurrentCustomer().getId(), initialDeposit,customerId ,bankAddress);
-            currentTeller.getDatabase().createPersonalAccount(newAccount);
-            System.out.println("New personal account created");
+            Personal newAccount = new Personal(0, initialDeposit,customerId ,bankAddress,paymentLimit);
+            int accountId = currentTeller.getDatabase().createPersonalAccount(newAccount);
+            if(accountId > 0){
+                System.out.println("Personal Account Created Succesfully, Account ID:  " + accountId);
+            }else {
+                System.out.println("Personal Account Creation Failed");
+            }
         } catch (Exception e) {
             System.out.println("Error" + e.getMessage());
         }
         currentTeller.currentDirectory = "home/customers/accounts";
         return currentTeller;
-/*
-            // Create new Personal account object
-            Personal newPersonalAccount = new Personal(accountNumber,initialDeposit,bankAddress);
-            teller.addPersonalAccount(newPersonalAccount);
 
-            System.out.println("New Personal Account created successfully with Account Number: " + accountNumber);
-            teller.setCurrentDirectory("home/customers");
-        } catch (Exception e) {
-            System.out.println("Error creating account: " + e.getMessage());
-        }
-
-        return teller;
-    }
-    */
     }
 }

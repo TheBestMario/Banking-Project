@@ -15,15 +15,20 @@ public class Personal extends Account {
     private List<String> pendingPayments;
     private String bankAddress;
     private double initialBalance;
+    private int paymentLimit;
 
 
-    public Personal(int accountNumber, double initialBalance,int customerId, String bankAddress) {
+
+
+
+    public Personal(int accountNumber, double initialBalance,int customerId, String bankAddress, int paymentLimit) {
         super(accountNumber, initialBalance);
         if (initialBalance < min_opening_balance) {
             throw new IllegalArgumentException("Initial balance cannot be less than min_opening_balance");
         }
         this.customerId = customerId;
         this.bankAddress = bankAddress;
+        this.paymentLimit = paymentLimit;
         this.cardNumber = generateCardNumber();
         this.standingOrders = new ArrayList<>();
         this.statmentHistory = new ArrayList<>();
@@ -31,6 +36,17 @@ public class Personal extends Account {
         this.initialBalance = initialBalance;
 
     }
+
+    public int getPaymentLimit(){
+        return paymentLimit;
+    }
+    public void setPaymentLimit(int paymentLimit){
+        if ( paymentLimit <= 0){
+            throw new IllegalArgumentException("Payment limit must be greater than 0");
+        }
+        this.paymentLimit = paymentLimit;
+    }
+
     public double getInitialBalance() {
         return initialBalance;
     }
